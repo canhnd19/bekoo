@@ -1,0 +1,32 @@
+:root {
+
+  --primary: #ececec;
+  --secondary: #999;
+  --hyperlink: #2e89ff;
+  --disabled: #31353e;
+  --active: #78a9ff;
+  --border-button-primary: #78a9ff;
+  --background-primary: linear-gradient(106.51deg, hsla(0, 0%, 100%, 0.09) 3.44%, hsla(0, 0%, 100%, 0.036) 64.82%);
+  --placeholder: #a8abb2;
+
+  /* border */
+  --border: #e1e1e133;
+  --border-sub: #31353e;
+  --border-table: #3c424d;
+  --border-input: #31353e;
+
+  /* amount */
+  --amount-increase: #129961;
+  --amount-decrease: #ff2e2e;
+
+  /* status */
+  --status-success: #129961;
+  --status-complete: #129961;
+  --status-warning: #ffcc00;
+  --status-processing: #fd8f00;
+  --status-pending: #999999;
+  --status-error: #ff2e2e;
+  --status-failed: #ff2e2e;
+
+
+}
