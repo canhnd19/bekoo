@@ -1,29 +1,59 @@
 <template>
   <div class="flex min-h-[202px] flex-col items-center justify-center">
-    <div class="loader"></div>
-    <div class="mt-3">loading...</div>
+    <div class="loader">
+      <div class="orbe" style="--index: 0"></div>
+      <div class="orbe" style="--index: 1"></div>
+      <div class="orbe" style="--index: 2"></div>
+      <div class="orbe" style="--index: 3"></div>
+      <div class="orbe" style="--index: 4"></div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped>
-/* HTML: <div class="loader"></div> */
+/* From Uiverse.io by krlozCJ */
 .loader {
-  width: 50px;
-  aspect-ratio: 1;
-  --_c: no-repeat radial-gradient(farthest-side, #c8c8c8 92%, #0000);
-  background:
-    var(--_c) top,
-    var(--_c) left,
-    var(--_c) right,
-    var(--_c) bottom;
-  background-size: 10px 10px;
-  animation: l7 0.7s infinite;
+  --size-loader: 50px;
+  --size-orbe: 10px;
+  width: var(--size-loader);
+  height: var(--size-loader);
+  position: relative;
+  transform: rotate(45deg);
 }
-@keyframes l7 {
-  to {
-    transform: rotate(0.5turn);
+
+.orbe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  --delay: calc(var(--index) * 0.1s);
+  animation: orbit7456 ease-in-out 1.5s var(--delay) infinite;
+  opacity: calc(1 - calc(0.2 * var(--index)));
+}
+
+.orbe::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: var(--size-orbe);
+  height: var(--size-orbe);
+  background-color: #3ae374;
+  box-shadow: 0px 0px 20px 2px #3ae374;
+  border-radius: 50%;
+}
+
+@keyframes orbit7456 {
+  0% {
+  }
+
+  80% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

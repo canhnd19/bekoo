@@ -12,10 +12,11 @@ const router = createRouter({
     {
       path: '/:catchAll(.*)',
       name: 'NotFound',
-      component: () => import('../NotFound.vue')
+      component: () => import('../components/base/loading/PageLoading.vue')
     }
   ]
 })
+// ../NotFound.vue
 
 router.beforeEach((to, _from, next) => {
   const { emptyDrawerAndPopup } = useBaseStore()
