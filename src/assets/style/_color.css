@@ -1,5 +1,4 @@
 :root {
-
   --primary: #ececec;
   --secondary: #999;
   --hyperlink: #2e89ff;
@@ -27,6 +26,4 @@
   --status-pending: #999999;
   --status-error: #ff2e2e;
   --status-failed: #ff2e2e;
-
-
 }
