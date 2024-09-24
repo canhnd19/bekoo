@@ -1,3 +1,4 @@
+import listRouter from '@/modules'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
@@ -8,11 +9,11 @@ const router = createRouter({
   linkExactActiveClass: 'text-active',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // ...listRouter,
+    ...listRouter,
     {
       path: '/:catchAll(.*)',
       name: 'NotFound',
-      component: () => import('../components/base/loading/PageLoading.vue')
+      component: () => import('../NotFound.vue')
     }
   ]
 })
