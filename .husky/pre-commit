@@ -15,7 +15,6 @@ branch_name=$(git rev-parse --abbrev-ref HEAD)
 # Define your branch naming convention regex
 branch_regex="^(feature|bugfix|hotfix|release|docs)\/[a-z0-9._-]+$"
 
-
 # Check if the branch name is master
 if [ "$branch_name" = "develop" ] || [ "$branch_name" = "uat" ] || [ "$branch_name" = "production" ]; then
   email=$(git config user.email)
