@@ -1,8 +1,6 @@
 <template>
   <div class="flex min-h-screen items-center justify-center">
-    <div class="loader">
-      <div>sdlbfvlzsdfnb</div>
-    </div>
+    <div class="loader"></div>
   </div>
 </template>
 
