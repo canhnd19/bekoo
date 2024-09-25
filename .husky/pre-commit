@@ -1,9 +1,9 @@
 # npm run lint-staged
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/husky.sh"
+# . "$(dirname -- "$0")/husky.sh"
 
 # Format and lint code
-echo "🪄 In the process of formatting and linting code."
+# echo "🪄 In the process of formatting and linting code."
 # npx lint-staged
 npm run lint-staged
 
