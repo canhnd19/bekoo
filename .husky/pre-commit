@@ -20,7 +20,7 @@ if [ "$branch_name" = "develop" ] || [ "$branch_name" = "uat" ] || [ "$branch_na
   email=$(git config user.email)
   
   # List of allowed usernames
-  allowed_email="canhnd1109@gmail.com"
+  allowed_email="ngoduccanh19@gmail.com"
 
   # Flag to indicate if the email is allowed
   is_allowed=false
