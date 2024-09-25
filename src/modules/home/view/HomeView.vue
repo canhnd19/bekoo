@@ -1,5 +1,7 @@
 <template>
-  <div>HOME PAGE TEST</div>
+  <div>
+    <img src="/images/homepage_banner.png" alt="" />
+  </div>
 </template>
 
 <script setup lang="ts"></script>
