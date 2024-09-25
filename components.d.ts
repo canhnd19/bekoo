@@ -23,6 +23,8 @@ declare module 'vue' {
     BaseSelect: typeof import('./src/components/base/select/BaseSelect.vue')['default']
     BaseTab: typeof import('./src/components/base/tab/BaseTab.vue')['default']
     BaseTable: typeof import('./src/components/base/table/BaseTable.vue')['default']
+    ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
