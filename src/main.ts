@@ -7,6 +7,7 @@ import './assets/style/_color.css'
 import './assets/style/_tailwind.css'
 // NOTE: Import custom styles always after tailwind.css
 import './assets/style/custom.scss'
+import './assets/style/index.scss'
 import router from './router'
 import { useBaseStore } from './stores/base'
 
