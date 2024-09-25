@@ -4,13 +4,19 @@
       <PageLoading />
     </template>
     <template v-else>
-      <TheHeader />
-      <RouterView />
+      <div class="flex h-dvh flex-col justify-between">
+        <div>
+          <TheHeader />
+          <RouterView />
+        </div>
+        <TheFooter />
+      </div>
     </template>
   </ElScrollbar>
 </template>
 
 <script setup lang="ts">
+import TheFooter from './TheFooter.vue'
 import TheHeader from './TheHeader.vue'
 
 // const route = useRoute()

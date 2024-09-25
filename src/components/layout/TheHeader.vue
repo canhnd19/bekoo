@@ -1,5 +1,5 @@
 <template>
-  <header class="layout-header">
+  <div class="layout-header">
     <img src="/images/header_logo.png" />
     <div class="flex items-center justify-around">
       <BaseDropdown :clearable="false" class="dropdown-logo">
@@ -44,7 +44,7 @@
       <BaseIcon name="user" class="mr-2.5" />
       <span class="items-center text-base font-medium">Tài khoản</span>
     </div>
-  </header>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -52,7 +52,7 @@ import { CONTACT_FOR_COOPERATION, INSTRUCT, MEDICAL_SERVICES, NEWS } from '../..
 </script>
 <style scoped lang="scss">
 .layout-header {
-  @apply mx-auto flex max-w-7xl items-center justify-around;
+  @apply mx-auto flex w-full max-w-7xl items-center justify-around;
   .text {
     @apply text-base font-semibold text-secondary hover:text-primary;
   }
