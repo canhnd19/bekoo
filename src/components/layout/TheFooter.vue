@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-6">
     <div class="layout-footer">
       <div>
         <img src="/images/footer_logo.png" />

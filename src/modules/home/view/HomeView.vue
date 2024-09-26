@@ -17,8 +17,8 @@
     </div>
   </div>
   <!-- Chuyên khoa -->
-  <div class="mx-auto my-28 max-w-7xl">
-    <p class="text-center text-[28px] font-bold">Chuyên khoa</p>
+  <div class="mx-auto mt-28 max-w-7xl">
+    <p class="label">CHUYÊN KHOA</p>
     <div class="my-8 grid grid-cols-8 gap-x-12 gap-y-8">
       <template v-for="(item, index) in showMore ? SPECIALTY_MORE : SPECIALTY" :key="index">
         <div class="cursor-pointer">
@@ -35,10 +35,26 @@
       </div>
     </div>
   </div>
+  <!-- Thống kê -->
+  <div class="bg"></div>
+  <div class="statistics">
+    <div class="mx-auto max-w-7xl">
+      <p class="label">THỐNG KÊ</p>
+      <div class="statistics-item">
+        <template v-for="(item, index) in STATISTICS" :key="index">
+          <div class="cursor-pointer">
+            <img :src="item.icon" alt="" class="mx-auto w-24" />
+            <p class="text-center text-2xl font-bold text-[#24313d]">{{ item.value }}</p>
+            <p class="mt-2 text-center text-[20px] text-[#757575]">{{ item.label }}</p>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { CAROUSEL_HOMEPAGE, SPECIALTY, SPECIALTY_MORE } from '../constants/index'
+import { CAROUSEL_HOMEPAGE, SPECIALTY, SPECIALTY_MORE, STATISTICS } from '../constants/index'
 
 const search = ref<string>('')
 const showMore = ref<boolean>(false)
@@ -67,6 +83,20 @@ const showMore = ref<boolean>(false)
   @apply flex cursor-pointer items-center justify-center rounded-lg border border-solid px-3 py-2 text-[20px] text-primary;
   &:hover {
     @apply border-primary;
+  }
+}
+.label {
+  @apply text-center text-[28px] font-bold;
+}
+.bg {
+  background: linear-gradient(180deg, #fff, #ebf2ff);
+  height: 68.15px;
+}
+.statistics {
+  background: rgb(232, 244, 253);
+  @apply pb-16;
+  .statistics-item {
+    @apply mt-6 flex items-center justify-around rounded-3xl bg-white p-6;
   }
 }
 </style>

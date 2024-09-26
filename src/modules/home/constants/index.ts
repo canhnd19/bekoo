@@ -234,3 +234,26 @@ export const SPECIALTY_MORE = [
     label: 'Tạo hình thẩm mỹ'
   }
 ]
+
+export const STATISTICS = [
+  {
+    icon: '/images/luotdatkham.png',
+    value: '3.0M+',
+    label: 'Lượt khám'
+  },
+  {
+    icon: '/images/bacsi.png',
+    value: '100+',
+    label: 'Bác sĩ'
+  },
+  {
+    icon: '/images/luottruycapthang.png',
+    value: '850K+',
+    label: 'Lượt truy cập tháng'
+  },
+  {
+    icon: '/images/luottruycapngay.png',
+    value: '28.3K++',
+    label: 'Lượt truy cập trong ngày'
+  }
+]
