@@ -1,6 +1,8 @@
 <template>
   <div class="layout-header">
-    <img src="/images/header_logo.png" />
+    <RouterLink :to="{ name: 'Home' }">
+      <img src="/images/header_logo.png" />
+    </RouterLink>
     <div class="flex items-center justify-around">
       <BaseDropdown :clearable="false" class="dropdown-logo">
         <template #reference>
