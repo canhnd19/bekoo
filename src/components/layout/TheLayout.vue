@@ -4,7 +4,10 @@
       <PageLoading />
     </template>
     <template v-else>
-      <div class="flex h-dvh flex-col justify-between">
+      <template v-if="route.name === 'Login'">
+        <RouterView />
+      </template>
+      <div v-else class="flex h-dvh flex-col justify-between">
         <div>
           <TheHeader />
           <RouterView />
@@ -19,7 +22,7 @@
 import TheFooter from './TheFooter.vue'
 import TheHeader from './TheHeader.vue'
 
-// const route = useRoute()
+const route = useRoute()
 
 const loading = ref(true)
 
