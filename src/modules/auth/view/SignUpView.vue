@@ -1,6 +1,6 @@
 <template>
-  <div class="h-screen bg-[#e8f2f7]">
-    <div class="container space-y-6 px-20">
+  <div class="min-h-screen bg-[#e8f2f7]">
+    <div class="container space-y-6 px-20 pb-6">
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
       <div class="flex">
         <div class="mr-[120px] space-y-2">
@@ -128,6 +128,12 @@ import { SEX } from '../constants/index'
 </script>
 
 <style scoped lang="scss">
+.text-label {
+  @apply text-xl font-medium text-[#003553];
+}
+.style-flex {
+  @apply flex items-end justify-between;
+}
 :deep(.input.el-input) {
   .el-input__wrapper {
     border-radius: 8px;
@@ -155,11 +161,5 @@ import { SEX } from '../constants/index'
   .el-input__wrapper {
     border-radius: 8px;
   }
-}
-.text-label {
-  @apply text-xl font-medium text-[#003553];
-}
-.style-flex {
-  @apply flex items-center justify-between;
 }
 </style>
