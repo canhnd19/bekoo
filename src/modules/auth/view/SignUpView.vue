@@ -5,31 +5,31 @@
       <div class="flex">
         <div class="mr-[120px] space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Họ và tên (có dấu) </span>
+            <span class="text-label">Họ và tên (có dấu) </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH" />
         </div>
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]"> Ngày sinh </span>
+            <span class="text-label"> Ngày sinh </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElDatePicker type="date" placeholder="DD/MM/YYYY" class="date-picker" format="DD/MM/YYYY" />
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="style-flex">
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Số điện thoại </span>
+            <span class="text-label">Số điện thoại </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập số điện thoại " />
         </div>
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Giới tính </span>
+            <span class="text-label">Giới tính </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect clearable placeholder="Chọn giới tính" class="select">
@@ -38,21 +38,21 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="style-flex">
         <div class="space-y-2">
-          <p class="text-xl font-medium text-[#003553]">Số CCCD/Passport</p>
+          <p class="text-label">Số CCCD/Passport</p>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Nhập số CCCD/Passport" />
         </div>
         <div class="space-y-2">
-          <p class="text-xl font-medium text-[#003553]">Địa chỉ Email</p>
+          <p class="text-label">Địa chỉ Email</p>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập email" />
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="style-flex">
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Tỉnh / Thành </span>
+            <span class="text-label">Tỉnh / Thành </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect clearable placeholder="Chọn tỉnh thành" class="select">
@@ -61,7 +61,7 @@
         </div>
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Quận / Huyện </span>
+            <span class="text-label">Quận / Huyện </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect clearable placeholder="Chọn quận huyện" class="select">
@@ -70,10 +70,10 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="style-flex">
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Phường / Xã </span>
+            <span class="text-label">Phường / Xã </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect clearable placeholder="Chọn phường xã" class="select">
@@ -82,7 +82,7 @@
         </div>
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Địa chỉ hiện tại </span>
+            <span class="text-label">Địa chỉ hiện tại </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập địa chỉ hiện tại" />
@@ -91,26 +91,26 @@
 
       <div class="text-2xl font-bold">Thông tin tài khoản</div>
 
-      <div class="flex items-center justify-between">
+      <div class="style-flex">
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Tên tài khoản </span>
+            <span class="text-label">Tên tài khoản </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập tên tài khoản" />
         </div>
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Mật khẩu </span>
+            <span class="text-label">Mật khẩu </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập mật khẩu" />
         </div>
       </div>
-      <div class="flex items-center justify-between">
+      <div class="style-flex">
         <div class="space-y-2">
           <div>
-            <span class="text-xl font-medium text-[#003553]">Xác nhận mật khẩu </span>
+            <span class="text-label">Xác nhận mật khẩu </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập lại mật khẩu" />
@@ -155,5 +155,11 @@ import { SEX } from '../constants/index'
   .el-input__wrapper {
     border-radius: 8px;
   }
+}
+.text-label {
+  @apply text-xl font-medium text-[#003553];
+}
+.style-flex {
+  @apply flex items-center justify-between;
 }
 </style>
