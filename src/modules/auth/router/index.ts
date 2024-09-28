@@ -16,6 +16,20 @@ const AuthRouter: RouteRecordRaw[] = [
         name: 'Login'
       }
     ]
+  },
+  {
+    path: '/signup',
+    component: TheLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('../view/SignUpView.vue'),
+        meta: {
+          auth: false
+        },
+        name: 'SignUp'
+      }
+    ]
   }
 ]
 

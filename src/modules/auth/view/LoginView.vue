@@ -13,6 +13,7 @@
         <ElFormItem prop="phoneNumber" :rules="{ required: true, message: 'Vui lòng nhập số điện thoại!' }">
           <ElInput
             v-model.number="loginValidateForm.phoneNumber"
+            class="input"
             autocomplete="off"
             style="width: 394px; height: 50px"
             placeholder="Số điện thoại"
@@ -21,6 +22,7 @@
         <ElFormItem prop="password" :rules="{ required: true, message: 'Vui lòng nhập mật khẩu!' }">
           <ElInput
             v-model.number="loginValidateForm.password"
+            class="input"
             autocomplete="off"
             style="width: 394px; height: 50px"
             type="password"
@@ -33,7 +35,7 @@
       <div class="my-10 border-b border-solid border-[#cacaca]"></div>
       <p class="text-center">
         <span>Chưa có tài khoản? </span>
-        <span class="cursor-pointer text-primary">Đăng ký ngay</span>
+        <RouterLink :to="{ name: 'SignUp' }" class="cursor-pointer text-primary">Đăng ký ngay</RouterLink>
       </p>
     </div>
     <div class="banner-login">
@@ -75,6 +77,11 @@ const disabled = computed(() => {
     width: 50px;
     -webkit-clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
     clip-path: polygon(0 0, 100% 0, 5% 100%, 0 100%);
+  }
+}
+:deep(.input.el-input) {
+  .el-input__wrapper {
+    border-radius: 8px;
   }
 }
 </style>

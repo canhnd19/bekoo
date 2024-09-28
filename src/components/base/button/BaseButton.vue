@@ -49,7 +49,7 @@ const handleClick = debounce(() => {
 
 <style scoped lang="scss">
 .button {
-  @apply flex cursor-pointer select-none items-center justify-center rounded border border-solid bg-transparent;
+  @apply flex cursor-pointer select-none items-center justify-center rounded-lg border border-solid bg-transparent;
 
   .is-loading {
     margin-right: 6px;
@@ -83,10 +83,7 @@ const handleClick = debounce(() => {
   }
 
   &--plain {
-    border-color: var(--disabled);
-    &:hover {
-      border-color: var(--border-button-primary);
-    }
+    background: var(--primary-gradient-title, linear-gradient(40deg, #00b5f1 0, #00e0ff 100%));
   }
 
   &--disabled {

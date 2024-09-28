@@ -17,7 +17,7 @@
     </div>
   </div>
   <!-- Chuyên khoa -->
-  <div class="mx-auto mt-28 max-w-7xl">
+  <div class="container mt-28">
     <p class="label">CHUYÊN KHOA</p>
     <div class="my-8 grid grid-cols-8 gap-x-12 gap-y-8">
       <template v-for="(item, index) in showMore ? SPECIALTY_MORE : SPECIALTY" :key="index">
@@ -38,7 +38,7 @@
   <!-- Thống kê -->
   <div class="bg"></div>
   <div class="statistics">
-    <div class="mx-auto max-w-7xl">
+    <div class="container">
       <p class="label">THỐNG KÊ</p>
       <div class="statistics-item">
         <template v-for="(item, index) in STATISTICS" :key="index">

@@ -4,7 +4,7 @@
       <PageLoading />
     </template>
     <template v-else>
-      <template v-if="route.name === 'Login'">
+      <template v-if="['Login', 'SignUp'].includes(route.name as string)">
         <RouterView />
       </template>
       <div v-else class="flex h-dvh flex-col justify-between">
