@@ -75,6 +75,7 @@
             clearable
             placeholder="Chọn quận huyện"
             class="select"
+            :disabled="checkDistrict"
             @change="selectDistrict"
           >
             <ElOption v-for="(item, index) in districts" :key="index" :value="item.code" :label="item.name"> </ElOption>
@@ -88,7 +89,7 @@
             <span class="text-label">Phường / Xã </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <BaseSelect clearable placeholder="Chọn phường xã" class="select">
+          <BaseSelect clearable placeholder="Chọn phường xã" class="select" :disabled="checkWard">
             <ElOption v-for="(item, index) in wards" :key="index" :value="item.code" :label="item.name"> </ElOption>
           </BaseSelect>
         </div>
@@ -160,6 +161,13 @@ const selectDistrict = async () => {
     console.log(error)
   }
 }
+const checkDistrict = computed(() => {
+  return !codeProvince.value
+})
+
+const checkWard = computed(() => {
+  return !codeDistrict.value
+})
 </script>
 
 <style scoped lang="scss">
