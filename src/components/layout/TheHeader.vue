@@ -1,7 +1,7 @@
 <template>
   <div class="layout-header">
     <RouterLink :to="{ name: 'Home' }">
-      <img src="/images/header_logo.png" />
+      <img src="/images/header_logo.png" class="w-36" />
     </RouterLink>
     <div class="flex items-center justify-around">
       <BaseDropdown :clearable="false" class="dropdown-logo">

@@ -2,7 +2,7 @@
   <div class="mt-6">
     <div class="layout-footer">
       <div>
-        <img src="/images/footer_logo.png" />
+        <img src="/images/header_logo.png" class="w-40" />
         <p>
           <span class="style-text-primary">Địa chỉ: </span>
           <span>Đang cập nhập...</span>
