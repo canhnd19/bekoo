@@ -15,7 +15,7 @@
             v-model.number="loginValidateForm.phoneNumber"
             class="input"
             autocomplete="off"
-            style="width: 394px; height: 50px"
+            style="width: 430px; height: 50px"
             placeholder="Số điện thoại"
           />
         </ElFormItem>
@@ -24,7 +24,7 @@
             v-model.number="loginValidateForm.password"
             class="input"
             autocomplete="off"
-            style="width: 394px; height: 50px"
+            style="width: 430px; height: 50px"
             type="password"
             placeholder="Mật khẩu"
             show-password
