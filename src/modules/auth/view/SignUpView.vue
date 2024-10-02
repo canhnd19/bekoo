@@ -55,8 +55,14 @@
             <span class="text-label">Tỉnh / Thành </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <BaseSelect clearable placeholder="Chọn tỉnh thành" class="select">
-            <ElOption v-for="(item, index) in SEX" :key="index" :value="item.value" :label="item.label"> </ElOption>
+          <BaseSelect
+            v-model="codeProvince"
+            clearable
+            placeholder="Chọn tỉnh thành"
+            class="select"
+            @change="selectPovince"
+          >
+            <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name"> </ElOption>
           </BaseSelect>
         </div>
         <div class="space-y-2">
@@ -64,8 +70,14 @@
             <span class="text-label">Quận / Huyện </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <BaseSelect clearable placeholder="Chọn quận huyện" class="select">
-            <ElOption v-for="(item, index) in SEX" :key="index" :value="item.value" :label="item.label"> </ElOption>
+          <BaseSelect
+            v-model="codeDistrict"
+            clearable
+            placeholder="Chọn quận huyện"
+            class="select"
+            @change="selectDistrict"
+          >
+            <ElOption v-for="(item, index) in districts" :key="index" :value="item.code" :label="item.name"> </ElOption>
           </BaseSelect>
         </div>
       </div>
@@ -77,7 +89,7 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect clearable placeholder="Chọn phường xã" class="select">
-            <ElOption v-for="(item, index) in SEX" :key="index" :value="item.value" :label="item.label"> </ElOption>
+            <ElOption v-for="(item, index) in wards" :key="index" :value="item.code" :label="item.name"> </ElOption>
           </BaseSelect>
         </div>
         <div class="space-y-2">
@@ -94,20 +106,11 @@
       <div class="style-flex">
         <div class="space-y-2">
           <div>
-            <span class="text-label">Tên tài khoản </span>
-            <span class="text-[#ff3b30]">*</span>
-          </div>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập tên tài khoản" />
-        </div>
-        <div class="space-y-2">
-          <div>
             <span class="text-label">Mật khẩu </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập mật khẩu" />
         </div>
-      </div>
-      <div class="style-flex">
         <div class="space-y-2">
           <div>
             <span class="text-label">Xác nhận mật khẩu </span>
@@ -115,6 +118,8 @@
           </div>
           <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập lại mật khẩu" />
         </div>
+      </div>
+      <div class="flex justify-end">
         <BaseButton size="large" type="plain" class="w-32">Đăng kí tài khoản</BaseButton>
       </div>
     </div>
@@ -122,9 +127,39 @@
 </template>
 
 <script setup lang="ts">
+import { apiParams } from '@/services'
+
+import type { IDistrict, IWard } from '@/types/param.types'
+
+import { useBaseStore } from '@/stores/base'
+
 import { SEX } from '../constants/index'
 
+const { province } = useBaseStore()
+
 // const route = useRoute()
+
+const districts = ref<IDistrict[]>([])
+const wards = ref<IWard[]>([])
+const codeProvince = ref<number | string>('')
+const codeDistrict = ref<number | string>('')
+const selectPovince = async () => {
+  try {
+    const rs = await apiParams.getListDistrict(codeProvince.value)
+    districts.value = rs.districts
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const selectDistrict = async () => {
+  try {
+    const rs = await apiParams.getListWards(codeDistrict.value)
+    wards.value = rs.wards
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,13 +1,15 @@
+import { apiParams } from '@/services'
 import { filter, union } from 'lodash-es'
 import { defineStore } from 'pinia'
 
+import type { IProvince } from '@/types/param.types'
 import type { DRAWER_NAME, POPUP_NAME } from '@/types/popup.types'
 
 export const useBaseStore = defineStore('base', () => {
   const popup = ref<string[]>([])
   const drawer = ref<string[]>([])
   const isDesktop = ref(true)
-
+  const province = ref<IProvince[]>([])
   const setOpenPopup = (popupName: POPUP_NAME, isOpen = true) => {
     if (isOpen) {
       popup.value = union(popup.value, [popupName])
@@ -33,12 +35,24 @@ export const useBaseStore = defineStore('base', () => {
     popup.value = []
   }
 
+  const getListProvince = async () => {
+    try {
+      const rs = await apiParams.getListProvince()
+      province.value = rs
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   return {
     popup,
     drawer,
     setOpenPopup,
     setOpenDrawer,
     isDesktop,
-    emptyDrawerAndPopup
+    emptyDrawerAndPopup,
+    province,
+    getListProvince
   }
 })
