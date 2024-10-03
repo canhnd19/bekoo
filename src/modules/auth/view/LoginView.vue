@@ -31,6 +31,7 @@
           />
         </ElFormItem>
       </ElForm>
+      <RouterLink :to="{ name: 'ForgotPassword' }" class="forgot-password">Quên mật khẩu</RouterLink>
       <BaseButton :disabled="disabled" size="large">Đăng nhập</BaseButton>
       <div class="my-10 border-b border-solid border-[#cacaca]"></div>
       <p class="text-center">
@@ -83,5 +84,8 @@ const disabled = computed(() => {
   .el-input__wrapper {
     border-radius: 8px;
   }
+}
+.forgot-password {
+  @apply mb-[18px] flex w-full cursor-pointer justify-end text-right text-base text-primary;
 }
 </style>

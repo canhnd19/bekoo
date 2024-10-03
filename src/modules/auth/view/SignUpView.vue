@@ -121,7 +121,7 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <BaseButton size="large" type="plain" class="w-32">Đăng kí tài khoản</BaseButton>
+        <BaseButton size="large" type="plain" class="w-36">Đăng kí tài khoản</BaseButton>
       </div>
     </div>
   </div>

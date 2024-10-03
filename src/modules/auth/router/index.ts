@@ -30,6 +30,20 @@ const AuthRouter: RouteRecordRaw[] = [
         name: 'SignUp'
       }
     ]
+  },
+  {
+    path: '/forgot-pasword',
+    component: TheLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('../view/ForgotPasswordView.vue'),
+        meta: {
+          auth: false
+        },
+        name: 'ForgotPassword'
+      }
+    ]
   }
 ]
 

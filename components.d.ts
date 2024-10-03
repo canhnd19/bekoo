@@ -13,6 +13,7 @@ declare module 'vue' {
     BaseIcon: typeof import('./src/components/base/icon/BaseIcon.vue')['default']
     BaseInput: typeof import('./src/components/base/input/BaseInput.vue')['default']
     BaseSelect: typeof import('./src/components/base/select/BaseSelect.vue')['default']
+    ElCountdown: typeof import('element-plus/es')['ElCountdown']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
