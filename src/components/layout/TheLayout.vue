@@ -4,10 +4,10 @@
       <PageLoading />
     </template>
     <template v-else>
-      <template v-if="['Login', 'SignUp', 'ForgotPassword'].includes(route.name as string)">
+      <!-- <template v-if="['Login', 'SignUp', 'ForgotPassword'].includes(route.name as string)">
         <RouterView />
-      </template>
-      <div v-else class="flex h-dvh flex-col justify-between">
+      </template> -->
+      <div class="flex h-dvh flex-col justify-between">
         <div>
           <TheHeader />
           <RouterView />
@@ -26,7 +26,7 @@ import TheHeader from './TheHeader.vue'
 
 const { getListProvince } = useBaseStore()
 
-const route = useRoute()
+// const route = useRoute()
 
 const loading = ref(true)
 

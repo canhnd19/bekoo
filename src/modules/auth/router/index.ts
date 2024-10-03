@@ -1,49 +1,45 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-const TheLayout = () => import('@/components/layout/TheLayout.vue')
-
 const AuthRouter: RouteRecordRaw[] = [
   {
     path: '/login',
-    component: TheLayout,
-    children: [
-      {
-        path: '',
-        component: () => import('../view/LoginView.vue'),
-        meta: {
-          auth: false
-        },
-        name: 'Login'
-      }
-    ]
+    component: () => import('../view/LoginView.vue'),
+    meta: {
+      auth: false
+    },
+    name: 'Login'
   },
   {
     path: '/signup',
-    component: TheLayout,
-    children: [
-      {
-        path: '',
-        component: () => import('../view/SignUpView.vue'),
-        meta: {
-          auth: false
-        },
-        name: 'SignUp'
-      }
-    ]
+    component: () => import('../view/SignUpView.vue'),
+    meta: {
+      auth: false
+    },
+    name: 'SignUp'
   },
   {
     path: '/forgot-pasword',
-    component: TheLayout,
-    children: [
-      {
-        path: '',
-        component: () => import('../view/ForgotPasswordView.vue'),
-        meta: {
-          auth: false
-        },
-        name: 'ForgotPassword'
-      }
-    ]
+    component: () => import('../view/ForgotPasswordView.vue'),
+    meta: {
+      auth: false
+    },
+    name: 'ForgotPassword'
+  },
+  {
+    path: '/pin-code',
+    component: () => import('../view/PinCodeView.vue'),
+    meta: {
+      auth: false
+    },
+    name: 'PinCode'
+  },
+  {
+    path: '/new-password',
+    component: () => import('../view/SetNewPasswordView.vue'),
+    meta: {
+      auth: false
+    },
+    name: 'SetNewPassword'
   }
 ]
 
