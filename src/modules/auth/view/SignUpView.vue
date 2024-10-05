@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen bg-[#e8f2f7]">
+  <template v-if="loading">
+    <PageLoading />
+  </template>
+  <div v-else class="min-h-screen bg-[#e8f2f7]">
     <div class="container space-y-6 px-20 pb-6">
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
       <div class="flex">
@@ -8,14 +11,25 @@
             <span class="text-label">Họ và tên (có dấu) </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH" />
+          <ElInput
+            v-model="userSignUp.name"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH"
+          />
         </div>
         <div class="space-y-2">
           <div>
             <span class="text-label"> Ngày sinh </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElDatePicker type="date" placeholder="DD/MM/YYYY" class="date-picker" format="DD/MM/YYYY" />
+          <ElDatePicker
+            v-model="userSignUp.dob"
+            type="date"
+            placeholder="DD/MM/YYYY"
+            class="date-picker"
+            format="DD/MM/YYYY"
+          />
         </div>
       </div>
 
@@ -25,14 +39,19 @@
             <span class="text-label">Số điện thoại </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập số điện thoại " />
+          <ElInput
+            v-model="userSignUp.phoneNumber"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập số điện thoại "
+          />
         </div>
         <div class="space-y-2">
           <div>
             <span class="text-label">Giới tính </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <BaseSelect clearable placeholder="Chọn giới tính" class="select">
+          <BaseSelect v-model="userSignUp.gender" clearable placeholder="Chọn giới tính" class="select">
             <ElOption v-for="(item, index) in SEX" :key="index" :value="item.value" :label="item.label"> </ElOption>
           </BaseSelect>
         </div>
@@ -40,12 +59,28 @@
 
       <div class="style-flex">
         <div class="space-y-2">
-          <p class="text-label">Số CCCD/Passport</p>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="Nhập số CCCD/Passport" />
+          <div>
+            <span class="text-label">Số CCCD/Passport </span>
+            <span class="text-[#ff3b30]">*</span>
+          </div>
+          <ElInput
+            v-model="userSignUp.cccd"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Nhập số CCCD/Passport"
+          />
         </div>
         <div class="space-y-2">
-          <p class="text-label">Địa chỉ Email</p>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập email" />
+          <div>
+            <span class="text-label">Địa chỉ Email </span>
+            <span class="text-[#ff3b30]">*</span>
+          </div>
+          <ElInput
+            v-model="userSignUp.email"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập email"
+          />
         </div>
       </div>
 
@@ -60,9 +95,19 @@
             clearable
             placeholder="Chọn tỉnh thành"
             class="select"
-            @change="selectPovince"
+            @change="getListDistrict"
           >
-            <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name"> </ElOption>
+            <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name">
+              <p
+                @click="
+                  () => {
+                    userSignUp.province = item.name
+                  }
+                "
+              >
+                {{ item.name }}
+              </p></ElOption
+            >
           </BaseSelect>
         </div>
         <div class="space-y-2">
@@ -76,9 +121,19 @@
             placeholder="Chọn quận huyện"
             class="select"
             :disabled="checkDistrict"
-            @change="selectDistrict"
+            @change="getListWards"
           >
-            <ElOption v-for="(item, index) in districts" :key="index" :value="item.code" :label="item.name"> </ElOption>
+            <ElOption v-for="(item, index) in districts" :key="index" :value="item.code" :label="item.name">
+              <p
+                @click="
+                  () => {
+                    userSignUp.district = item.name
+                  }
+                "
+              >
+                {{ item.name }}
+              </p>
+            </ElOption>
           </BaseSelect>
         </div>
       </div>
@@ -90,15 +145,27 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect clearable placeholder="Chọn phường xã" class="select" :disabled="checkWard">
-            <ElOption v-for="(item, index) in wards" :key="index" :value="item.code" :label="item.name"> </ElOption>
+            <ElOption v-for="(item, index) in wards" :key="index" :value="item.code" :label="item.name">
+              <p
+                @click="
+                  () => {
+                    userSignUp.commune = item.name
+                  }
+                "
+              >
+                {{ item.name }}
+              </p>
+            </ElOption>
           </BaseSelect>
         </div>
         <div class="space-y-2">
-          <div>
-            <span class="text-label">Địa chỉ hiện tại </span>
-            <span class="text-[#ff3b30]">*</span>
-          </div>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập địa chỉ hiện tại" />
+          <p class="text-label">Địa chỉ hiện tại</p>
+          <ElInput
+            v-model="userSignUp.aboutAddress"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập địa chỉ hiện tại"
+          />
         </div>
       </div>
 
@@ -110,41 +177,65 @@
             <span class="text-label">Mật khẩu </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập mật khẩu" />
+          <ElInput
+            v-model="userSignUp.password"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập mật khẩu"
+          />
         </div>
         <div class="space-y-2">
           <div>
             <span class="text-label">Xác nhận mật khẩu </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput class="input" style="height: 50px; width: 500px" placeholder="Vui lòng nhập lại mật khẩu" />
+          <ElInput
+            v-model="userSignUp.confirmPassword"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập lại mật khẩu"
+          />
         </div>
       </div>
       <div class="flex justify-end">
-        <BaseButton size="large" type="plain" class="w-36">Đăng kí tài khoản</BaseButton>
+        <BaseButton :disabled="disabled" size="large" class="w-36" @click="handleSinup">Đăng kí tài khoản</BaseButton>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { apiParams } from '@/services'
+import { apiAuth, apiParams } from '@/services'
 
-import type { IDistrict, IWard } from '@/types/param.types'
-
-import { useBaseStore } from '@/stores/base'
+import type { IDistrict, IProvince, IWard } from '@/types/param.types'
+import type { UserReq } from '@/types/user.types'
 
 import { SEX } from '../constants/index'
 
-const { province } = useBaseStore()
+onMounted(() => {
+  getListProvince()
+})
 
-// const route = useRoute()
-
+const loading = ref<boolean>(false)
 const districts = ref<IDistrict[]>([])
 const wards = ref<IWard[]>([])
 const codeProvince = ref<number | string>('')
 const codeDistrict = ref<number | string>('')
-const selectPovince = async () => {
+const userSignUp = ref<UserReq>({} as UserReq)
+const province = ref<IProvince[]>([])
+
+const getListProvince = async () => {
+  try {
+    loading.value = true
+    const rs = await apiParams.getListProvince()
+    province.value = rs
+    loading.value = false
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getListDistrict = async () => {
   try {
     const rs = await apiParams.getListDistrict(codeProvince.value)
     districts.value = rs.districts
@@ -153,7 +244,7 @@ const selectPovince = async () => {
   }
 }
 
-const selectDistrict = async () => {
+const getListWards = async () => {
   try {
     const rs = await apiParams.getListWards(codeDistrict.value)
     wards.value = rs.wards
@@ -167,6 +258,30 @@ const checkDistrict = computed(() => {
 
 const checkWard = computed(() => {
   return !codeDistrict.value
+})
+
+const handleSinup = async () => {
+  try {
+    const rs = await apiAuth.signup({ ...userSignUp.value })
+    console.log('🚀 ~ handleSinup ~ rs:', rs)
+  } catch (error) {
+    console.log(error)
+  }
+}
+const disabled = computed(() => {
+  return !(
+    userSignUp.value.cccd &&
+    userSignUp.value.commune &&
+    userSignUp.value.confirmPassword &&
+    userSignUp.value.district &&
+    userSignUp.value.dob &&
+    userSignUp.value.email &&
+    userSignUp.value.gender &&
+    userSignUp.value.name &&
+    userSignUp.value.password &&
+    userSignUp.value.phoneNumber &&
+    userSignUp.value.province
+  )
 })
 </script>
 
@@ -185,6 +300,7 @@ const checkWard = computed(() => {
     }
   }
 }
+
 .select {
   :deep(.el-select) {
     .el-select__wrapper {

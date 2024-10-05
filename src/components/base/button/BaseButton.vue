@@ -81,7 +81,6 @@ const handleClick = debounce(() => {
       color: #fff;
     }
   }
-
   &--plain {
     background: var(--primary-gradient-title, linear-gradient(40deg, #00b5f1 0, #00e0ff 100%));
   }
