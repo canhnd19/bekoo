@@ -5,7 +5,7 @@
     @click="handleClick"
   >
     <div v-if="loading" class="is-loading">
-      <BaseIcon name="loading" />
+      <BaseIcon name="loading" class="text-white" />
     </div>
     <div class="title">
       <slot />

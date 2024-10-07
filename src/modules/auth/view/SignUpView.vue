@@ -314,7 +314,9 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <BaseButton :disabled="disabled" size="large" class="w-36" @click="handleSinup">Đăng kí tài khoản</BaseButton>
+        <BaseButton :disabled="disabled" :loading="loadingBtn" size="large" class="w-40" @click="handleSinup"
+          >Đăng kí tài khoản</BaseButton
+        >
       </div>
     </div>
   </div>
@@ -335,6 +337,7 @@ onMounted(() => {
 })
 
 const loading = ref<boolean>(false)
+const loadingBtn = ref<boolean>(false)
 const districts = ref<IDistrict[]>([])
 const wards = ref<IWard[]>([])
 const codeProvince = ref<number | string>('')
@@ -357,7 +360,6 @@ const getListProvince = async () => {
     console.log(error)
   }
 }
-
 const getListDistrict = async () => {
   try {
     const rs = await apiParams.getListDistrict(codeProvince.value)
@@ -366,7 +368,6 @@ const getListDistrict = async () => {
     console.log(error)
   }
 }
-
 const getListWards = async () => {
   try {
     const rs = await apiParams.getListWards(codeDistrict.value)
@@ -381,11 +382,9 @@ const blurDatePicker = () => {
 const blurSex = () => {
   userSignUp.value.gender ? (checkGender.value = false) : (checkGender.value = true)
 }
-
 const blurProvince = () => {
   userSignUp.value.province ? (checkProvince.value = false) : (checkProvince.value = true)
 }
-
 const checkDistrict = computed(() => {
   return !codeProvince.value
 })
@@ -396,11 +395,9 @@ const blurDistrict = () => {
     return
   }
 }
-
 const checkWard = computed(() => {
   return !codeDistrict.value
 })
-
 const blurWard = () => {
   if (userSignUp.value.district) {
     userSignUp.value.commune ? (checkValWard.value = false) : (checkValWard.value = true)
@@ -410,8 +407,11 @@ const blurWard = () => {
 }
 const handleSinup = async () => {
   try {
+    loadingBtn.value = true
     const rs = await apiAuth.signup({ ...userSignUp.value, dob: useConvertUTCTime(userSignUp.value.dob, 'FROM') })
     console.log('🚀 ~ handleSinup ~ rs:', rs)
+    ElMessage.success(rs.message)
+    loadingBtn.value = false
   } catch (error) {
     console.log(error)
   }
