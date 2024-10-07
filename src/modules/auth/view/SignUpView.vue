@@ -3,7 +3,7 @@
     <PageLoading />
   </template>
   <div v-else class="min-h-screen bg-[#e8f2f7]">
-    <div class="container space-y-6 px-20 pb-6">
+    <div class="container space-y-4 px-20 pb-6">
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
       <div class="flex">
         <div class="mr-[120px] space-y-2">
@@ -11,25 +11,42 @@
             <span class="text-label">Họ và tên (có dấu) </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput
-            v-model="userSignUp.name"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH"
-          />
+
+          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+            <ElFormItem
+              prop="name"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập họ và tên',
+                  trigger: 'blur'
+                }
+              ]"
+            >
+              <ElInput
+                v-model="userSignUp.name"
+                class="input"
+                style="height: 50px; width: 500px"
+                placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH"
+              />
+            </ElFormItem>
+          </ElForm>
         </div>
-        <div class="space-y-2">
-          <div>
+        <div>
+          <div class="mb-2">
             <span class="text-label"> Ngày sinh </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElDatePicker
             v-model="userSignUp.dob"
+            :class="{ validate: checkDob }"
             type="date"
             placeholder="DD/MM/YYYY"
             class="date-picker"
             format="DD/MM/YYYY"
+            @blur="blurDatePicker"
           />
+          <p v-if="checkDob" class="-!mt-1 text-xs text-[#f56c6c]">Vui lòng nhập ngày sinh</p>
         </div>
       </div>
 
@@ -39,21 +56,43 @@
             <span class="text-label">Số điện thoại </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput
-            v-model="userSignUp.phoneNumber"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Vui lòng nhập số điện thoại "
-          />
+
+          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+            <ElFormItem
+              prop="phoneNumber"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập số điện thoại',
+                  trigger: 'blur'
+                }
+              ]"
+            >
+              <ElInput
+                v-model="userSignUp.phoneNumber"
+                class="input"
+                style="height: 50px; width: 500px"
+                placeholder="Vui lòng nhập số điện thoại "
+              />
+            </ElFormItem>
+          </ElForm>
         </div>
-        <div class="space-y-2">
-          <div>
+        <div>
+          <div class="mb-2">
             <span class="text-label">Giới tính </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <BaseSelect v-model="userSignUp.gender" clearable placeholder="Chọn giới tính" class="select">
+          <BaseSelect
+            v-model="userSignUp.gender"
+            :class="{ 'validate-select': checkGender }"
+            clearable
+            placeholder="Chọn giới tính"
+            class="select"
+            @blur="blurSex"
+          >
             <ElOption v-for="(item, index) in SEX" :key="index" :value="item.value" :label="item.label"> </ElOption>
           </BaseSelect>
+          <p v-if="checkGender" class="-!mt-1 text-xs text-[#f56c6c]">Vui lòng chọn giới tính</p>
         </div>
       </div>
 
@@ -63,39 +102,73 @@
             <span class="text-label">Số CCCD/Passport </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput
-            v-model="userSignUp.cccd"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Nhập số CCCD/Passport"
-          />
+          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+            <ElFormItem
+              prop="cccd"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập số CCCD/Passport',
+                  trigger: 'blur'
+                }
+              ]"
+            >
+              <ElInput
+                v-model="userSignUp.cccd"
+                class="input"
+                style="height: 50px; width: 500px"
+                placeholder="Nhập số CCCD/Passport"
+              />
+            </ElFormItem>
+          </ElForm>
         </div>
         <div class="space-y-2">
           <div>
             <span class="text-label">Địa chỉ Email </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput
-            v-model="userSignUp.email"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Vui lòng nhập email"
-          />
+
+          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+            <ElFormItem
+              prop="email"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập địa chỉ email',
+                  trigger: 'blur'
+                },
+                {
+                  type: 'email',
+                  message: 'Vui lòng nhập địa chỉ email chính xác',
+                  trigger: ['blur', 'change']
+                }
+              ]"
+            >
+              <ElInput
+                v-model="userSignUp.email"
+                class="input"
+                style="height: 50px; width: 500px"
+                placeholder="Vui lòng nhập email"
+              />
+            </ElFormItem>
+          </ElForm>
         </div>
       </div>
 
-      <div class="style-flex">
-        <div class="space-y-2">
-          <div>
+      <div class="style-flex h-[102px]">
+        <div>
+          <div class="mb-2">
             <span class="text-label">Tỉnh / Thành </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect
             v-model="codeProvince"
+            :class="{ 'validate-select': checkProvince }"
             clearable
             placeholder="Chọn tỉnh thành"
             class="select"
             @change="getListDistrict"
+            @blur="blurProvince"
           >
             <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name">
               <p
@@ -109,19 +182,22 @@
               </p></ElOption
             >
           </BaseSelect>
+          <p v-if="checkProvince" class="-!mt-1 text-xs text-[#f56c6c]">Vui lòng chọn tỉnh/thành</p>
         </div>
-        <div class="space-y-2">
-          <div>
+        <div>
+          <div class="mb-2">
             <span class="text-label">Quận / Huyện </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect
             v-model="codeDistrict"
+            :class="{ 'validate-select': checkValDistrict }"
             clearable
             placeholder="Chọn quận huyện"
             class="select"
             :disabled="checkDistrict"
             @change="getListWards"
+            @blur="blurDistrict"
           >
             <ElOption v-for="(item, index) in districts" :key="index" :value="item.code" :label="item.name">
               <p
@@ -135,16 +211,24 @@
               </p>
             </ElOption>
           </BaseSelect>
+          <p v-if="checkValDistrict" class="-!mt-1 text-xs text-[#f56c6c]">Vui lòng chọn quận/huyện</p>
         </div>
       </div>
 
-      <div class="style-flex">
-        <div class="space-y-2">
-          <div>
+      <div class="style-flex h-[102px]">
+        <div>
+          <div class="mb-2">
             <span class="text-label">Phường / Xã </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <BaseSelect clearable placeholder="Chọn phường xã" class="select" :disabled="checkWard">
+          <BaseSelect
+            :class="{ 'validate-select': checkValWard }"
+            clearable
+            placeholder="Chọn phường xã"
+            class="select"
+            :disabled="checkWard"
+            @blur="blurWard"
+          >
             <ElOption v-for="(item, index) in wards" :key="index" :value="item.code" :label="item.name">
               <p
                 @click="
@@ -157,6 +241,7 @@
               </p>
             </ElOption>
           </BaseSelect>
+          <p v-if="checkValWard" class="-!mt-1 text-xs text-[#f56c6c]">Vui lòng chọn phường/xã</p>
         </div>
         <div class="space-y-2">
           <p class="text-label">Địa chỉ hiện tại</p>
@@ -170,31 +255,62 @@
       </div>
 
       <div class="text-2xl font-bold">Thông tin tài khoản</div>
-
       <div class="style-flex">
         <div class="space-y-2">
           <div>
             <span class="text-label">Mật khẩu </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput
-            v-model="userSignUp.password"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Vui lòng nhập mật khẩu"
-          />
+
+          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+            <ElFormItem
+              prop="password"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập mật khẩu',
+                  trigger: 'blur'
+                }
+              ]"
+            >
+              <ElInput
+                v-model="userSignUp.password"
+                class="input"
+                style="height: 50px; width: 500px"
+                placeholder="Vui lòng nhập mật khẩu"
+                type="password"
+                show-password
+              />
+            </ElFormItem>
+          </ElForm>
         </div>
         <div class="space-y-2">
           <div>
             <span class="text-label">Xác nhận mật khẩu </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElInput
-            v-model="userSignUp.confirmPassword"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Vui lòng nhập lại mật khẩu"
-          />
+
+          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+            <ElFormItem
+              prop="confirmPassword"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập lại mật khẩu',
+                  trigger: 'blur'
+                }
+              ]"
+            >
+              <ElInput
+                v-model="userSignUp.confirmPassword"
+                class="input"
+                style="height: 50px; width: 500px"
+                placeholder="Vui lòng nhập lại mật khẩu"
+                type="password"
+                show-password
+              />
+            </ElFormItem>
+          </ElForm>
         </div>
       </div>
       <div class="flex justify-end">
@@ -210,6 +326,8 @@ import { apiAuth, apiParams } from '@/services'
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
 import type { UserReq } from '@/types/user.types'
 
+import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
+
 import { SEX } from '../constants/index'
 
 onMounted(() => {
@@ -223,6 +341,11 @@ const codeProvince = ref<number | string>('')
 const codeDistrict = ref<number | string>('')
 const userSignUp = ref<UserReq>({} as UserReq)
 const province = ref<IProvince[]>([])
+const checkDob = ref<boolean>(false)
+const checkGender = ref<boolean>(false)
+const checkProvince = ref<boolean>(false)
+const checkValDistrict = ref<boolean>(false)
+const checkValWard = ref<boolean>(false)
 
 const getListProvince = async () => {
   try {
@@ -252,22 +375,48 @@ const getListWards = async () => {
     console.log(error)
   }
 }
+const blurDatePicker = () => {
+  userSignUp.value.dob ? (checkDob.value = false) : (checkDob.value = true)
+}
+const blurSex = () => {
+  userSignUp.value.gender ? (checkGender.value = false) : (checkGender.value = true)
+}
+
+const blurProvince = () => {
+  userSignUp.value.province ? (checkProvince.value = false) : (checkProvince.value = true)
+}
+
 const checkDistrict = computed(() => {
   return !codeProvince.value
 })
+const blurDistrict = () => {
+  if (userSignUp.value.province) {
+    userSignUp.value.district ? (checkValDistrict.value = false) : (checkValDistrict.value = true)
+  } else {
+    return
+  }
+}
 
 const checkWard = computed(() => {
   return !codeDistrict.value
 })
 
+const blurWard = () => {
+  if (userSignUp.value.district) {
+    userSignUp.value.commune ? (checkValWard.value = false) : (checkValWard.value = true)
+  } else {
+    return
+  }
+}
 const handleSinup = async () => {
   try {
-    const rs = await apiAuth.signup({ ...userSignUp.value })
+    const rs = await apiAuth.signup({ ...userSignUp.value, dob: useConvertUTCTime(userSignUp.value.dob, 'FROM') })
     console.log('🚀 ~ handleSinup ~ rs:', rs)
   } catch (error) {
     console.log(error)
   }
 }
+
 const disabled = computed(() => {
   return !(
     userSignUp.value.cccd &&
@@ -290,7 +439,7 @@ const disabled = computed(() => {
   @apply text-xl font-medium text-[#003553];
 }
 .style-flex {
-  @apply flex items-end justify-between;
+  @apply flex items-start justify-between;
 }
 :deep(.input.el-input) {
   .el-input__wrapper {
@@ -319,6 +468,20 @@ const disabled = computed(() => {
   width: 500px;
   .el-input__wrapper {
     border-radius: 8px;
+  }
+}
+:deep(.validate.date-picker) {
+  .el-input__wrapper {
+    border: none !important;
+    box-shadow: 0 0 0 1px #f56c6c inset;
+  }
+}
+:deep(.validate-select.base-select) {
+  .el-select {
+    .el-select__wrapper {
+      border: none !important;
+      box-shadow: 0 0 0 1px #f56c6c inset !important;
+    }
   }
 }
 </style>

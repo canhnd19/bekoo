@@ -21,7 +21,7 @@
         </ElFormItem>
         <ElFormItem prop="password" :rules="{ required: true, message: 'Vui lòng nhập mật khẩu!' }">
           <ElInput
-            v-model.number="loginValidateForm.password"
+            v-model="loginValidateForm.password"
             class="input"
             autocomplete="off"
             style="width: 430px; height: 50px"

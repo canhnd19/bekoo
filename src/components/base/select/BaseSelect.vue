@@ -105,12 +105,14 @@ const handleChange = (value: any) => {
           height: 38px;
         }
       }
+
       .el-input__wrapper.is-focus,
       .el-input__wrapper.is-focus + .el-input-group__append {
         border-color: var(--dr-border-hover);
         box-shadow: none !important;
       }
     }
+
     .el-input.is-focus {
       .el-input__wrapper {
         box-shadow: none !important;

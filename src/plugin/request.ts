@@ -12,6 +12,7 @@ const request = axios.create({
 })
 
 request.defaults.headers.put['Content-Type'] = 'application/json'
+request.defaults.headers.common['ngrok-skip-browser-warning'] = '241804'
 
 const token = Cookies.get('access_token')
 request.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : ''
