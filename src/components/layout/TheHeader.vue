@@ -42,10 +42,12 @@
         </template>
       </BaseDropdown>
     </div>
-    <div class="account">
-      <BaseIcon name="user" class="mr-2.5" />
-      <RouterLink :to="{ name: 'Login' }" class="items-center text-base font-medium">Tài khoản</RouterLink>
-    </div>
+    <RouterLink :to="{ name: 'Login' }">
+      <div class="account">
+        <BaseIcon name="user" class="mr-2.5" />
+        <span class="items-center text-base font-medium">Tài khoản</span>
+      </div>
+    </RouterLink>
   </div>
 </template>
 
