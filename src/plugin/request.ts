@@ -25,14 +25,13 @@ request.interceptors.response.use(
   },
   (error) => {
     const { config, data, status } = error.response
-
     if (status === 401 || data.errorCode === 401) {
       Cookies.remove('access_token')
       request.defaults.headers.common['Authorization'] = ''
       location.href = '/'
     }
     if (status === 400) {
-      showError(data, config)
+      showError(data.message, config)
     }
     if (!error.response || error.response.status >= 500) {
       ElMessage.error({ message: 'Internal Server Error', duration: 5000 })

@@ -332,6 +332,8 @@ import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
 import { SEX } from '../constants/index'
 
+const router = useRouter()
+
 onMounted(() => {
   getListProvince()
 })
@@ -408,11 +410,15 @@ const blurWard = () => {
 const handleSinup = async () => {
   try {
     loadingBtn.value = true
-    const rs = await apiAuth.signup({ ...userSignUp.value, dob: useConvertUTCTime(userSignUp.value.dob, 'FROM') })
-    console.log('🚀 ~ handleSinup ~ rs:', rs)
+    const rs = await apiAuth.signup({
+      ...userSignUp.value,
+      dob: useConvertUTCTime(userSignUp.value.dob, 'FROM')
+    })
     ElMessage.success(rs.message)
+    router.push({ name: 'Login' })
     loadingBtn.value = false
   } catch (error) {
+    loadingBtn.value = false
     console.log(error)
   }
 }
