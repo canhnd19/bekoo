@@ -3,25 +3,33 @@
     <div class="mx-auto">
       <img src="/images/header_logo.png" class="mx-auto my-7" />
       <p class="mb-[18px] text-center">Vui lòng đăng nhập để tiếp tục</p>
-      <ElForm
-        ref="formRef"
-        style="max-width: 600px"
-        :model="loginValidateForm"
-        label-width="auto"
-        class="demo-ruleForm"
-      >
-        <ElFormItem prop="phoneNumber" :rules="{ required: true, message: 'Vui lòng nhập số điện thoại!' }">
+      <ElForm ref="formRef" :model="loginForm" label-width="auto" class="demo-ruleForm">
+        <ElFormItem
+          prop="email"
+          :rules="[
+            {
+              required: true,
+              message: 'Vui lòng nhập địa chỉ email',
+              trigger: 'blur'
+            },
+            {
+              type: 'email',
+              message: 'Vui lòng nhập địa chỉ email chính xác',
+              trigger: ['blur', 'change']
+            }
+          ]"
+        >
           <ElInput
-            v-model.number="loginValidateForm.phoneNumber"
+            v-model="loginForm.email"
             class="input"
             autocomplete="off"
             style="width: 430px; height: 50px"
-            placeholder="Số điện thoại"
+            placeholder="Vui lòng nhập email"
           />
         </ElFormItem>
         <ElFormItem prop="password" :rules="{ required: true, message: 'Vui lòng nhập mật khẩu!' }">
           <ElInput
-            v-model="loginValidateForm.password"
+            v-model="loginForm.password"
             class="input"
             autocomplete="off"
             style="width: 430px; height: 50px"
@@ -32,7 +40,7 @@
         </ElFormItem>
       </ElForm>
       <RouterLink :to="{ name: 'ForgotPassword' }" class="forgot-password">Quên mật khẩu</RouterLink>
-      <BaseButton :disabled="disabled" size="large">Đăng nhập</BaseButton>
+      <BaseButton :disabled="disabled" :loading="loading" size="large" @click="handleLogin">Đăng nhập</BaseButton>
       <div class="my-10 border-b border-solid border-[#cacaca]"></div>
       <p class="text-center">
         <span>Chưa có tài khoản? </span>
@@ -49,16 +57,34 @@
 import type { FormInstance } from 'element-plus'
 import { reactive, ref } from 'vue'
 
-const formRef = ref<FormInstance>()
+import { useAuthStore } from '@/stores/auth'
 
-const loginValidateForm = reactive({
-  phoneNumber: '',
+const router = useRouter()
+
+const { login, setBearerToken } = useAuthStore()
+const formRef = ref<FormInstance>()
+const loading = ref<boolean>(false)
+const loginForm = reactive({
+  email: '',
   password: ''
 })
 
 const disabled = computed(() => {
-  return !(loginValidateForm.phoneNumber && loginValidateForm.password)
+  return !(loginForm.email && loginForm.password)
 })
+
+const handleLogin = async () => {
+  try {
+    loading.value = true
+    const { tokenContent } = await login({ ...loginForm })
+    setBearerToken(tokenContent)
+    router.push({ name: 'Home' })
+    loading.value = false
+  } catch (error) {
+    loading.value = false
+    console.log(error)
+  }
+}
 </script>
 
 <style scoped lang="scss">

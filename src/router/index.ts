@@ -26,8 +26,9 @@ router.beforeEach((to, _from, next) => {
   if (to.meta.whiteList) {
     return next()
   }
-  if (to.meta.auth && !isLogin.value) {
-    return next({ name: 'Home' })
+  if (to.path === '/login' && isLogin) {
+    next({ name: 'Home' })
+    return
   }
   next()
 })
