@@ -17,7 +17,7 @@ export default class AuthService {
 
   async login(body: IBodyLogin): Promise<IResponse<ILogin>> {
     try {
-      const result = await request.post(`${this.prefix}/sign-in`, body)
+      const result = await request.post(`/sign-in`, body)
       return Promise.resolve(result.data)
     } catch (error) {
       return Promise.reject(error)
