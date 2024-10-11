@@ -1,7 +1,7 @@
 import request from '@/plugin/request'
 
 import type { IBodyLogin, ILogin } from '@/types/auth.types'
-import type { IResponse } from '@/types/response.types'
+import type { IResponse, IResposeMessage } from '@/types/response.types'
 import type { UserReq } from '@/types/user.types'
 
 export default class AuthService {
@@ -23,10 +23,17 @@ export default class AuthService {
       return Promise.reject(error)
     }
   }
-  async forgotPass(email: Record<any, string>): Promise<any> {
+  async forgotPass(email: Record<any, string>): Promise<IResposeMessage> {
     try {
       const result = await request.post(`${this.prefix}/forgot-password/send-otp`, email)
-      console.log('🚀 ~ AuthService ~ forgotPass ~ result:', result)
+      return Promise.resolve(result.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async pinCode(body: Record<any, string>): Promise<any> {
+    try {
+      const result = await request.post(`${this.prefix}/forgot-password/verify`, body)
       return Promise.resolve(result.data)
     } catch (error) {
       return Promise.reject(error)

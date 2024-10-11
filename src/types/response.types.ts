@@ -3,3 +3,8 @@ export interface IResponse<T> {
   message: string
   value: T
 }
+
+export interface IResposeMessage {
+  code: number
+  message: string
+}
