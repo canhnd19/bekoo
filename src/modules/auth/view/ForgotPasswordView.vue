@@ -3,20 +3,66 @@
     <div class="content">
       <div class="space-y-10">
         <p class="text-label">Quên mật khẩu</p>
-        <ElInput
-          class="input"
-          autocomplete="off"
-          style="width: 100%; height: 50px"
-          type="text"
-          placeholder="Số điện thoại"
-        />
-        <BaseButton size="large" class="mx-auto w-52">Xác nhận</BaseButton>
+        <ElForm ref="formRef" :model="fogotPass" label-width="auto" class="demo-ruleForm">
+          <ElFormItem
+            prop="email"
+            :rules="[
+              {
+                required: true,
+                message: 'Vui lòng nhập địa chỉ email',
+                trigger: 'blur'
+              },
+              {
+                type: 'email',
+                message: 'Vui lòng nhập địa chỉ email chính xác',
+                trigger: ['blur', 'change']
+              }
+            ]"
+          >
+            <ElInput
+              v-model="fogotPass.email"
+              class="input"
+              autocomplete="off"
+              style="width: 430px; height: 50px"
+              placeholder="Vui lòng nhập email"
+            />
+          </ElFormItem>
+        </ElForm>
+        <BaseButton :disabled="disabled" :loading="loading" size="large" class="mx-auto w-52" @click="conFirm"
+          >Xác nhận</BaseButton
+        >
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { REGEX_EMAIL } from '@/constants/regex'
+import { apiAuth } from '@/services'
+
+const router = useRouter()
+
+const loading = ref<boolean>(false)
+const fogotPass = reactive({
+  email: ''
+})
+
+const disabled = computed(() => {
+  return !fogotPass.email || !REGEX_EMAIL.test(fogotPass.email)
+})
+
+const conFirm = async () => {
+  try {
+    loading.value = true
+    await apiAuth.forgotPass({ email: fogotPass.email })
+    router.push({ name: 'PinCode' })
+    loading.value = false
+  } catch (error) {
+    loading.value = false
+    console.log(error)
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .layout {

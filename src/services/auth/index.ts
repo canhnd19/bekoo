@@ -23,4 +23,13 @@ export default class AuthService {
       return Promise.reject(error)
     }
   }
+  async forgotPass(email: Record<any, string>): Promise<any> {
+    try {
+      const result = await request.post(`${this.prefix}/forgot-password/send-otp`, email)
+      console.log('🚀 ~ AuthService ~ forgotPass ~ result:', result)
+      return Promise.resolve(result.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }
