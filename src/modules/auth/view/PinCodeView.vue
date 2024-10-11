@@ -7,12 +7,12 @@
           Mã xác thực OTP vừa được gửi đến email của bạn. Vui lòng nhập mã OTP để đặt lại mật khẩu!
         </p>
         <div class="flex items-center justify-center space-x-2">
-          <ElInput v-model="num1" class="input" autocomplete="off" style="width: 56px; height: 56px" type="text" />
-          <ElInput v-model="num2" class="input" autocomplete="off" style="width: 56px; height: 56px" type="text" />
-          <ElInput v-model="num3" class="input" autocomplete="off" style="width: 56px; height: 56px" type="text" />
-          <ElInput v-model="num4" class="input" autocomplete="off" style="width: 56px; height: 56px" type="text" />
-          <ElInput v-model="num5" class="input" autocomplete="off" style="width: 56px; height: 56px" type="text" />
-          <ElInput v-model="num6" class="input" autocomplete="off" style="width: 56px; height: 56px" type="text" />
+          <ElInput v-model="num1" class="input-otp" autocomplete="off" style="width: 56px; height: 56px" type="text" />
+          <ElInput v-model="num2" class="input-otp" autocomplete="off" style="width: 56px; height: 56px" type="text" />
+          <ElInput v-model="num3" class="input-otp" autocomplete="off" style="width: 56px; height: 56px" type="text" />
+          <ElInput v-model="num4" class="input-otp" autocomplete="off" style="width: 56px; height: 56px" type="text" />
+          <ElInput v-model="num5" class="input-otp" autocomplete="off" style="width: 56px; height: 56px" type="text" />
+          <ElInput v-model="num6" class="input-otp" autocomplete="off" style="width: 56px; height: 56px" type="text" />
         </div>
         <p class="mb-3 mt-8 text-center text-4xl font-bold text-primary">{{ time }}s</p>
         <BaseButton :loading="loading" size="large" class="mx-auto mb-8 w-52" @click="conFirm">Xác nhận</BaseButton>
@@ -122,7 +122,14 @@ const resendOtp = async () => {
     animation: rotating 2s linear infinite;
   }
 }
-
+:deep(.input-otp.el-input) {
+  .el-input__wrapper {
+    .el-input__inner {
+      font-size: 20px;
+      text-align: center;
+    }
+  }
+}
 @keyframes rotating {
   0% {
     transform: rotate(0deg);
