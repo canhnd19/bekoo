@@ -83,6 +83,7 @@ const confirm = async () => {
     })
     ElMessage.error(rs.message)
     router.push({ name: 'Home' })
+    sessionStorage.clear()
     loading.value = false
   } catch (error) {
     loading.value = false

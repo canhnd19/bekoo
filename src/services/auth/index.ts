@@ -1,8 +1,9 @@
 import request from '@/plugin/request'
+import requestQuery from '@/plugin/requestQuery'
 
 import type { IBodyLogin, ILogin } from '@/types/auth.types'
 import type { IResponse, IResposeMessage } from '@/types/response.types'
-import type { UserReq } from '@/types/user.types'
+import type { IUser, UserReq } from '@/types/user.types'
 
 export default class AuthService {
   prefix = '/user'
@@ -42,6 +43,15 @@ export default class AuthService {
   async newPass(body: Record<any, string>): Promise<IResposeMessage> {
     try {
       const result = await request.put(`${this.prefix}/password/otp`, body)
+      return Promise.resolve(result.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  async getUserInfo(id: string): Promise<IResponse<IUser>> {
+    try {
+      const result = await requestQuery.get(`${this.prefix}/id/${id}`)
       return Promise.resolve(result.data)
     } catch (error) {
       return Promise.reject(error)

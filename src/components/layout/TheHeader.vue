@@ -42,7 +42,12 @@
         </template>
       </BaseDropdown>
     </div>
-    <RouterLink :to="{ name: 'Login' }">
+
+    <div v-if="user.name" class="account">
+      <BaseIcon name="user" class="mr-2.5" />
+      <span class="items-center text-base font-medium"> {{ user.name }}</span>
+    </div>
+    <RouterLink v-else :to="{ name: 'Login' }">
       <div class="account">
         <BaseIcon name="user" class="mr-2.5" />
         <span class="items-center text-base font-medium">Tài khoản</span>
@@ -52,7 +57,11 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
+
 import { CONTACT_FOR_COOPERATION, INSTRUCT, MEDICAL_SERVICES, NEWS } from '../../constants/index'
+
+const { user } = useAuthStore()
 </script>
 <style scoped lang="scss">
 .layout-header {

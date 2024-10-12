@@ -4,19 +4,22 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 
 import type { IBodyLogin } from '@/types/auth.types'
+import type { IUser } from '@/types/user.types'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<Record<string, any>>({})
+  const user = ref<IUser>({} as IUser)
   const access_token = Cookies.get('access_token') || ''
   const accessToken = ref(access_token)
   const isLogin = computed(() => !!Cookies.get('access_token'))
-
+  const userId = ref<string>('')
   const login = async (body: IBodyLogin) => {
     try {
       const rs = await apiAuth.login(body)
+      userId.value = rs.value.userId
       accessToken.value = rs.value.tokenContent
       Cookies.set('access_token', accessToken.value, { expires: 3 })
       request.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
+      await getUserInfo()
       return Promise.resolve(rs.value)
     } catch (error) {
       return Promise.reject(error)
@@ -41,15 +44,15 @@ export const useAuthStore = defineStore('auth', () => {
   //   }
   // }
 
-  // const getUserInfo = async () => {
-  //   try {
-  //     const rs = await apiAuth.getUserInfo()
-  //     user.value = rs.data
-  //     return Promise.resolve()
-  //   } catch (error) {
-  //     return Promise.reject(error)
-  //   }
-  // }
+  const getUserInfo = async () => {
+    try {
+      const rs = await apiAuth.getUserInfo(userId.value)
+      user.value = rs.value
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 
-  return { login, user, isLogin, setBearerToken }
+  return { login, user, isLogin, setBearerToken, getUserInfo }
 })
