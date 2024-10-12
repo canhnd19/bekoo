@@ -77,7 +77,6 @@ const conFirm = async () => {
     const OTP = combineNumbers(num1.value, num2.value, num3.value, num4.value, num5.value, num6.value)
     await apiAuth.pinCode({ code: OTP as string, email: email.value as string })
     router.push({ name: 'SetNewPassword' })
-    sessionStorage.clear()
     loading.value = false
   } catch (error) {
     loading.value = false

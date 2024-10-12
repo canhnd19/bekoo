@@ -4,35 +4,92 @@
       <div>
         <p class="text-label mb-3">Đặt lại mật khẩu</p>
         <div class="mt-[60px] space-y-8">
+          <ElForm ref="formRef" :model="newPass" label-width="auto" class="demo-ruleForm">
+            <ElFormItem
+              prop="email"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập địa chỉ email',
+                  trigger: 'blur'
+                },
+                {
+                  type: 'email',
+                  message: 'Vui lòng nhập địa chỉ email chính xác',
+                  trigger: ['blur', 'change']
+                }
+              ]"
+            >
+              <ElInput
+                v-model="newPass.email"
+                class="input"
+                autocomplete="off"
+                style="width: 100%; height: 56px"
+                placeholder="Vui lòng nhập email"
+              />
+            </ElFormItem>
+          </ElForm>
           <ElInput
-            class="input"
-            autocomplete="off"
-            style="width: 100%; height: 56px"
-            type="password"
-            placeholder="Nhập mật khẩu cũ"
-          />
-          <ElInput
+            v-model="newPass.password"
             class="input"
             autocomplete="off"
             style="width: 100%; height: 56px"
             type="password"
             placeholder="Nhập mật khẩu mới"
+            show-password
           />
           <ElInput
+            v-model="newPass.confirmPassword"
             class="input"
             autocomplete="off"
             style="width: 100%; height: 56px"
             type="password"
             placeholder="Nhập mật lại khẩu mới"
+            show-password
           />
-          <BaseButton size="large" class="mx-auto mb-8 w-52">Xác nhận</BaseButton>
+          <BaseButton :loading="loading" :disabled="disabled" size="large" class="mx-auto mb-8 w-52" @click="confirm"
+            >Xác nhận</BaseButton
+          >
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { REGEX_EMAIL } from '@/constants/regex'
+import { apiAuth } from '@/services'
+
+const router = useRouter()
+
+const loading = ref<boolean>(false)
+const newPass = reactive({
+  email: '',
+  password: '',
+  confirmPassword: ''
+})
+
+const disabled = computed(() => {
+  return !(newPass.email && newPass.password && newPass.confirmPassword) || !REGEX_EMAIL.test(newPass.email)
+})
+const confirm = async () => {
+  try {
+    loading.value = true
+    const email = sessionStorage.getItem('email') as string
+    const rs = await apiAuth.newPass({
+      email: email,
+      newPassword: newPass.password,
+      confirmPassword: newPass.confirmPassword
+    })
+    ElMessage.error(rs.message)
+    router.push({ name: 'Home' })
+    loading.value = false
+  } catch (error) {
+    loading.value = false
+    console.log(error)
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .layout {

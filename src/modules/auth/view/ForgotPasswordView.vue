@@ -28,7 +28,7 @@
             />
           </ElFormItem>
         </ElForm>
-        <BaseButton :disabled="disabled" :loading="loading" size="large" class="mx-auto w-52" @click="conFirm"
+        <BaseButton :disabled="disabled" :loading="loading" size="large" class="mx-auto w-52" @click="confirm"
           >Xác nhận</BaseButton
         >
       </div>
@@ -51,7 +51,7 @@ const disabled = computed(() => {
   return !fogotPass.email || !REGEX_EMAIL.test(fogotPass.email)
 })
 
-const conFirm = async () => {
+const confirm = async () => {
   try {
     loading.value = true
     await apiAuth.forgotPass({ email: fogotPass.email })
