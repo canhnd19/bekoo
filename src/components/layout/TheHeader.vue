@@ -52,7 +52,7 @@
       </template>
       <div>
         <ul>
-          <li class="option-label" @click="router.push({ name: 'Admin' })">Admin</li>
+          <li class="option-label" @click="router.push({ name: 'Users' })">Admin</li>
         </ul>
       </div>
     </ElPopover>

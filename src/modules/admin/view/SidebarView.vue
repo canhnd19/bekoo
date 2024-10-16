@@ -6,6 +6,7 @@
     <div v-for="(menu, index) in listMenu" :key="index" class="mt-2 w-full space-y-2">
       <div
         class="h-16 w-full cursor-pointer text-center hover:!text-primary"
+        :class="{ active: menu.routerName === route.name }"
         @click="router.push({ name: menu.routerName })"
       >
         <BaseIcon :name="menu.icon" class="mx-auto w-full" />
@@ -17,6 +18,7 @@
 
 <script setup lang="ts">
 const router = useRouter()
+const route = useRoute()
 
 const listMenu = [
   {
@@ -38,5 +40,8 @@ const listMenu = [
   border-right: 1px solid #dbdbdb;
   border-left: 1px solid #dbdbdb;
   background-color: #f6f8fc;
+  .active {
+    @apply text-primary;
+  }
 }
 </style>
