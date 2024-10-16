@@ -43,10 +43,24 @@
       </BaseDropdown>
     </div>
 
-    <div v-if="user.name" class="account">
-      <BaseIcon name="user" class="mr-2.5" />
-      <span class="items-center text-base font-medium"> {{ user.name }}</span>
-    </div>
+    <ElPopover v-if="user.name" placement="bottom" :width="200" trigger="click" popper-class="!p-4 !rounded-xl">
+      <template #reference>
+        <div class="account relative">
+          <BaseIcon name="user" class="mr-2.5" />
+          <span class="items-center text-base font-medium"> {{ user.name }}</span>
+        </div>
+      </template>
+      <div>
+        <ul>
+          <li
+            class="cursor-pointer text-base text-secondary hover:!text-[#11a2f3]"
+            @click="router.push({ name: 'Admin' })"
+          >
+            Admin
+          </li>
+        </ul>
+      </div>
+    </ElPopover>
     <RouterLink v-else :to="{ name: 'Login' }">
       <div class="account">
         <BaseIcon name="user" class="mr-2.5" />
@@ -60,6 +74,8 @@
 import { useAuthStore } from '@/stores/auth'
 
 import { CONTACT_FOR_COOPERATION, INSTRUCT, MEDICAL_SERVICES, NEWS } from '../../constants/index'
+
+const router = useRouter()
 
 const { user } = useAuthStore()
 </script>

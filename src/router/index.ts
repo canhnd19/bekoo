@@ -15,6 +15,7 @@ const router = createRouter({
     }
   ]
 })
+
 // ../NotFound.vue
 
 router.beforeEach((to, _from, next) => {
