@@ -22,13 +22,13 @@ const listMenu = [
   {
     title: 'Users',
     icon: 'menu-user',
-    routerName: 'User'
+    routerName: 'Users'
   },
 
   {
     title: 'Doctors',
     icon: 'menu-user',
-    routerName: 'Doctor'
+    routerName: 'Doctors'
   }
 ]
 </script>

@@ -47,24 +47,19 @@
       <template #reference>
         <div class="account relative">
           <BaseIcon name="user" class="mr-2.5" />
-          <span class="items-center text-base font-medium"> {{ user.name }}</span>
+          <span class="text-label"> {{ user.name }}</span>
         </div>
       </template>
       <div>
         <ul>
-          <li
-            class="cursor-pointer text-base text-secondary hover:!text-[#11a2f3]"
-            @click="router.push({ name: 'Admin' })"
-          >
-            Admin
-          </li>
+          <li class="option-label" @click="router.push({ name: 'Admin' })">Admin</li>
         </ul>
       </div>
     </ElPopover>
     <RouterLink v-else :to="{ name: 'Login' }">
       <div class="account">
         <BaseIcon name="user" class="mr-2.5" />
-        <span class="items-center text-base font-medium">Tài khoản</span>
+        <span class="text-label">Tài khoản</span>
       </div>
     </RouterLink>
   </div>
@@ -90,7 +85,13 @@ const { user } = useAuthStore()
     &:hover {
       background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
       @apply text-white;
+      .text-label {
+        @apply items-center text-base font-medium;
+      }
     }
   }
+}
+.option-label {
+  @apply cursor-pointer text-base text-secondary hover:!text-[#11a2f3];
 }
 </style>

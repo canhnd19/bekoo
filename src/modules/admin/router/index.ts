@@ -13,7 +13,7 @@ const AdminRouter: RouteRecordRaw[] = [
         meta: {
           auth: false
         },
-        name: 'User'
+        name: 'Users'
       },
       {
         path: 'doctors',
@@ -21,7 +21,7 @@ const AdminRouter: RouteRecordRaw[] = [
         meta: {
           auth: false
         },
-        name: 'Doctor'
+        name: 'Doctors'
       }
     ]
   }
