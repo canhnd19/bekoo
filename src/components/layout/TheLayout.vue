@@ -27,19 +27,19 @@ import TheHeader from './TheHeader.vue'
 
 // const route = useRoute()
 
-// const loading = ref(true)
+const loading = ref(true)
 
-// const init = async () => {
-//   try {
-//     // const promises = [getListProvince()]
-//     await Promise.all(promises)
-//     loading.value = false
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
+const init = async () => {
+  try {
+    // const promises = [getListProvince()]
+    // await Promise.all(promises)
+    loading.value = false
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-// init()
+init()
 </script>
 
 <style scoped></style>
