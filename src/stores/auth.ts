@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const rs = await apiAuth.login(body)
       userId.value = rs.value.userId
+      sessionStorage.setItem('userId', rs.value.userId)
       accessToken.value = rs.value.tokenContent
       Cookies.set('access_token', accessToken.value, { expires: 3 })
       request.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
@@ -46,7 +47,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const getUserInfo = async () => {
     try {
-      const rs = await apiAuth.getUserInfo(userId.value)
+      const userId = sessionStorage.getItem('userId') as string
+      const rs = await apiAuth.getUserInfo(userId)
       user.value = rs.value
       return Promise.resolve()
     } catch (error) {
