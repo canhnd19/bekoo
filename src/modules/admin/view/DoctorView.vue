@@ -1,5 +1,5 @@
 <template>
-  <div>doctorView</div>
+  <div>DoctorView</div>
 </template>
 
 <script setup lang="ts"></script>
