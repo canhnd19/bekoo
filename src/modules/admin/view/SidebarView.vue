@@ -38,7 +38,7 @@ const listMenu = [
 <style scoped lang="scss">
 .sidebar {
   border-right: 1px solid #dbdbdb;
-  border-left: 1px solid #dbdbdb;
+  // border-left: 1px solid #dbdbdb;
   background-color: #f6f8fc;
   .active {
     @apply text-primary;
