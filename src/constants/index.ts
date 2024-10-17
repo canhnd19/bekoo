@@ -17,3 +17,9 @@ export const INSTRUCT = [
   'Quy trình đi khám'
 ]
 export const CONTACT_FOR_COOPERATION = ['Quảng cáo', 'Tuyển dụng', 'Về medpro']
+
+export const DEFAULT_QUERY_PAGINATION = {
+  pageIndex: 1,
+  pageSize: 10,
+  loading: false
+}

@@ -1,0 +1,9 @@
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M46.875 126.562H14.0625C8.88483 126.562 4.6875 122.365 4.6875 117.188V14.0625C4.6875 8.88483 8.88483 4.6875 14.0625 4.6875H80.4937C82.9784 4.68803 85.3613 5.67489 87.1188 7.43125L105.069 25.3813C106.825 27.1387 107.812 29.5216 107.812 32.0062V46.875" stroke="#31353E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M98.5254 131.25C116.647 131.25 131.338 116.559 131.338 98.4375C131.338 80.3157 116.647 65.625 98.5254 65.625C80.4035 65.625 65.7129 80.3157 65.7129 98.4375C65.7129 116.559 80.4035 131.25 98.5254 131.25Z" stroke="#31353E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M145.312 145.312L121.725 121.637" stroke="#31353E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="24.1074" y="23.2148" width="58.0357" height="4.46429" rx="2.23214" fill="#31353E"/>
+<rect x="24.1074" y="43.75" width="58.0357" height="4.46429" rx="2.23214" fill="#31353E"/>
+<rect x="24.1074" y="64.2852" width="40.1786" height="4.46429" rx="2.23214" fill="#31353E"/>
+<rect x="24.1074" y="84.8223" width="31.25" height="4.46429" rx="2.23214" fill="#31353E"/>
+</svg>
