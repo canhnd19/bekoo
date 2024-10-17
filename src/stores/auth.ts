@@ -47,8 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const getUserInfo = async () => {
     try {
-      const userId = sessionStorage.getItem('userId') as string
-      const rs = await apiAuth.getUserInfo(userId)
+      const rs = await apiAuth.getUserInfo()
       user.value = rs.value
       return Promise.resolve()
     } catch (error) {

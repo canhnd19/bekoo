@@ -1,5 +1,4 @@
 import request from '@/plugin/request'
-import requestQuery from '@/plugin/requestQuery'
 
 import type { IBodyLogin, ILogin } from '@/types/auth.types'
 import type { IResponse, IResposeMessage } from '@/types/response.types'
@@ -49,9 +48,9 @@ export default class AuthService {
     }
   }
 
-  async getUserInfo(id: string): Promise<IResponse<IUser>> {
+  async getUserInfo(): Promise<IResponse<IUser>> {
     try {
-      const result = await requestQuery.get(`${this.prefix}/id/${id}`)
+      const result = await request.post('/token')
       return Promise.resolve(result.data)
     } catch (error) {
       return Promise.reject(error)
