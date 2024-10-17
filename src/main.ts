@@ -20,13 +20,13 @@ app.use(createPinia())
 const init = async () => {
   const { isDesktop } = storeToRefs(useBaseStore())
   const { getUserInfo } = useAuthStore()
-  const isLogin = Cookies.get('access_token') ? true : false
+  const isLoggedIn = Cookies.get('access_token') ? true : false
   isDesktop.value = window.innerWidth > 1023
   // add event resize window
   window.addEventListener('resize', () => {
     isDesktop.value = window.innerWidth > 1023
   })
-  if (isLogin) {
+  if (isLoggedIn) {
     await getUserInfo()
   }
   app.use(router)

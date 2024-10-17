@@ -1,4 +1,5 @@
 import request from '@/plugin/request'
+import requestQuery from '@/plugin/requestQuery'
 import { apiAuth } from '@/services'
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
@@ -10,13 +11,10 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<IUser>({} as IUser)
   const access_token = Cookies.get('access_token') || ''
   const accessToken = ref(access_token)
-  const isLogin = computed(() => !!Cookies.get('access_token'))
-  const userId = ref<string>('')
+  const isLoggedIn = computed(() => !!Cookies.get('access_token'))
   const login = async (body: IBodyLogin) => {
     try {
       const rs = await apiAuth.login(body)
-      userId.value = rs.value.userId
-      sessionStorage.setItem('userId', rs.value.userId)
       accessToken.value = rs.value.tokenContent
       Cookies.set('access_token', accessToken.value, { expires: 3 })
       request.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
@@ -33,17 +31,17 @@ export const useAuthStore = defineStore('auth', () => {
     request.defaults.headers.common['Authorization'] = `Bearer ${token}`
   }
 
-  // const logout = async () => {
-  //   try {
-  //     await apiAuth.logout()
-  //     Cookies.remove('access_token')
-  //     request.defaults.headers.common['Authorization'] = ''
-  //     requestSub.defaults.headers.common['Authorization'] = ''
-  //     return Promise.resolve()
-  //   } catch (error) {
-  //     return Promise.reject(error)
-  //   }
-  // }
+  const logout = async () => {
+    try {
+      Cookies.remove('access_token')
+      request.defaults.headers.common['Authorization'] = ''
+      requestQuery.defaults.headers.common['Authorization'] = ''
+      location.href = '/login'
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 
   const getUserInfo = async () => {
     try {
@@ -55,5 +53,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { login, user, isLogin, setBearerToken, getUserInfo }
+  return { login, user, isLoggedIn, setBearerToken, getUserInfo, logout }
 })

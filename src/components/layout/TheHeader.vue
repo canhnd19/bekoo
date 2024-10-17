@@ -53,6 +53,7 @@
       <div>
         <ul>
           <li class="option-label" @click="router.push({ name: 'Users' })">Admin</li>
+          <li class="option-label" @click="logout">Logout</li>
         </ul>
       </div>
     </ElPopover>
@@ -70,8 +71,8 @@ import { useAuthStore } from '@/stores/auth'
 
 import { CONTACT_FOR_COOPERATION, INSTRUCT, MEDICAL_SERVICES, NEWS } from '../../constants/index'
 
+const { logout } = useAuthStore()
 const router = useRouter()
-
 const { user } = useAuthStore()
 </script>
 <style scoped lang="scss">
@@ -92,6 +93,6 @@ const { user } = useAuthStore()
   }
 }
 .option-label {
-  @apply cursor-pointer text-base text-secondary hover:!text-[#11a2f3];
+  @apply cursor-pointer py-2 text-base text-secondary hover:!text-[#11a2f3];
 }
 </style>

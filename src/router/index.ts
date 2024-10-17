@@ -20,15 +20,15 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const { emptyDrawerAndPopup } = useBaseStore()
-  const { isLogin } = storeToRefs(useAuthStore())
+  const { isLoggedIn } = storeToRefs(useAuthStore())
   emptyDrawerAndPopup()
   if (to.meta.whiteList) {
     return next()
   }
-  if (to.meta.auth && !isLogin.value) {
+  if (to.meta.auth && !isLoggedIn.value) {
     return next({ name: 'Home' })
   }
-  if (isLogin.value && to.path === '/login') {
+  if (isLoggedIn.value && to.path === '/login') {
     return next({ name: 'Home' })
   }
   next()
