@@ -1,30 +1,28 @@
-type BaseRsPro = {
+export interface ResProvince<T> {
+  total: number
+  data: T[]
+}
+
+export interface IProvince {
+  id: string
   name: string
-  code: number
-  division_type: string
-  codename: string
+  type: number
+  typeText: string
+  slug: string
 }
 
-export interface IProvince extends BaseRsPro {
-  phone_code: number
-  districts: []
+export interface IDistrict {
+  id: string
+  name: string
+  provinceId: string
+  type: number
+  typeText: string
 }
 
-export interface IDistrict extends BaseRsPro {
-  province_code: number
-  wards: []
-}
-
-export interface ResDistrict extends BaseRsPro {
-  phone_code: number
-
-  districts: IDistrict[]
-}
-
-export interface IWard extends BaseRsPro {
-  district_code: number
-}
-export interface ResWard extends BaseRsPro {
-  province_code: number
-  wards: IWard[]
+export interface IWard {
+  id: string
+  name: string
+  districtId: string
+  type: number
+  typeText: string
 }

@@ -170,7 +170,7 @@
             @change="getListDistrict"
             @blur="blurProvince"
           >
-            <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name">
+            <ElOption v-for="(item, index) in province" :key="index" :value="item.id" :label="item.name">
               <p
                 @click="
                   () => {
@@ -199,7 +199,7 @@
             @change="getListWards"
             @blur="blurDistrict"
           >
-            <ElOption v-for="(item, index) in districts" :key="index" :value="item.code" :label="item.name">
+            <ElOption v-for="(item, index) in districts" :key="index" :value="item.id" :label="item.name">
               <p
                 @click="
                   () => {
@@ -229,7 +229,7 @@
             :disabled="checkWard"
             @blur="blurWard"
           >
-            <ElOption v-for="(item, index) in wards" :key="index" :value="item.code" :label="item.name">
+            <ElOption v-for="(item, index) in wards" :key="index" :value="item.id" :label="item.name">
               <p
                 @click="
                   () => {
@@ -356,7 +356,7 @@ const getListProvince = async () => {
   try {
     loading.value = true
     const rs = await apiParams.getListProvince()
-    province.value = rs
+    province.value = rs.data
     loading.value = false
   } catch (error) {
     console.log(error)
@@ -365,7 +365,7 @@ const getListProvince = async () => {
 const getListDistrict = async () => {
   try {
     const rs = await apiParams.getListDistrict(codeProvince.value)
-    districts.value = rs.districts
+    districts.value = rs.data
   } catch (error) {
     console.log(error)
   }
@@ -373,7 +373,7 @@ const getListDistrict = async () => {
 const getListWards = async () => {
   try {
     const rs = await apiParams.getListWards(codeDistrict.value)
-    wards.value = rs.wards
+    wards.value = rs.data
   } catch (error) {
     console.log(error)
   }

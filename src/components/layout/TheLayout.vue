@@ -19,11 +19,12 @@
 </template>
 
 <script setup lang="ts">
-// import { useBaseStore } from '@/stores/base'
+import { useBaseStore } from '@/stores/base'
+
 import TheFooter from './TheFooter.vue'
 import TheHeader from './TheHeader.vue'
 
-// const { getListProvince } = useBaseStore()
+const { getListProvince } = useBaseStore()
 
 // const route = useRoute()
 
@@ -31,8 +32,8 @@ const loading = ref(true)
 
 const init = async () => {
   try {
-    // const promises = [getListProvince()]
-    // await Promise.all(promises)
+    const promises = [getListProvince()]
+    await Promise.all(promises)
     loading.value = false
   } catch (error) {
     console.log(error)
