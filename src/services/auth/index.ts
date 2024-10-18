@@ -65,4 +65,12 @@ export default class AuthService {
       return Promise.reject(error)
     }
   }
+  async editUser(body: UserReq): Promise<IResposeMessage> {
+    try {
+      const result = await request.put(`${this.prefix}`, body)
+      return Promise.resolve(result.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }

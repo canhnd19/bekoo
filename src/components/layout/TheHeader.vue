@@ -52,9 +52,10 @@
       </template>
       <div>
         <ul>
-          <li class="option-label" @click="router.push({ name: 'Users' })">Admin</li>
-          <li class="option-label" @click="router.push({ name: 'ChangePassword' })">Change password</li>
-          <li class="option-label" @click="logout">Logout</li>
+          <li class="option-label" @click="router.push({ name: 'Users' })">Quản lý</li>
+          <li class="option-label" @click="router.push({ name: 'EditUser' })">Sửa thông tin cá nhân</li>
+          <li class="option-label" @click="router.push({ name: 'ChangePassword' })">Thay đổi mật khẩu</li>
+          <li class="option-label" @click="logout">Đăng xuất</li>
         </ul>
       </div>
     </ElPopover>

@@ -48,6 +48,14 @@ const AuthRouter: RouteRecordRaw[] = [
       auth: false
     },
     name: 'ChangePassword'
+  },
+  {
+    path: '/edit-user',
+    component: () => import('../view/EditUserView.vue'),
+    meta: {
+      auth: false
+    },
+    name: 'EditUser'
   }
 ]
 
