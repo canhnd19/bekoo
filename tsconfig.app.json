@@ -3,7 +3,7 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.d.ts", "*.d.ts", "*.ts", "*.vue", "components.d.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    // "composite": true,
+    "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "esnext",
     "useDefineForClassFields": true,
