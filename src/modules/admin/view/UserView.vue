@@ -14,7 +14,7 @@
       @page-change="getAllUser"
       @limit-change="getAllUser"
     >
-      <ElTableColumn type="index" :index="(index) => printIndex(index, query)" label="#" align="center" />
+      <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
       <ElTableColumn label="NAME">
         <template #default="{ row }">
           <p>{{ row.name }}</p>
