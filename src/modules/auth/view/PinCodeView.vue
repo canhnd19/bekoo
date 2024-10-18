@@ -28,7 +28,10 @@
 <script setup lang="ts">
 import { apiAuth } from '@/services'
 
+import { useAuthStore } from '@/stores/auth'
+
 const router = useRouter()
+const { user } = useAuthStore()
 
 const TIME_COUNTDOWN = 60
 const time = ref<number>(TIME_COUNTDOWN) // 60 seconds = 1 minute
@@ -39,10 +42,8 @@ const num4 = ref<string>('')
 const num5 = ref<string>('')
 const num6 = ref<string>('')
 const loading = ref<boolean>(false)
-const email = ref<string>('')
 onMounted(() => {
   startCountdown() // Start the countdown when the component is created
-  email.value = sessionStorage.getItem('email') as string
 })
 
 const startCountdown = () => {
@@ -75,7 +76,7 @@ const conFirm = async () => {
   try {
     loading.value = true
     const OTP = combineNumbers(num1.value, num2.value, num3.value, num4.value, num5.value, num6.value)
-    await apiAuth.pinCode({ code: OTP as string, email: email.value as string })
+    await apiAuth.pinCode({ code: OTP as string, email: user.email })
     router.push({ name: 'SetNewPassword' })
     loading.value = false
   } catch (error) {
@@ -85,7 +86,7 @@ const conFirm = async () => {
 }
 const resendOtp = async () => {
   try {
-    await apiAuth.forgotPass({ email: email.value })
+    await apiAuth.forgotPass({ email: user.email })
     startCountdown()
   } catch (error) {
     console.log(error)
