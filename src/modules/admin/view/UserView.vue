@@ -25,18 +25,27 @@
           <p>{{ row.email }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="PHONE NUMBER">
+      <ElTableColumn label="PHONE NUMBER" width="200">
         <template #default="{ row }">
           <p>{{ row.phoneNumber }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="GENDER">
+      <ElTableColumn label="GENDER" width="90">
         <template #default="{ row }">
           <p>{{ row.gender }}</p>
         </template>
       </ElTableColumn>
+      <ElTableColumn label="ACTION" width="120" align="right">
+        <template #default="{ row }">
+          <div class="flex items-center justify-end space-x-3">
+            <BaseIcon name="edit" @click="handleEditUser" />
+            <BaseIcon name="delete" @click="handleDeleteUser(row)" />
+          </div>
+        </template>
+      </ElTableColumn>
     </BaseTable>
   </div>
+  <PopupConfirmDeleteUser :email="userRow.email" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
 </template>
 
 <script setup lang="ts">
@@ -46,11 +55,20 @@ import { apiUser } from '@/services'
 import type { IQueryUser } from '@/types/admin.types'
 import type { IUserTable } from '@/types/user.types'
 
+import { useBaseStore } from '@/stores/base'
+
+import PopupConfirmDeleteUser from '../components/PopupConfirmDeleteUser.vue'
+
+const { setOpenPopup } = useBaseStore()
+
 const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
   search: ''
 })
+
 const data = ref<IUserTable[]>([])
+const userRow = ref<IUserTable>({} as IUserTable)
+const isLoadingDelete = ref<boolean>(false)
 
 onMounted(() => {
   getAllUser()
@@ -65,6 +83,25 @@ const getAllUser = async () => {
     query.value.loading = false
   } catch (error) {
     query.value.loading = false
+    console.log(error)
+  }
+}
+
+const handleEditUser = () => {}
+
+const handleDeleteUser = (data: IUserTable) => {
+  userRow.value = data
+  setOpenPopup('popup-confirm-delete-user')
+}
+
+const deleteUser = async () => {
+  try {
+    isLoadingDelete.value = true
+    const rs = await apiUser.deteteUser({ ids: [userRow.value.id] })
+    console.log('🚀 ~ deleteUser ~ rs:', rs)
+    isLoadingDelete.value = false
+  } catch (error) {
+    isLoadingDelete.value = false
     console.log(error)
   }
 }
