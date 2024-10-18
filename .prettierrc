@@ -26,6 +26,7 @@
     "^@/composables/(.*)$",
     "^@/utils/(.*)$",
     "^@/stores/(.*)$",
+    "^@/constants/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,
