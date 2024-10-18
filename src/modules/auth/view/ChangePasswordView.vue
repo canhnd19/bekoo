@@ -2,10 +2,19 @@
   <div class="layout">
     <div class="content">
       <div>
-        <p class="text-label mb-3">Đặt lại mật khẩu</p>
+        <p class="text-label mb-3">Thay đổi mật khẩu</p>
         <div class="mt-[60px] space-y-8">
           <ElInput
-            v-model="newPass.password"
+            v-model="changePassword.oldPassword"
+            class="input"
+            autocomplete="off"
+            style="width: 100%; height: 56px"
+            type="password"
+            placeholder="Nhập mật khẩu cũ"
+            show-password
+          />
+          <ElInput
+            v-model="changePassword.newPassword"
             class="input"
             autocomplete="off"
             style="width: 100%; height: 56px"
@@ -14,7 +23,7 @@
             show-password
           />
           <ElInput
-            v-model="newPass.confirmPassword"
+            v-model="changePassword.confirmNewPassword"
             class="input"
             autocomplete="off"
             style="width: 100%; height: 56px"
@@ -40,21 +49,23 @@ const router = useRouter()
 const { user } = useAuthStore()
 
 const loading = ref<boolean>(false)
-const newPass = reactive({
-  password: '',
-  confirmPassword: ''
+const changePassword = reactive({
+  oldPassword: '',
+  newPassword: '',
+  confirmNewPassword: ''
 })
 
 const disabled = computed(() => {
-  return !(newPass.password && newPass.confirmPassword)
+  return !(changePassword.oldPassword && changePassword.newPassword && changePassword.confirmNewPassword)
 })
 const confirm = async () => {
   try {
     loading.value = true
-    const rs = await apiAuth.newPass({
-      email: user.email,
-      newPassword: newPass.password,
-      confirmPassword: newPass.confirmPassword
+    const rs = await apiAuth.changePass({
+      id: user.id,
+      oldPassword: changePassword.oldPassword,
+      newPassword: changePassword.newPassword,
+      confirmPassword: changePassword.confirmNewPassword
     })
     ElMessage.success(rs.message)
     router.push({ name: 'Home' })

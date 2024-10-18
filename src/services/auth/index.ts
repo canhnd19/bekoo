@@ -48,6 +48,15 @@ export default class AuthService {
     }
   }
 
+  async changePass(body: Record<any, string>): Promise<IResposeMessage> {
+    try {
+      const result = await request.put(`${this.prefix}/password`, body)
+      return Promise.resolve(result.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   async getUserInfo(): Promise<IResponse<IUser>> {
     try {
       const result = await request.post('/token')

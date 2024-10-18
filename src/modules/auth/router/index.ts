@@ -40,6 +40,14 @@ const AuthRouter: RouteRecordRaw[] = [
       auth: false
     },
     name: 'SetNewPassword'
+  },
+  {
+    path: '/change-password',
+    component: () => import('../view/ChangePasswordView.vue'),
+    meta: {
+      auth: false
+    },
+    name: 'ChangePassword'
   }
 ]
 

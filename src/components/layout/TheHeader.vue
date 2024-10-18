@@ -53,7 +53,7 @@
       <div>
         <ul>
           <li class="option-label" @click="router.push({ name: 'Users' })">Admin</li>
-          <li class="option-label" @click="router.push({ name: '' })">Change password</li>
+          <li class="option-label" @click="router.push({ name: 'ChangePassword' })">Change password</li>
           <li class="option-label" @click="logout">Logout</li>
         </ul>
       </div>
