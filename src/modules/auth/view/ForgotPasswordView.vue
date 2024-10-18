@@ -37,8 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import { REGEX_EMAIL } from '@/constants/regex'
 import { apiAuth } from '@/services'
+
+import { REGEX_EMAIL } from '@/constants/regex'
 
 const router = useRouter()
 

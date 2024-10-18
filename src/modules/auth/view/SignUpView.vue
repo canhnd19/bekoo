@@ -4,6 +4,14 @@
   </template>
   <div v-else class="min-h-screen bg-[#e8f2f7]">
     <div class="container space-y-4 px-20 pb-6">
+      <div class="pt-7">
+        <div class="rounded-lg border border-solid border-[#c1d5e9] bg-[#d4e9ff] p-4">
+          <p class="text-[#11a2f3]">
+            Vui lòng cung cấp thông tin chính xác để được phục vụ tốt nhất. Vì một số lí do nên có thể một số thông tin
+            của bạn sẽ không chỉnh sửa được.
+          </p>
+        </div>
+      </div>
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
       <div class="flex">
         <div class="mr-[120px] space-y-2">
