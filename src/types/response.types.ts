@@ -8,3 +8,10 @@ export interface IResposeMessage {
   code: number
   message: string
 }
+export interface IResponseTable<T> {
+  pageIndex: number
+  pageSize: number
+  orders: []
+  totalPage: number
+  contentResponse: T
+}

@@ -120,7 +120,6 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<(typeof import('vue'))['EffectScope']>
-    readonly ElMessage: UnwrapRef<(typeof import('element-plus/es'))['ElMessage']>
     readonly acceptHMRUpdate: UnwrapRef<(typeof import('pinia'))['acceptHMRUpdate']>
     readonly computed: UnwrapRef<(typeof import('vue'))['computed']>
     readonly createApp: UnwrapRef<(typeof import('vue'))['createApp']>
@@ -162,6 +161,7 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<(typeof import('vue'))['onUnmounted']>
     readonly onUpdated: UnwrapRef<(typeof import('vue'))['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<(typeof import('vue'))['onWatcherCleanup']>
+    readonly pluralize: UnwrapRef<(typeof import('./src/utils/pluralize'))['default']>
     readonly printIndex: UnwrapRef<(typeof import('./src/utils/printIndex'))['default']>
     readonly provide: UnwrapRef<(typeof import('vue'))['provide']>
     readonly reactive: UnwrapRef<(typeof import('vue'))['reactive']>

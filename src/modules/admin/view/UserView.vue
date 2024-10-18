@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="rounded-lg p-4">
     <div class="flex items-start justify-between">
-      <BaseInput v-model="search" class="input-search" :show-icon="true" />
+      <BaseInput v-model="query.search" class="input-search" :show-icon="true" />
       <BaseButton size="small" class="w-20">Add</BaseButton>
     </div>
     <BaseTable
@@ -10,11 +10,31 @@
       :data="data"
       :query="query"
       class="mt-6"
-      label="transaction"
-      @page-change="getAllUsers"
-      @limit-change="getAllUsers"
+      label="user"
+      @page-change="getAllUser"
+      @limit-change="getAllUser"
     >
       <ElTableColumn type="index" :index="(index) => printIndex(index, query)" label="#" align="center" />
+      <ElTableColumn label="NAME">
+        <template #default="{ row }">
+          <p>{{ row.name }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="EMAIL">
+        <template #default="{ row }">
+          <p>{{ row.email }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="PHONE NUMBER">
+        <template #default="{ row }">
+          <p>{{ row.phoneNumber }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="GENDER">
+        <template #default="{ row }">
+          <p>{{ row.gender }}</p>
+        </template>
+      </ElTableColumn>
     </BaseTable>
   </div>
 </template>
@@ -23,22 +43,25 @@
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiUser } from '@/services'
 
-import type { IQuery } from '@/types/query.type'
+import type { IQueryUser } from '@/types/admin.types'
+import type { IUserTable } from '@/types/user.types'
 
-const search = ref<string>('')
-
-const query = ref<IQuery>({
-  ...DEFAULT_QUERY_PAGINATION
+const query = ref<IQueryUser>({
+  ...DEFAULT_QUERY_PAGINATION,
+  search: ''
 })
+const data = ref<IUserTable[]>([])
 
 onMounted(() => {
-  getAllUsers()
+  getAllUser()
 })
-const getAllUsers = async () => {
+
+const getAllUser = async () => {
   try {
     query.value.loading = true
     const rs = await apiUser.getAllUser(query.value)
-    console.log('🚀 ~ getAllUsers ~ rs:', rs)
+    data.value = rs.value.contentResponse
+    query.value.totalPage = rs.value.totalPage
     query.value.loading = false
   } catch (error) {
     query.value.loading = false

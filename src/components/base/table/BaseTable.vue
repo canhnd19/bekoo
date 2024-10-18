@@ -31,8 +31,8 @@
     </ElTable>
     <BasePagination
       v-if="showPagination && props.data.length && !props.loading"
-      v-model:page="page"
-      v-model:limit="limit"
+      v-model:page-index="pageIndex"
+      v-model:page-size="pageSize"
       :query="query"
       :label="label"
       @limit-change="emits('limit-change', $event)"
@@ -69,7 +69,7 @@ const props = withDefaults(defineProps<IProp>(), {
   data: () => [],
   label: '',
   showPagination: true,
-  query: () => ({ pageIndex: 1, pageSize: 10 }),
+  query: () => ({ pageIndex: 1, pageSize: 10, totalPage: 0 }),
   rowClassName: () => ({}),
   showHeader: true,
   treeProps: () => ({}),
@@ -77,11 +77,11 @@ const props = withDefaults(defineProps<IProp>(), {
   load: () => ({})
 })
 
-const limit = defineModel('limit', {
+const pageIndex = defineModel('pageIndex', {
   default: 10,
   type: Number
 })
-const page = defineModel('page', {
+const pageSize = defineModel('pageSize', {
   default: 1,
   type: Number
 })
@@ -130,15 +130,15 @@ const handleSelectionAll = (val: T[]) => {
     --el-table-header-bg-color: transparent;
     --el-table-border-color: var(--border-table);
     --el-table-border: 1px solid var(--border-table);
-    --el-table-row-hover-bg-color: rgba(49, 53, 62, 0.4);
+    --el-table-row-hover-bg-color: #ffffff;
     background-color: transparent;
     .el-table__header-wrapper {
       .el-table__header {
         .el-table__cell {
           height: 46px;
-          color: var(--primary);
+          color: var(--secondary);
           text-transform: uppercase;
-          font-weight: 500;
+          font-weight: 600;
           font-size: 16px;
           .cell {
             text-wrap: nowrap;
@@ -157,7 +157,7 @@ const handleSelectionAll = (val: T[]) => {
             cursor: pointer;
             .el-table__cell {
               height: 52px;
-              color: var(--primary);
+              color: var(--secondary);
               font-size: 16px;
               .cell {
                 word-break: break-word;
@@ -177,7 +177,7 @@ const handleSelectionAll = (val: T[]) => {
             width: 16px;
             i {
               font-size: 20px;
-              color: var(--primary);
+              color: var(--secondary);
             }
           }
         }

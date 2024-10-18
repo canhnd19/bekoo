@@ -29,3 +29,12 @@ export interface IUser {
   createdAt: string
   updatedAt: string
 }
+
+export interface IUserTable {
+  id: string
+  name: string
+  email: string
+  phoneNumber: string
+  linkAvatar: string
+  gender: string
+}
