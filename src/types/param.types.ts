@@ -1,6 +1,6 @@
 export interface ResProvince<T> {
   total: number
-  data: T[]
+  data: T
 }
 
 export interface IProvince {
