@@ -26,6 +26,7 @@
       "@services/*": ["services/*"],
       "@modules/*": ["modules/*"],
       "@composables/*": ["composables/*"],
+      "@constants/*": ["constants/*"],
       "@stores/*": ["stores/*"],
       "@plugins/*": ["plugins/*"],
       "@assets/*": ["assets/*"],

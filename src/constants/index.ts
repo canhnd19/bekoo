@@ -24,3 +24,13 @@ export const DEFAULT_QUERY_PAGINATION = {
   totalPage: 0,
   loading: false
 }
+export const GENDER = [
+  {
+    label: 'Nam',
+    value: 'Female'
+  },
+  {
+    label: 'Nữ',
+    value: 'Male'
+  }
+]

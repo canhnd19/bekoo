@@ -1,4 +1,4 @@
-export const SEX = [
+export const GENDER = [
   {
     label: 'Nam',
     value: 'Female'

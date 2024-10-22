@@ -1,8 +1,6 @@
 <template>
-  <template v-if="loading">
-    <PageLoading />
-  </template>
-  <div v-else class="min-h-screen bg-[#e8f2f7]">
+  <BasePopup name="popup-add-doctor" width="1280">
+    <template #title> Add doctor </template>
     <div class="container space-y-4 px-20 pb-6">
       <div class="pt-7">
         <div class="rounded-lg border border-solid border-[#c1d5e9] bg-[#d4e9ff] p-4">
@@ -14,13 +12,13 @@
       </div>
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
       <div class="flex">
-        <div class="mr-[120px] space-y-2">
+        <div class="mr-7 space-y-2">
           <div>
             <span class="text-label">Họ và tên (có dấu) </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
 
-          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+          <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
               prop="name"
               :rules="[
@@ -32,7 +30,7 @@
               ]"
             >
               <ElInput
-                v-model="userSignUp.name"
+                v-model="doctorCreate.user.name"
                 class="input"
                 style="height: 50px; width: 500px"
                 placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH"
@@ -46,7 +44,7 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
           <ElDatePicker
-            v-model="userSignUp.dob"
+            v-model="doctorCreate.user.dob"
             :class="{ validate: checkDob }"
             type="date"
             placeholder="DD/MM/YYYY"
@@ -65,7 +63,7 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
 
-          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+          <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
               prop="phoneNumber"
               :rules="[
@@ -77,7 +75,7 @@
               ]"
             >
               <ElInput
-                v-model="userSignUp.phoneNumber"
+                v-model="doctorCreate.user.phoneNumber"
                 class="input"
                 style="height: 50px; width: 500px"
                 placeholder="Vui lòng nhập số điện thoại "
@@ -91,7 +89,7 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
           <BaseSelect
-            v-model="userSignUp.gender"
+            v-model="doctorCreate.user.gender"
             :class="{ 'validate-select': checkGender }"
             clearable
             placeholder="Chọn giới tính"
@@ -110,7 +108,7 @@
             <span class="text-label">Số CCCD/Passport </span>
             <span class="text-[#ff3b30]">*</span>
           </div>
-          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+          <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
               prop="cccd"
               :rules="[
@@ -122,7 +120,7 @@
               ]"
             >
               <ElInput
-                v-model="userSignUp.cccd"
+                v-model="doctorCreate.user.cccd"
                 class="input"
                 style="height: 50px; width: 500px"
                 placeholder="Nhập số CCCD/Passport"
@@ -136,7 +134,7 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
 
-          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+          <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
               prop="email"
               :rules="[
@@ -153,7 +151,7 @@
               ]"
             >
               <ElInput
-                v-model="userSignUp.email"
+                v-model="doctorCreate.user.email"
                 class="input"
                 style="height: 50px; width: 500px"
                 placeholder="Vui lòng nhập email"
@@ -182,7 +180,7 @@
               <p
                 @click="
                   () => {
-                    userSignUp.province = item.name as string
+                    doctorCreate.user.province = item.name as string
                   }
                 "
               >
@@ -211,7 +209,7 @@
               <p
                 @click="
                   () => {
-                    userSignUp.district = item.name as string
+                    doctorCreate.user.district = item.name as string
                   }
                 "
               >
@@ -241,7 +239,7 @@
               <p
                 @click="
                   () => {
-                    userSignUp.commune = item.name
+                    doctorCreate.user.commune = item.name
                   }
                 "
               >
@@ -254,10 +252,35 @@
         <div class="space-y-2">
           <p class="text-label">Địa chỉ hiện tại</p>
           <ElInput
-            v-model="userSignUp.aboutAddress"
+            v-model="doctorCreate.user.aboutAddress"
             class="input"
             style="height: 50px; width: 500px"
             placeholder="Vui lòng nhập địa chỉ hiện tại"
+          />
+        </div>
+      </div>
+
+      <div class="style-flex">
+        <div class="space-y-2">
+          <p class="text-label">Mô tả học vấn</p>
+          <ElInput
+            v-model="doctorCreate.trainingBy"
+            class="input"
+            style="height: 50px; width: 500px"
+            :autosize="{ minRows: 2 }"
+            type="textarea"
+            placeholder="Vui lòng nhập mô tả"
+          />
+        </div>
+        <div class="space-y-2">
+          <p class="text-label">Mô tả</p>
+          <ElInput
+            v-model="doctorCreate.description"
+            class="input"
+            style="height: 50px; width: 500px"
+            :autosize="{ minRows: 2 }"
+            type="textarea"
+            placeholder="Vui lòng nhập mô tả"
           />
         </div>
       </div>
@@ -270,7 +293,7 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
 
-          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+          <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
               prop="password"
               :rules="[
@@ -282,7 +305,7 @@
               ]"
             >
               <ElInput
-                v-model="userSignUp.password"
+                v-model="doctorCreate.user.password"
                 class="input"
                 style="height: 50px; width: 500px"
                 placeholder="Vui lòng nhập mật khẩu"
@@ -298,7 +321,7 @@
             <span class="text-[#ff3b30]">*</span>
           </div>
 
-          <ElForm ref="formRef" style="max-width: 500px" :model="userSignUp" label-width="auto" class="demo-ruleForm">
+          <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
               prop="confirmPassword"
               :rules="[
@@ -310,7 +333,7 @@
               ]"
             >
               <ElInput
-                v-model="userSignUp.confirmPassword"
+                v-model="doctorCreate.user.confirmPassword"
                 class="input"
                 style="height: 50px; width: 500px"
                 placeholder="Vui lòng nhập lại mật khẩu"
@@ -321,25 +344,33 @@
           </ElForm>
         </div>
       </div>
-      <div class="flex justify-end">
-        <BaseButton :disabled="disabled" :loading="loadingBtn" size="large" class="w-40" @click="handleSinup"
-          >Đăng kí tài khoản</BaseButton
+    </div>
+    <template #footer>
+      <div class="flex items-center justify-end space-x-3">
+        <BaseButton type="plain" size="small" class="w-20" @click="setOpenPopup('popup-add-doctor', false)"
+          >Hủy</BaseButton
+        >
+        <BaseButton :disabled="disabled" :loading="loadingBtn" size="small" class="w-28" @click="handleSinup"
+          >Tạo bác sĩ</BaseButton
         >
       </div>
-    </div>
-  </div>
+    </template>
+  </BasePopup>
 </template>
 
 <script setup lang="ts">
 import { GENDER } from '@/constants'
 import { apiAuth, apiParams } from '@/services'
 
+import type { DoctorReq } from '@/types/doctor.types'
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
-import type { UserReq } from '@/types/user.types'
 
 import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
+import { useBaseStore } from '@/stores/base'
+
 const router = useRouter()
+const { setOpenPopup } = useBaseStore()
 
 onMounted(() => {
   getListProvince()
@@ -351,7 +382,24 @@ const districts = ref<IDistrict[]>([])
 const wards = ref<IWard[]>([])
 const codeProvince = ref<number | string>('')
 const codeDistrict = ref<number | string>('')
-const userSignUp = ref<UserReq>({} as UserReq)
+const doctorCreate = ref<DoctorReq>({
+  trainingBy: '',
+  description: '',
+  user: {
+    name: '',
+    phoneNumber: '',
+    email: '',
+    cccd: '',
+    province: '',
+    district: '',
+    commune: '',
+    aboutAddress: '',
+    password: '',
+    confirmPassword: '',
+    dob: '',
+    gender: ''
+  }
+})
 const province = ref<IProvince[]>([])
 const checkDob = ref<boolean>(false)
 const checkGender = ref<boolean>(false)
@@ -386,20 +434,20 @@ const getListWards = async () => {
   }
 }
 const blurDatePicker = () => {
-  userSignUp.value.dob ? (checkDob.value = false) : (checkDob.value = true)
+  doctorCreate.value.user.dob ? (checkDob.value = false) : (checkDob.value = true)
 }
 const blurSex = () => {
-  userSignUp.value.gender ? (checkGender.value = false) : (checkGender.value = true)
+  doctorCreate.value.user.gender ? (checkGender.value = false) : (checkGender.value = true)
 }
 const blurProvince = () => {
-  userSignUp.value.province ? (checkProvince.value = false) : (checkProvince.value = true)
+  doctorCreate.value.user.province ? (checkProvince.value = false) : (checkProvince.value = true)
 }
 const checkDistrict = computed(() => {
   return !codeProvince.value
 })
 const blurDistrict = () => {
-  if (userSignUp.value.province) {
-    userSignUp.value.district ? (checkValDistrict.value = false) : (checkValDistrict.value = true)
+  if (doctorCreate.value.user.province) {
+    doctorCreate.value.user.district ? (checkValDistrict.value = false) : (checkValDistrict.value = true)
   } else {
     return
   }
@@ -408,8 +456,8 @@ const checkWard = computed(() => {
   return !codeDistrict.value
 })
 const blurWard = () => {
-  if (userSignUp.value.district) {
-    userSignUp.value.commune ? (checkValWard.value = false) : (checkValWard.value = true)
+  if (doctorCreate.value.user.district) {
+    doctorCreate.value.user.commune ? (checkValWard.value = false) : (checkValWard.value = true)
   } else {
     return
   }
@@ -418,8 +466,8 @@ const handleSinup = async () => {
   try {
     loadingBtn.value = true
     const rs = await apiAuth.signup({
-      ...userSignUp.value,
-      dob: useConvertUTCTime(userSignUp.value.dob, 'FROM')
+      ...doctorCreate.value.user,
+      dob: useConvertUTCTime(doctorCreate.value.user.dob, 'FROM')
     })
     ElMessage.success(rs.message)
     router.push({ name: 'Login' })
@@ -432,17 +480,17 @@ const handleSinup = async () => {
 
 const disabled = computed(() => {
   return !(
-    userSignUp.value.cccd &&
-    userSignUp.value.commune &&
-    userSignUp.value.confirmPassword &&
-    userSignUp.value.district &&
-    userSignUp.value.dob &&
-    userSignUp.value.email &&
-    userSignUp.value.gender &&
-    userSignUp.value.name &&
-    userSignUp.value.password &&
-    userSignUp.value.phoneNumber &&
-    userSignUp.value.province
+    doctorCreate.value.user.cccd &&
+    doctorCreate.value.user.commune &&
+    doctorCreate.value.user.confirmPassword &&
+    doctorCreate.value.user.district &&
+    doctorCreate.value.user.dob &&
+    doctorCreate.value.user.email &&
+    doctorCreate.value.user.gender &&
+    doctorCreate.value.user.name &&
+    doctorCreate.value.user.password &&
+    doctorCreate.value.user.phoneNumber &&
+    doctorCreate.value.user.province
   )
 })
 </script>
@@ -460,6 +508,16 @@ const disabled = computed(() => {
     .el-input__inner {
       font-size: 16px;
     }
+  }
+  .el-textarea__inner {
+    font-size: 16px;
+    border-radius: 8px;
+  }
+}
+:deep(.input.el-textarea) {
+  .el-textarea__inner {
+    font-size: 16px;
+    border-radius: 8px;
   }
 }
 
