@@ -1,50 +1,48 @@
 <template>
-  <div>
-    <div class="flex items-start justify-between">
-      <BaseInput v-model="search" class="input-search" :show-icon="true" />
-      <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
-    </div>
-    <BaseTable
-      v-model:page="query.pageIndex"
-      v-model:limit="query.pageSize"
-      :data="data"
-      :query="query"
-      class="mt-6"
-      label="user"
-      @page-change="getAllDoctor"
-      @limit-change="getAllDoctor"
-    >
-      <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-      <ElTableColumn label="NAME">
-        <template #default="{ row }">
-          <p>{{ row.user.name }}</p>
-        </template>
-      </ElTableColumn>
-      <ElTableColumn label="EMAIL">
-        <template #default="{ row }">
-          <p>{{ row.user.email }}</p>
-        </template>
-      </ElTableColumn>
-      <ElTableColumn label="PHONE NUMBER" width="200">
-        <template #default="{ row }">
-          <p>{{ row.user.phoneNumber }}</p>
-        </template>
-      </ElTableColumn>
-      <ElTableColumn label="GENDER" width="90">
-        <template #default="{ row }">
-          <p>{{ row.user.gender }}</p>
-        </template>
-      </ElTableColumn>
-      <ElTableColumn label="ACTION" width="120" align="right">
-        <template #default="{ row }">
-          <div class="flex items-center justify-end space-x-3">
-            <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
-            <BaseIcon name="delete" @click="handleDeleteUser(row)" />
-          </div>
-        </template>
-      </ElTableColumn>
-    </BaseTable>
+  <div class="flex items-start justify-between">
+    <BaseInput v-model="search" class="input-search" :show-icon="true" />
+    <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
   </div>
+  <BaseTable
+    v-model:page="query.pageIndex"
+    v-model:limit="query.pageSize"
+    :data="data"
+    :query="query"
+    class="mt-6"
+    label="user"
+    @page-change="getAllDoctor"
+    @limit-change="getAllDoctor"
+  >
+    <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
+    <ElTableColumn label="NAME">
+      <template #default="{ row }">
+        <p>{{ row.user.name }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="EMAIL">
+      <template #default="{ row }">
+        <p>{{ row.user.email }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="PHONE NUMBER" width="200">
+      <template #default="{ row }">
+        <p>{{ row.user.phoneNumber }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="GENDER" width="90">
+      <template #default="{ row }">
+        <p>{{ row.user.gender }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="ACTION" width="120" align="right">
+      <template #default="{ row }">
+        <div class="flex items-center justify-end space-x-3">
+          <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
+          <BaseIcon name="delete" @click="handleDeleteUser(row)" />
+        </div>
+      </template>
+    </ElTableColumn>
+  </BaseTable>
   <PopupAddDoctor />
   <PopupConfirmDeleteUser :email="doctorRow.user?.email" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
 </template>

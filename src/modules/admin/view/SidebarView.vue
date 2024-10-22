@@ -26,11 +26,15 @@ const listMenu = [
     icon: 'menu-user',
     routerName: 'Users'
   },
-
   {
     title: 'Doctors',
     icon: 'menu-user',
     routerName: 'Doctors'
+  },
+  {
+    title: 'Departments',
+    icon: 'menu-user',
+    routerName: 'Departments'
   }
 ]
 </script>

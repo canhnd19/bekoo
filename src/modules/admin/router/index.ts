@@ -22,6 +22,14 @@ const AdminRouter: RouteRecordRaw[] = [
           auth: false
         },
         name: 'Doctors'
+      },
+      {
+        path: 'departments',
+        component: () => import('../view/DepartmentView.vue'),
+        meta: {
+          auth: false
+        },
+        name: 'Departments'
       }
     ]
   }
