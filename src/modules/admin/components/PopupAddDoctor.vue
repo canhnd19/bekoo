@@ -469,8 +469,8 @@ const handleCreateUser = async () => {
       ...doctorCreate.value,
       user: { ...doctorCreate.value.user, dob: useConvertUTCTime(doctorCreate.value.user.dob, 'FROM') }
     })
-
     ElMessage.success(rs.message)
+    setOpenPopup('popup-add-doctor', false)
     loadingBtn.value = false
   } catch (error) {
     loadingBtn.value = false
