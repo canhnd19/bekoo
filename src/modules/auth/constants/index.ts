@@ -1,10 +1,10 @@
 export const SEX = [
   {
     label: 'Nam',
-    value: 'FEMALE'
+    value: 'Female'
   },
   {
     label: 'Nữ',
-    value: 'MALE'
+    value: 'Male'
   }
 ]
