@@ -2,7 +2,7 @@
   <BasePopup name="popup-confirm-delete-user" width="480">
     <template #title> Confirm delete user </template>
     <div>
-      <p class="text-base">Bạn có chắc chắn muốn xóa người {{ props.email }} dùng không?</p>
+      <p class="text-base">Bạn có chắc chắn muốn xóa người dùng {{ props.email }} không?</p>
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">

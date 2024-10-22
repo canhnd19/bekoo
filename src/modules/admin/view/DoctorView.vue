@@ -38,7 +38,7 @@
       <ElTableColumn label="ACTION" width="120" align="right">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
-            <BaseIcon name="edit" @click="handleEditUser" />
+            <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
             <BaseIcon name="delete" @click="handleDeleteUser(row)" />
           </div>
         </template>
@@ -46,6 +46,7 @@
     </BaseTable>
   </div>
   <PopupAddDoctor />
+  <PopupConfirmDeleteUser :email="doctorRow.user?.email" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
 </template>
 
 <script setup lang="ts">
@@ -58,11 +59,14 @@ import type { IDoctor } from '@/types/doctor.types'
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddDoctor from '../components/PopupAddDoctor.vue'
+import PopupConfirmDeleteUser from '../components/PopupConfirmDeleteUser.vue'
 
 const { setOpenPopup } = useBaseStore()
 
 const search = ref<string>('')
 const data = ref<IDoctor[]>([])
+const doctorRow = ref<IDoctor>({} as IDoctor)
+const isLoadingDelete = ref<boolean>(false)
 const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
   search: ''
@@ -81,6 +85,25 @@ const getAllDoctor = async () => {
     query.value.loading = false
   } catch (error) {
     query.value.loading = false
+    console.log(error)
+  }
+}
+
+const handleDeleteUser = (data: IDoctor) => {
+  doctorRow.value = data
+  setOpenPopup('popup-confirm-delete-user')
+}
+
+const deleteUser = async () => {
+  try {
+    isLoadingDelete.value = true
+    const rs = await apiDoctor.deteteDoctor([doctorRow.value.id])
+    ElMessage.success(rs.message)
+    setOpenPopup('popup-confirm-delete-user', false)
+    isLoadingDelete.value = false
+    getAllDoctor()
+  } catch (error) {
+    isLoadingDelete.value = false
     console.log(error)
   }
 }

@@ -24,4 +24,12 @@ export default class DoctorService {
       return Promise.reject(error)
     }
   }
+  async deteteDoctor(params: Record<string, any>): Promise<any> {
+    try {
+      const rs = await request.delete(`${this.prefix}/${useRemoveParams(params)}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }
