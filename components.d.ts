@@ -17,6 +17,7 @@ declare module 'vue' {
     BasePagination: typeof import('./src/components/base/pagination/BasePagination.vue')['default']
     BasePopup: typeof import('./src/components/base/popup/BasePopup.vue')['default']
     BaseSelect: typeof import('./src/components/base/select/BaseSelect.vue')['default']
+    BaseTab: typeof import('./src/components/base/tab/BaseTab.vue')['default']
     BaseTable: typeof import('./src/components/base/table/BaseTable.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElContainer: typeof import('element-plus/es')['ElContainer']

@@ -10,3 +10,10 @@ export interface ISelect {
   reserveKeyword?: boolean
   showPrefix?: boolean
 }
+export interface ITab {
+  id?: number
+  title: string
+  tabValue: string | number
+  routerName?: string
+  [x: string]: any
+}

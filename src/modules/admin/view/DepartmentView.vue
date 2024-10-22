@@ -1,34 +1,38 @@
 <template>
-  <div class="flex items-start justify-between">
-    <BaseInput v-model="search" class="input-search" :show-icon="true" />
-    <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-department')">Add</BaseButton>
-  </div>
-  <BaseTable
-    v-model:page="query.pageIndex"
-    v-model:limit="query.pageSize"
-    :data="data"
-    :query="query"
-    class="mt-6"
-    label="user"
-    @page-change="getAllDepartment"
-    @limit-change="getAllDepartment"
-  >
-    <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-    <ElTableColumn label="NAME">
-      <template #default="{ row }">
-        <p>{{ row.name }}</p>
-      </template>
-    </ElTableColumn>
-    <ElTableColumn label="ACTION">
-      <template #default="{ row }">
-        <div class="flex items-center justify-end space-x-3">
-          <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
-          <BaseButton type="plain" size="small" class="w-40">Thêm bác sĩ</BaseButton>
-          <BaseIcon name="delete" @click="handleDeleteUser(row)" />
-        </div>
-      </template>
-    </ElTableColumn>
-  </BaseTable>
+  <template v-if="!departmentIdActive">
+    <div class="flex items-start justify-between">
+      <BaseInput v-model="search" class="input-search" :show-icon="true" />
+      <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-department')">Add</BaseButton>
+    </div>
+    <BaseTable
+      v-model:page="query.pageIndex"
+      v-model:limit="query.pageSize"
+      :data="data"
+      :query="query"
+      class="mt-6"
+      label="user"
+      @page-change="getAllDepartment"
+      @limit-change="getAllDepartment"
+      @row-click="rowClick"
+    >
+      <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
+      <ElTableColumn label="NAME">
+        <template #default="{ row }">
+          <p>{{ row.name }}</p>
+        </template>
+      </ElTableColumn>
+      <!-- <ElTableColumn label="ACTION">
+        <template #default="{ row }">
+          <div class="flex items-center justify-end space-x-3">
+            <BaseIcon name="delete" @click="handleDeleteUser(row)" />
+          </div>
+        </template>
+      </ElTableColumn> -->
+    </BaseTable>
+  </template>
+  <template v-else>
+    <p>{{ departmentRow.name }}</p>
+  </template>
   <PopupAddDepartment />
 </template>
 
@@ -48,6 +52,7 @@ const { setOpenPopup } = useBaseStore()
 const search = ref<string>('')
 const data = ref<IDepartment[]>([])
 const departmentRow = ref<IDepartment>({} as IDepartment)
+const departmentIdActive = ref<string>('')
 // const isLoadingDelete = ref<boolean>(false)
 const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
@@ -71,10 +76,10 @@ const getAllDepartment = async () => {
   }
 }
 
-const handleDeleteUser = (data: IDepartment) => {
-  departmentRow.value = data
-  setOpenPopup('popup-confirm-delete-user')
-}
+// const handleDeleteUser = (data: IDepartment) => {
+//   departmentRow.value = data
+//   setOpenPopup('popup-confirm-delete-user')
+// }
 
 // const deleteUser = async () => {
 //   try {
@@ -89,6 +94,11 @@ const handleDeleteUser = (data: IDepartment) => {
 //     console.log(error)
 //   }
 // }
+
+const rowClick = (data: IDepartment) => {
+  departmentRow.value = data
+  departmentIdActive.value = data.id
+}
 </script>
 
 <style scoped lang="scss">
