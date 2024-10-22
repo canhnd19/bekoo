@@ -1,7 +1,7 @@
 <template>
   <ElAside width="80px" class="sidebar">
     <div class="flex h-[72px] w-full items-center justify-center">
-      <img src="/favicon.png" alt="" class="w-10" />
+      <img src="/favicon.png" alt="" class="w-10 cursor-pointer" @click="router.push({ name: 'Home' })" />
     </div>
     <div v-for="(menu, index) in listMenu" :key="index" class="mt-2 w-full space-y-2">
       <div
