@@ -1,7 +1,7 @@
 <template>
   <BasePopup name="popup-add-doctor" width="1280">
     <template #title> Add doctor </template>
-    <div class="container space-y-4 px-20 pb-6">
+    <div class="space-y-4 px-20 pb-6">
       <div class="pt-7">
         <div class="rounded-lg border border-solid border-[#c1d5e9] bg-[#d4e9ff] p-4">
           <p class="text-[#11a2f3]">
@@ -20,7 +20,7 @@
 
           <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
-              prop="name"
+              prop="user.name"
               :rules="[
                 {
                   required: true,
@@ -65,7 +65,7 @@
 
           <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
-              prop="phoneNumber"
+              prop="user.phoneNumber"
               :rules="[
                 {
                   required: true,
@@ -110,7 +110,7 @@
           </div>
           <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
-              prop="cccd"
+              prop="user.cccd"
               :rules="[
                 {
                   required: true,
@@ -136,7 +136,7 @@
 
           <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
-              prop="email"
+              prop="user.email"
               :rules="[
                 {
                   required: true,
@@ -295,7 +295,7 @@
 
           <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
-              prop="password"
+              prop="user.password"
               :rules="[
                 {
                   required: true,
@@ -323,7 +323,7 @@
 
           <ElForm ref="formRef" style="max-width: 500px" :model="doctorCreate" label-width="auto" class="demo-ruleForm">
             <ElFormItem
-              prop="confirmPassword"
+              prop="user.confirmPassword"
               :rules="[
                 {
                   required: true,
@@ -350,7 +350,7 @@
         <BaseButton type="plain" size="small" class="w-20" @click="setOpenPopup('popup-add-doctor', false)"
           >Hủy</BaseButton
         >
-        <BaseButton :disabled="disabled" :loading="loadingBtn" size="small" class="w-28" @click="handleSinup"
+        <BaseButton :disabled="disabled" :loading="loadingBtn" size="small" class="w-32" @click="handleCreateUser"
           >Tạo bác sĩ</BaseButton
         >
       </div>
@@ -360,7 +360,7 @@
 
 <script setup lang="ts">
 import { GENDER } from '@/constants'
-import { apiAuth, apiParams } from '@/services'
+import { apiDoctor, apiParams } from '@/services'
 
 import type { DoctorReq } from '@/types/doctor.types'
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
@@ -369,7 +369,6 @@ import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
 import { useBaseStore } from '@/stores/base'
 
-const router = useRouter()
 const { setOpenPopup } = useBaseStore()
 
 onMounted(() => {
@@ -462,15 +461,16 @@ const blurWard = () => {
     return
   }
 }
-const handleSinup = async () => {
+
+const handleCreateUser = async () => {
   try {
     loadingBtn.value = true
-    const rs = await apiAuth.signup({
-      ...doctorCreate.value.user,
-      dob: useConvertUTCTime(doctorCreate.value.user.dob, 'FROM')
+    const rs = await apiDoctor.createDoctor({
+      ...doctorCreate.value,
+      user: { ...doctorCreate.value.user, dob: useConvertUTCTime(doctorCreate.value.user.dob, 'FROM') }
     })
+
     ElMessage.success(rs.message)
-    router.push({ name: 'Login' })
     loadingBtn.value = false
   } catch (error) {
     loadingBtn.value = false
