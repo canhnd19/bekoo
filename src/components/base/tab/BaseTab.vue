@@ -48,27 +48,19 @@ const handleSelectTab = (tab: ITab) => {
 
 <style scoped lang="scss">
 .base-tab {
-  border-bottom: 1px solid #31353e;
+  border-bottom: 1px solid var(--border-table);
   .tab {
     color: var(--secondary);
     padding: 0 18px 20px;
     font-size: 16px;
     &:hover {
-      color: var(--active);
+      color: var(--primary);
     }
   }
   .active {
-    color: var(--active);
-    border-bottom: 2px solid var(--active);
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
     font-weight: 600;
-  }
-}
-
-@media (max-width: 1023px) {
-  .base-tab {
-    .tab {
-      padding: 0 14px 10px;
-    }
   }
 }
 </style>

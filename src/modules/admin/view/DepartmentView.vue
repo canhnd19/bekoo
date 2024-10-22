@@ -31,7 +31,14 @@
     </BaseTable>
   </template>
   <template v-else>
-    <p>{{ departmentRow.name }}</p>
+    <div class="flex items-center justify-start">
+      <BaseIcon name="back" class="mr-3 cursor-pointer" @click="departmentIdActive = ''" />
+      <p class="text-lg">{{ departmentRow.name }}</p>
+    </div>
+    <div class="pb-6 pt-4">
+      <BaseTab v-model="tabActive" :tabs="tabs" />
+      <component :is="component" />
+    </div>
   </template>
   <PopupAddDepartment />
 </template>
@@ -41,14 +48,30 @@ import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiDepartment } from '@/services'
 
 import type { IQueryUser } from '@/types/admin.types'
+import type { ITab } from '@/types/component.types'
 import type { IDepartment } from '@/types/department.types'
 
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddDepartment from '../components/PopupAddDepartment.vue'
+import TabDoctors from '../components/TabDoctors.vue'
+import TabSpecializes from '../components/TabSpecializes.vue'
 
 const { setOpenPopup } = useBaseStore()
+const tabs = ref<ITab[]>([
+  {
+    id: 1,
+    title: 'Doctors',
+    tabValue: 'doctors'
+  },
+  {
+    id: 2,
+    title: 'Specialize',
+    tabValue: 'specialize'
+  }
+])
 
+const tabActive = ref<string>('doctors')
 const search = ref<string>('')
 const data = ref<IDepartment[]>([])
 const departmentRow = ref<IDepartment>({} as IDepartment)
@@ -58,7 +81,9 @@ const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
   search: ''
 })
-
+const component = computed(() => {
+  return tabActive.value === 'doctors' ? TabDoctors : TabSpecializes
+})
 onMounted(() => {
   getAllDepartment()
 })
