@@ -97,9 +97,11 @@ const handleDeleteUser = (data: IUserTable) => {
 const deleteUser = async () => {
   try {
     isLoadingDelete.value = true
-    const rs = await apiUser.deteteUser({ ids: [userRow.value.id] })
-    console.log('🚀 ~ deleteUser ~ rs:', rs)
+    const rs = await apiUser.deteteUser([userRow.value.id])
+    ElMessage.success(rs.message)
+    setOpenPopup('popup-confirm-delete-user', false)
     isLoadingDelete.value = false
+    getAllUser()
   } catch (error) {
     isLoadingDelete.value = false
     console.log(error)

@@ -16,9 +16,9 @@ export default class UserService {
       return Promise.reject(error)
     }
   }
-  async deteteUser(body: Record<string, any>): Promise<any> {
+  async deteteUser(params: Record<string, any>): Promise<any> {
     try {
-      const rs = await request.delete(`${this.prefix}`, body)
+      const rs = await request.delete(`${this.prefix}/${useRemoveParams(params)}`)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
