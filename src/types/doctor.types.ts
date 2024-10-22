@@ -10,7 +10,7 @@ export interface IDoctor {
   id: string
   description: string
   trainingBy: string
-  user: {
+  info: {
     id: string
     name: string
     phoneNumber: string

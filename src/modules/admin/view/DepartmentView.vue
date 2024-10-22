@@ -19,11 +19,11 @@
         <p>{{ row.name }}</p>
       </template>
     </ElTableColumn>
-
-    <ElTableColumn label="ACTION" width="120" align="right">
+    <ElTableColumn label="ACTION">
       <template #default="{ row }">
         <div class="flex items-center justify-end space-x-3">
           <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
+          <BaseButton type="plain" size="small" class="w-40">Thêm bác sĩ</BaseButton>
           <BaseIcon name="delete" @click="handleDeleteUser(row)" />
         </div>
       </template>

@@ -371,6 +371,10 @@ import { useBaseStore } from '@/stores/base'
 
 const { setOpenPopup } = useBaseStore()
 
+const emit = defineEmits<{
+  created: []
+}>()
+
 onMounted(() => {
   getListProvince()
 })
@@ -471,6 +475,7 @@ const handleCreateUser = async () => {
     })
     ElMessage.success(rs.message)
     setOpenPopup('popup-add-doctor', false)
+    emit('created')
     loadingBtn.value = false
   } catch (error) {
     loadingBtn.value = false

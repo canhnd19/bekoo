@@ -16,22 +16,22 @@
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
     <ElTableColumn label="NAME">
       <template #default="{ row }">
-        <p>{{ row.user.name }}</p>
+        <p>{{ row.info.name }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="EMAIL">
       <template #default="{ row }">
-        <p>{{ row.user.email }}</p>
+        <p>{{ row.info.email }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="PHONE NUMBER" width="200">
       <template #default="{ row }">
-        <p>{{ row.user.phoneNumber }}</p>
+        <p>{{ row.info.phoneNumber }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="GENDER" width="90">
       <template #default="{ row }">
-        <p>{{ row.user.gender }}</p>
+        <p>{{ row.info.gender }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="ACTION" width="120" align="right">
@@ -43,8 +43,8 @@
       </template>
     </ElTableColumn>
   </BaseTable>
-  <PopupAddDoctor />
-  <PopupConfirmDeleteUser :email="doctorRow.user?.email" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
+  <PopupAddDoctor @created="getAllDoctor" />
+  <PopupConfirmDeleteUser :email="doctorRow.info?.email" :is-loading-delete="isLoadingDelete" @delete="deleteDoctor" />
 </template>
 
 <script setup lang="ts">
@@ -92,7 +92,7 @@ const handleDeleteUser = (data: IDoctor) => {
   setOpenPopup('popup-confirm-delete-user')
 }
 
-const deleteUser = async () => {
+const deleteDoctor = async () => {
   try {
     isLoadingDelete.value = true
     const rs = await apiDoctor.deteteDoctor([doctorRow.value.id])
