@@ -38,7 +38,7 @@ export const useBaseStore = defineStore('base', () => {
   const getListProvince = async () => {
     try {
       const rs = await apiParams.getListProvince()
-      province.value = rs.data
+      province.value = rs
       return Promise.resolve()
     } catch (error) {
       return Promise.reject(error)
