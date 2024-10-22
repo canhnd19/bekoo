@@ -78,11 +78,11 @@ const props = withDefaults(defineProps<IProp>(), {
 })
 
 const pageIndex = defineModel('pageIndex', {
-  default: 10,
+  default: 1,
   type: Number
 })
 const pageSize = defineModel('pageSize', {
-  default: 1,
+  default: 10,
   type: Number
 })
 

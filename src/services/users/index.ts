@@ -10,7 +10,7 @@ export default class UserService {
   prefix = 'user'
   async getAllUser(params: Record<string, any>): Promise<IResponse<IResponseTable<IUserTable[]>>> {
     try {
-      const rs = await requestQuery.get(`${this.prefix}`, { params: useRemoveParams(params) })
+      const rs = await requestQuery.post(`${this.prefix}`, useRemoveParams(params))
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
