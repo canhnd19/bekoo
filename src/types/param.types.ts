@@ -1,28 +1,21 @@
-export interface ResProvince<T> {
-  total: number
-  data: T
+export interface IBaseRes {
+  code: number
+  codename: string
+  division_type: string
+  name: string
 }
 
-export interface IProvince {
-  id: string
-  name: string
-  type: number
-  typeText: string
-  slug: string
+export interface IProvince extends IBaseRes {
+  phone_code: number
+  districts: []
 }
 
-export interface IDistrict {
-  id: string
-  name: string
-  provinceId: string
-  type: number
-  typeText: string
+export interface IDistrict extends IBaseRes {
+  phone_code: number
+  districts: []
 }
 
-export interface IWard {
-  id: string
-  name: string
-  districtId: string
-  type: number
-  typeText: string
+export interface IWard extends IBaseRes {
+  province_code: number
+  wards: []
 }

@@ -178,11 +178,11 @@
             @change="getListDistrict"
             @blur="blurProvince"
           >
-            <ElOption v-for="(item, index) in province" :key="index" :value="item.id" :label="item.name">
+            <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name">
               <p
                 @click="
                   () => {
-                    userSignUp.province = item.name
+                    userSignUp.province = item.name as string
                   }
                 "
               >
@@ -207,11 +207,11 @@
             @change="getListWards"
             @blur="blurDistrict"
           >
-            <ElOption v-for="(item, index) in districts" :key="index" :value="item.id" :label="item.name">
+            <ElOption v-for="(item, index) in districts" :key="index" :value="item.code" :label="item.name">
               <p
                 @click="
                   () => {
-                    userSignUp.district = item.name
+                    userSignUp.district = item.name as string
                   }
                 "
               >
@@ -237,7 +237,7 @@
             :disabled="checkWard"
             @blur="blurWard"
           >
-            <ElOption v-for="(item, index) in wards" :key="index" :value="item.id" :label="item.name">
+            <ElOption v-for="(item, index) in wards" :key="index" :value="item.code" :label="item.name">
               <p
                 @click="
                   () => {
@@ -364,7 +364,7 @@ const getListProvince = async () => {
   try {
     loading.value = true
     const rs = await apiParams.getListProvince()
-    province.value = rs.data
+    province.value = rs
     loading.value = false
   } catch (error) {
     console.log(error)
@@ -373,7 +373,7 @@ const getListProvince = async () => {
 const getListDistrict = async () => {
   try {
     const rs = await apiParams.getListDistrict(codeProvince.value)
-    districts.value = rs.data
+    districts.value = rs.districts
   } catch (error) {
     console.log(error)
   }
@@ -381,7 +381,7 @@ const getListDistrict = async () => {
 const getListWards = async () => {
   try {
     const rs = await apiParams.getListWards(codeDistrict.value)
-    wards.value = rs.data
+    wards.value = rs.wards
   } catch (error) {
     console.log(error)
   }

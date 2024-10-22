@@ -1,30 +1,30 @@
 import axios from 'axios'
 
-import type { IDistrict, IProvince, IWard, ResProvince } from '@/types/param.types'
+import type { IDistrict, IProvince, IWard } from '@/types/param.types'
 
 export default class ParamService {
-  prefix = 'https://open.oapi.vn'
+  prefix = 'https://provinces.open-api.vn'
 
-  async getListProvince(): Promise<ResProvince<IProvince[]>> {
+  async getListProvince(): Promise<IProvince[]> {
     try {
-      const rs = await axios.get(`${this.prefix}/location/provinces`)
+      const rs = await axios.get(`${this.prefix}/api/p`)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
     }
   }
 
-  async getListDistrict(code: number | string): Promise<ResProvince<IDistrict[]>> {
+  async getListDistrict(code: number | string): Promise<IDistrict> {
     try {
-      const rs = await axios.get(`${this.prefix}/location/districts?provinceId=${code}`)
+      const rs = await axios.get(`${this.prefix}/api/p/${code}?depth=2`)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
     }
   }
-  async getListWards(code: number | string): Promise<ResProvince<IWard[]>> {
+  async getListWards(code: number | string): Promise<IWard> {
     try {
-      const rs = await axios.get(`${this.prefix}/location/wards?districtId=${code}`)
+      const rs = await axios.get(`${this.prefix}/api/d/${code}?depth=2`)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
