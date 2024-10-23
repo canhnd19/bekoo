@@ -41,7 +41,7 @@
     </div>
   </template>
   <PopupAddDepartment />
-  <PopupConfirmDelete :name="departmentRow.name" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
+  <PopupConfirmDelete :name="departmentRow.name" :is-loading-delete="isLoadingDelete" @delete="deleteDepartment" />
 </template>
 
 <script setup lang="ts">
@@ -110,7 +110,7 @@ const handleDelete = (data: IDepartment) => {
   setOpenPopup('popup-confirm-delete')
 }
 
-const deleteUser = async () => {
+const deleteDepartment = async () => {
   try {
     isLoadingDelete.value = true
     const rs = await apiDepartment.deteteDepartment(departmentRow.value.id)

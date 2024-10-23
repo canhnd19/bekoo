@@ -25,8 +25,16 @@
         <p>{{ row.price }}</p>
       </template>
     </ElTableColumn>
+    <ElTableColumn label="ACTION">
+      <template #default="{ row }">
+        <div class="flex items-center space-x-3">
+          <BaseIcon name="delete" @click="handleDelete(row)" />
+        </div>
+      </template>
+    </ElTableColumn>
   </BaseTable>
   <PopupAddExminationPackage :is-loading="isLoading" @add="handleAdd" @cancel="handleCancel" />
+  <PopupConfirmDelete :name="packageRow.name" :is-loading-delete="isLoadingDelete" @delete="deleteDepartment" />
 </template>
 
 <script setup lang="ts">
@@ -39,6 +47,7 @@ import type { IQuery } from '@/types/query.type'
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddExminationPackage from './PopupAddExminationPackage.vue'
+import PopupConfirmDelete from './PopupConfirmDelete.vue'
 
 const { setOpenPopup } = useBaseStore()
 
@@ -48,9 +57,10 @@ interface IProps {
 onMounted(() => {
   getAllPackage()
 })
-
+const packageRow = ref<IPackage>({} as IPackage)
 const data = ref<IPackage[]>([])
 const isLoading = ref<boolean>(false)
+const isLoadingDelete = ref<boolean>(false)
 const props = withDefaults(defineProps<IProps>(), {
   departmentId: ''
 })
@@ -96,6 +106,24 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getAllPackage()
+}
+const handleDelete = (data: IPackage) => {
+  packageRow.value = data
+  setOpenPopup('popup-confirm-delete')
+}
+
+const deleteDepartment = async () => {
+  try {
+    isLoadingDelete.value = true
+    const rs = await apiSpecialize.detetePackage(packageRow.value.id)
+    ElMessage.success(rs.message)
+    setOpenPopup('popup-confirm-delete', false)
+    isLoadingDelete.value = false
+    getAllPackage()
+  } catch (error) {
+    isLoadingDelete.value = false
+    console.log(error)
+  }
 }
 </script>
 

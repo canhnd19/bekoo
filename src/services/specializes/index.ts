@@ -23,4 +23,13 @@ export default class SpecializeService {
       return Promise.reject(error)
     }
   }
+
+  async detetePackage(ids: string): Promise<IResposeMessage> {
+    try {
+      const rs = await request.delete(`${this.prefix}/${ids}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }
