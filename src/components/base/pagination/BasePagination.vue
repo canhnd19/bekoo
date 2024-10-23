@@ -1,5 +1,19 @@
 <template>
-  <div class="base-pagination flex justify-end">
+  <div class="base-pagination flex justify-between">
+    <div class="text-sm text-secondary">
+      Show
+      {{ useFormatNumber(props.query.totalElements == 0 ? 0 : (props.query.pageIndex - 1) * props.query.pageSize + 1) }}
+      -
+      {{
+        useFormatNumber(
+          props.query.pageIndex * props.query.pageSize > props.query.totalElements
+            ? props.query.totalElements
+            : props.query.pageIndex * props.query.pageSize
+        )
+      }}
+      /
+      {{ useFormatNumber(props.query.totalElements) }} {{ query.totalElements < 2 ? label : pluralize(label) }}
+    </div>
     <div class="list-paging sm:w-full">
       <ElPagination
         v-model:current-page="pageIndex"
@@ -28,6 +42,8 @@
 
 <script setup lang="ts">
 import type { IQuery } from '@/types/query.type'
+
+import useFormatNumber from '@/composables/useFormatNumber'
 
 const pageSizes: number[] = [10, 20, 50, 100]
 interface IProps {

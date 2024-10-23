@@ -9,7 +9,7 @@
     :data="data"
     :query="query"
     class="mt-6"
-    label="user"
+    label="doctor"
     @page-change="handlePageChange"
     @limit-change="handleLimitChange"
   >
