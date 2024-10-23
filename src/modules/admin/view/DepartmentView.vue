@@ -37,7 +37,7 @@
     </div>
     <div class="pb-6 pt-4">
       <BaseTab v-model="tabActive" :tabs="tabs" />
-      <component :is="component" />
+      <component :is="component" :department-id="departmentIdActive" />
     </div>
   </template>
   <PopupAddDepartment />

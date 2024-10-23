@@ -72,10 +72,6 @@ const handleCreateDepartment = async () => {
       font-size: 16px;
     }
   }
-  .el-textarea__inner {
-    font-size: 16px;
-    border-radius: 8px;
-  }
 }
 :deep(.input.el-textarea) {
   .el-textarea__inner {
