@@ -33,4 +33,13 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
+
+  async deteteDepartment(ids: string): Promise<IResposeMessage> {
+    try {
+      const rs = await request.delete(`${this.prefix}/${ids}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }

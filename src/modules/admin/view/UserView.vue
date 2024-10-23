@@ -45,7 +45,7 @@
       </ElTableColumn>
     </BaseTable>
   </div>
-  <PopupConfirmDeleteUser :email="userRow.email" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
+  <PopupConfirmDelete :email="userRow.email" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
 </template>
 
 <script setup lang="ts">
@@ -57,7 +57,7 @@ import type { IUserTable } from '@/types/user.types'
 
 import { useBaseStore } from '@/stores/base'
 
-import PopupConfirmDeleteUser from '../components/PopupConfirmDeleteUser.vue'
+import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 
 const { setOpenPopup } = useBaseStore()
 
@@ -91,7 +91,7 @@ const handleEditUser = () => {}
 
 const handleDeleteUser = (data: IUserTable) => {
   userRow.value = data
-  setOpenPopup('popup-confirm-delete-user')
+  setOpenPopup('popup-confirm-delete')
 }
 
 const deleteUser = async () => {
@@ -99,7 +99,7 @@ const deleteUser = async () => {
     isLoadingDelete.value = true
     const rs = await apiUser.deteteUser([userRow.value.id])
     ElMessage.success(rs.message)
-    setOpenPopup('popup-confirm-delete-user', false)
+    setOpenPopup('popup-confirm-delete', false)
     isLoadingDelete.value = false
     getAllUser()
   } catch (error) {

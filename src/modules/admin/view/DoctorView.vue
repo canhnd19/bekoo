@@ -44,7 +44,7 @@
     </ElTableColumn>
   </BaseTable>
   <PopupAddDoctor @created="getAllDoctor" />
-  <PopupConfirmDeleteUser :email="doctorRow.info?.email" :is-loading-delete="isLoadingDelete" @delete="deleteDoctor" />
+  <PopupConfirmDelete :email="doctorRow.info?.email" :is-loading-delete="isLoadingDelete" @delete="deleteDoctor" />
 </template>
 
 <script setup lang="ts">
@@ -57,7 +57,7 @@ import type { IDoctor } from '@/types/doctor.types'
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddDoctor from '../components/PopupAddDoctor.vue'
-import PopupConfirmDeleteUser from '../components/PopupConfirmDeleteUser.vue'
+import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 
 const { setOpenPopup } = useBaseStore()
 
@@ -89,7 +89,7 @@ const getAllDoctor = async () => {
 
 const handleDeleteUser = (data: IDoctor) => {
   doctorRow.value = data
-  setOpenPopup('popup-confirm-delete-user')
+  setOpenPopup('popup-confirm-delete')
 }
 
 const deleteDoctor = async () => {
@@ -97,7 +97,7 @@ const deleteDoctor = async () => {
     isLoadingDelete.value = true
     const rs = await apiDoctor.deteteDoctor([doctorRow.value.id])
     ElMessage.success(rs.message)
-    setOpenPopup('popup-confirm-delete-user', false)
+    setOpenPopup('popup-confirm-delete', false)
     isLoadingDelete.value = false
     getAllDoctor()
   } catch (error) {

@@ -1,8 +1,9 @@
 <template>
-  <BasePopup name="popup-confirm-delete-user" width="480">
+  <BasePopup name="popup-confirm-delete" width="480">
     <template #title> Confirm delete user </template>
     <div>
-      <p class="text-base">Bạn có chắc chắn muốn xóa người dùng {{ props.email }} không?</p>
+      <p v-if="props.email" class="text-base">Bạn có chắc chắn muốn xóa người dùng {{ props.email }} không?</p>
+      <p v-else class="text-base">Bạn có chắc chắn muốn xóa chuyên khoa {{ props.name }} không?</p>
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
@@ -15,11 +16,13 @@
 
 <script setup lang="ts">
 interface IProps {
-  email: string
+  email?: string
+  name?: string
   isLoadingDelete: boolean
 }
 const props = withDefaults(defineProps<IProps>(), {
   email: '',
+  name: '',
   isLoadingDelete: false
 })
 const emits = defineEmits<{

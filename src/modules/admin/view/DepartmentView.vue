@@ -21,13 +21,13 @@
           <p>{{ row.name }}</p>
         </template>
       </ElTableColumn>
-      <!-- <ElTableColumn label="ACTION">
+      <ElTableColumn label="ACTION">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
-            <BaseIcon name="delete" @click="handleDeleteUser(row)" />
+            <BaseIcon name="delete" @click="handleDelete(row)" />
           </div>
         </template>
-      </ElTableColumn> -->
+      </ElTableColumn>
     </BaseTable>
   </template>
   <template v-else>
@@ -41,6 +41,7 @@
     </div>
   </template>
   <PopupAddDepartment />
+  <PopupConfirmDelete :name="departmentRow.name" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
 </template>
 
 <script setup lang="ts">
@@ -54,6 +55,7 @@ import type { IDepartment } from '@/types/department.types'
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddDepartment from '../components/PopupAddDepartment.vue'
+import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 import TabDoctors from '../components/TabDoctors.vue'
 import TabSpecializes from '../components/TabSpecializes.vue'
 
@@ -76,7 +78,8 @@ const search = ref<string>('')
 const data = ref<IDepartment[]>([])
 const departmentRow = ref<IDepartment>({} as IDepartment)
 const departmentIdActive = ref<string>('')
-// const isLoadingDelete = ref<boolean>(false)
+const isLoadingDelete = ref<boolean>(false)
+const isConflictClick = ref<boolean>(false)
 const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
   search: ''
@@ -101,26 +104,31 @@ const getAllDepartment = async () => {
   }
 }
 
-// const handleDeleteUser = (data: IDepartment) => {
-//   departmentRow.value = data
-//   setOpenPopup('popup-confirm-delete-user')
-// }
+const handleDelete = (data: IDepartment) => {
+  isConflictClick.value = true
+  departmentRow.value = data
+  setOpenPopup('popup-confirm-delete')
+}
 
-// const deleteUser = async () => {
-//   try {
-//     isLoadingDelete.value = true
-//     const rs = await apiDoctor.deteteDoctor([departmentRow.value.id])
-//     ElMessage.success(rs.message)
-//     setOpenPopup('popup-confirm-delete-user', false)
-//     isLoadingDelete.value = false
-//     getAllDepartment()
-//   } catch (error) {
-//     isLoadingDelete.value = false
-//     console.log(error)
-//   }
-// }
+const deleteUser = async () => {
+  try {
+    isLoadingDelete.value = true
+    const rs = await apiDepartment.deteteDepartment(departmentRow.value.id)
+    ElMessage.success(rs.message)
+    setOpenPopup('popup-confirm-delete', false)
+    isLoadingDelete.value = false
+    getAllDepartment()
+  } catch (error) {
+    isLoadingDelete.value = false
+    console.log(error)
+  }
+}
 
 const rowClick = (data: IDepartment) => {
+  if (isConflictClick.value) {
+    isConflictClick.value = false
+    return
+  }
   departmentRow.value = data
   departmentIdActive.value = data.id
 }
