@@ -1,6 +1,6 @@
 export interface IQuery {
   pageIndex: number
   pageSize: number
-  totalPage: number
+  totalElements: number
   loading?: boolean
 }

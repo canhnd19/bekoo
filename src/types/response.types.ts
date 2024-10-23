@@ -13,5 +13,6 @@ export interface IResponseTable<T> {
   pageSize: number
   orders: []
   totalPage: number
+  totalElements: number
   contentResponse: T
 }

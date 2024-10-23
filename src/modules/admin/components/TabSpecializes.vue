@@ -4,11 +4,37 @@
       >Thêm gói khám</BaseButton
     >
   </div>
+  <BaseTable
+    v-model:page="query.pageIndex"
+    v-model:limit="query.pageSize"
+    :data="data"
+    :query="query"
+    class="mt-6"
+    label="user"
+    @page-change="getAllPackage"
+    @limit-change="getAllPackage"
+  >
+    <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
+    <ElTableColumn label="NAME">
+      <template #default="{ row }">
+        <p>{{ row.name }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="price">
+      <template #default="{ row }">
+        <p>{{ row.price }}</p>
+      </template>
+    </ElTableColumn>
+  </BaseTable>
   <PopupAddExminationPackage :is-loading="isLoading" @add="handleAdd" @cancel="handleCancel" />
 </template>
 
 <script setup lang="ts">
+import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiSpecialize } from '@/services'
+
+import type { IPackage } from '@/types/package.types'
+import type { IQuery } from '@/types/query.type'
 
 import { useBaseStore } from '@/stores/base'
 
@@ -19,12 +45,18 @@ const { setOpenPopup } = useBaseStore()
 interface IProps {
   departmentId: string
 }
+onMounted(() => {
+  getAllPackage()
+})
 
+const data = ref<IPackage[]>([])
 const isLoading = ref<boolean>(false)
 const props = withDefaults(defineProps<IProps>(), {
   departmentId: ''
 })
-
+const query = ref<IQuery>({
+  ...DEFAULT_QUERY_PAGINATION
+})
 const handleCancel = () => {
   setOpenPopup('popup-add-exmination-package', false)
 }
@@ -32,12 +64,25 @@ const handleAdd = async (data: Record<string, any>) => {
   try {
     isLoading.value = true
     const departmentId = props.departmentId
-    const rs = await apiSpecialize.createSpecialize({ ...data, departmentId })
+    const rs = await apiSpecialize.createPackage({ ...data, departmentId })
     ElMessage.success(rs.message)
     setOpenPopup('popup-add-exmination-package', false)
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
+    console.log(error)
+  }
+}
+
+const getAllPackage = async () => {
+  try {
+    query.value.loading = true
+    const rs = await apiSpecialize.getAllPackage(query.value)
+    data.value = rs.value.contentResponse
+    query.value.totalElements = rs.value.totalElements
+    query.value.loading = false
+  } catch (error) {
+    query.value.loading = false
     console.log(error)
   }
 }

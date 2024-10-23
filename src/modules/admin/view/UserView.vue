@@ -79,7 +79,7 @@ const getAllUser = async () => {
     query.value.loading = true
     const rs = await apiUser.getAllUser(query.value)
     data.value = rs.value.contentResponse
-    query.value.totalPage = rs.value.totalPage
+    query.value.totalElements = rs.value.totalElements
     query.value.loading = false
   } catch (error) {
     query.value.loading = false

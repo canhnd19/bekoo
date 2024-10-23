@@ -5,7 +5,7 @@
         v-model:current-page="pageIndex"
         v-model:page-size="pageSize"
         :page-sizes="pageSizes"
-        :total="props.query.totalPage"
+        :total="props.query.totalElements"
         :pager-count="
           () => {
             return 5
@@ -38,7 +38,7 @@ const props = withDefaults(defineProps<IProps>(), {
   query: () => ({
     pageIndex: 1,
     pageSize: 10,
-    totalPage: 0
+    totalElements: 0
   }),
   label: ''
 })

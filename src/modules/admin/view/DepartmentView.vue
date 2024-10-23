@@ -93,7 +93,7 @@ const getAllDepartment = async () => {
     query.value.loading = true
     const rs = await apiDepartment.getAllDepartment(query.value)
     data.value = rs.value.contentResponse
-    query.value.totalPage = rs.value.totalPage
+    query.value.totalElements = rs.value.totalElements
     query.value.loading = false
   } catch (error) {
     query.value.loading = false
