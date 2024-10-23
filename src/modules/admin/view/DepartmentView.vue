@@ -11,8 +11,8 @@
       :query="query"
       class="mt-6"
       label="user"
-      @page-change="getAllDepartment"
-      @limit-change="getAllDepartment"
+      @page-change="handlePageChange"
+      @limit-change="handleLimitChange"
       @row-click="rowClick"
     >
       <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
@@ -123,6 +123,17 @@ const getAllDepartment = async () => {
 const rowClick = (data: IDepartment) => {
   departmentRow.value = data
   departmentIdActive.value = data.id
+}
+
+const handleLimitChange = (limit: unknown) => {
+  query.value.pageSize = limit as number
+  query.value.pageIndex = 1
+  getAllDepartment()
+}
+
+const handlePageChange = (page: unknown) => {
+  query.value.pageIndex = page as number
+  getAllDepartment()
 }
 </script>
 

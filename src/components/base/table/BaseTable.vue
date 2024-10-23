@@ -91,8 +91,8 @@ const table = ref<InstanceType<typeof ElTable> | null>(null)
 defineExpose({ rowSelected, table })
 
 const emits = defineEmits<{
-  'page-change': [page: number]
-  'limit-change': [limit: number]
+  'page-change': [pageIndex: number]
+  'limit-change': [pageSize: number]
   'row-click': [row: T]
   'cell-click': [index: number]
   'selection-change': [value: T[]]

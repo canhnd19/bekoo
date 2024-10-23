@@ -10,8 +10,8 @@
     :query="query"
     class="mt-6"
     label="user"
-    @page-change="getAllDoctor"
-    @limit-change="getAllDoctor"
+    @page-change="handlePageChange"
+    @limit-change="handleLimitChange"
   >
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
     <ElTableColumn label="NAME">
@@ -104,6 +104,17 @@ const deleteDoctor = async () => {
     isLoadingDelete.value = false
     console.log(error)
   }
+}
+
+const handleLimitChange = (limit: unknown) => {
+  query.value.pageSize = limit as number
+  query.value.pageIndex = 1
+  getAllDoctor()
+}
+
+const handlePageChange = (page: unknown) => {
+  query.value.pageIndex = page as number
+  getAllDoctor()
 }
 </script>
 

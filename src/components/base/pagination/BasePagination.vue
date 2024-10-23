@@ -44,16 +44,17 @@ const props = withDefaults(defineProps<IProps>(), {
 })
 
 const emits = defineEmits<{
-  (e: 'page-change', page: number): void
-  (e: 'limit-change', limit: number): void
+  (e: 'page-change', pageIndex: number): void
+  (e: 'limit-change', pageSize: number): void
 }>()
+
+const pageIndex = defineModel('pageIndex', {
+  default: 1,
+  type: Number
+})
 
 const pageSize = defineModel('pageSize', {
   default: 10,
-  type: Number
-})
-const pageIndex = defineModel('pageIndex', {
-  default: 1,
   type: Number
 })
 </script>
