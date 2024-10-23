@@ -16,7 +16,7 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
-  async getAllDepartment(params: Record<string, any>): Promise<IResponse<IResponseTable<any[]>>> {
+  async getAllDepartment(params: Record<string, any>): Promise<IResponse<IResponseTable<IDepartment[]>>> {
     try {
       const rs = await requestQuery.post(`${this.prefix}`, useRemoveParams(params))
       return Promise.resolve(rs.data)
@@ -37,6 +37,14 @@ export default class DepartmentService {
   async deteteDepartment(ids: string): Promise<IResposeMessage> {
     try {
       const rs = await request.delete(`${this.prefix}/${ids}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async getAllDoctorOfDepartment(ids: string): Promise<IResponse<IResponseTable<any[]>>> {
+    try {
+      const rs = await requestQuery.post(`${this.prefix}/doctor/${ids}`)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
