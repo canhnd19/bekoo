@@ -45,7 +45,12 @@
       </ElTableColumn>
     </BaseTable>
   </div>
-  <PopupConfirmDelete :email="userRow.email" :is-loading-delete="isLoadingDelete" @delete="deleteUser" />
+  <PopupConfirmDelete
+    :name="userRow.email"
+    type="người dùng"
+    :is-loading-delete="isLoadingDelete"
+    @delete="deleteUser"
+  />
 </template>
 
 <script setup lang="ts">

@@ -44,7 +44,12 @@
     </ElTableColumn>
   </BaseTable>
   <PopupAddDoctor @created="getAllDoctor" />
-  <PopupConfirmDelete :email="doctorRow.info?.email" :is-loading-delete="isLoadingDelete" @delete="deleteDoctor" />
+  <PopupConfirmDelete
+    :name="doctorRow.info?.email"
+    type="bác sĩ"
+    :is-loading-delete="isLoadingDelete"
+    @delete="deleteDoctor"
+  />
 </template>
 
 <script setup lang="ts">

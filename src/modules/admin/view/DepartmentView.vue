@@ -41,7 +41,12 @@
     </div>
   </template>
   <PopupAddDepartment />
-  <PopupConfirmDelete :name="departmentRow.name" :is-loading-delete="isLoadingDelete" @delete="deleteDepartment" />
+  <PopupConfirmDelete
+    :name="departmentRow.name"
+    type="chuyên khoa"
+    :is-loading-delete="isLoadingDelete"
+    @delete="deleteDepartment"
+  />
 </template>
 
 <script setup lang="ts">

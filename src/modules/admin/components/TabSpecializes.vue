@@ -34,7 +34,12 @@
     </ElTableColumn>
   </BaseTable>
   <PopupAddExminationPackage :is-loading="isLoading" @add="handleAdd" @cancel="handleCancel" />
-  <PopupConfirmDelete :name="packageRow.name" :is-loading-delete="isLoadingDelete" @delete="deleteDepartment" />
+  <PopupConfirmDelete
+    :name="packageRow.name"
+    type="gói khám"
+    :is-loading-delete="isLoadingDelete"
+    @delete="deleteDepartment"
+  />
 </template>
 
 <script setup lang="ts">
