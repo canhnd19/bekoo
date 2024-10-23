@@ -1,7 +1,7 @@
 import request from '@/plugin/request'
 import requestQuery from '@/plugin/requestQuery'
 
-import type { IResponse, IResponseTable } from '@/types/response.types'
+import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
 import type { IUserTable } from '@/types/user.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
@@ -16,7 +16,7 @@ export default class UserService {
       return Promise.reject(error)
     }
   }
-  async deteteUser(params: Record<string, any>): Promise<any> {
+  async deteteUser(params: Record<string, any>): Promise<IResposeMessage> {
     try {
       const rs = await request.delete(`${this.prefix}/${useRemoveParams(params)}`)
       return Promise.resolve(rs.data)

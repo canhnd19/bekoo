@@ -1,13 +1,13 @@
 import request from '@/plugin/request'
 
 import type { IPackage } from '@/types/package.types'
-import type { IResponse, IResponseTable } from '@/types/response.types'
+import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
 
 export default class SpecializeService {
   prefix = 'specialize'
-  async createPackage(body: Record<string, any>): Promise<any> {
+  async createPackage(body: Record<string, any>): Promise<IResposeMessage> {
     try {
       const rs = await request.post(`${this.prefix}`, useRemoveParams(body))
       return Promise.resolve(rs.data)

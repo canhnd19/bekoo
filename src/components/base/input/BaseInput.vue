@@ -77,7 +77,7 @@ const debounceChange = debounce((value: string | number) => {
     // }
     .el-input__wrapper {
       background-color: white !important;
-      box-shadow: 4px 8px 30px 0 rgba(177, 196, 218, 0.35);
+      // box-shadow: 4px 8px 30px 0 rgba(177, 196, 218, 0.35);
       border-radius: 12px;
       padding-top: 0;
       padding-bottom: 0;

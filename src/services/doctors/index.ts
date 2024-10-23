@@ -2,7 +2,7 @@ import request from '@/plugin/request'
 import requestQuery from '@/plugin/requestQuery'
 
 import type { DoctorReq, IDoctor } from '@/types/doctor.types'
-import type { IResponse, IResponseTable } from '@/types/response.types'
+import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
 
@@ -24,9 +24,17 @@ export default class DoctorService {
       return Promise.reject(error)
     }
   }
-  async deteteDoctor(params: Record<string, any>): Promise<any> {
+  async deteteDoctor(params: Record<string, any>): Promise<IResposeMessage> {
     try {
       const rs = await request.delete(`${this.prefix}/${useRemoveParams(params)}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async getDoctorByName(name: string): Promise<IResponse<IResponseTable<IDoctor[]>>> {
+    try {
+      const rs = await requestQuery.post(`${this.prefix}/name`, { name })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
