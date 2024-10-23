@@ -69,7 +69,7 @@ const props = withDefaults(defineProps<IProp>(), {
   data: () => [],
   label: '',
   showPagination: true,
-  query: () => ({ pageIndex: 1, pageSize: 10, totalPage: 0 }),
+  query: () => ({ pageIndex: 1, pageSize: 10, totalElements: 0 }),
   rowClassName: () => ({}),
   showHeader: true,
   treeProps: () => ({}),
