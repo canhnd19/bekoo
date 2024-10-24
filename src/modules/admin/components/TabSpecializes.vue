@@ -60,7 +60,7 @@ interface IProps {
   departmentId: string
 }
 onMounted(() => {
-  getAllPackage()
+  getListPackage()
 })
 const packageRow = ref<IPackage>({} as IPackage)
 const data = ref<IPackage[]>([])
@@ -81,7 +81,6 @@ const handleAdd = async (data: Record<string, any>) => {
     const departmentId = props.departmentId
     const rs = await apiSpecialize.createPackage({ ...data, departmentId })
     ElMessage.success(rs.message)
-    setOpenPopup('popup-add-exmination-package', false)
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
@@ -89,10 +88,10 @@ const handleAdd = async (data: Record<string, any>) => {
   }
 }
 
-const getAllPackage = async () => {
+const getListPackage = async () => {
   try {
     query.value.loading = true
-    const rs = await apiSpecialize.getAllPackage(query.value)
+    const rs = await apiSpecialize.getListPackage(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -105,12 +104,12 @@ const getAllPackage = async () => {
 const handleLimitChange = (limit: unknown) => {
   query.value.pageSize = limit as number
   query.value.pageIndex = 1
-  getAllPackage()
+  getListPackage()
 }
 
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
-  getAllPackage()
+  getListPackage()
 }
 const handleDelete = (data: IPackage) => {
   packageRow.value = data
@@ -124,7 +123,7 @@ const deleteDepartment = async () => {
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
     isLoadingDelete.value = false
-    getAllPackage()
+    getListPackage()
   } catch (error) {
     isLoadingDelete.value = false
     console.log(error)

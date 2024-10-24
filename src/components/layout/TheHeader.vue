@@ -104,8 +104,8 @@ const { user } = useAuthStore()
       }
     }
   }
-  .option-label {
-    @apply cursor-pointer py-2 text-base text-secondary hover:!text-[#11a2f3];
-  }
+}
+.option-label {
+  @apply cursor-pointer py-2 text-base text-secondary hover:!text-[#11a2f3];
 }
 </style>
