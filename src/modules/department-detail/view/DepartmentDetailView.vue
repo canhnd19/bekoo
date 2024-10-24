@@ -10,10 +10,10 @@
       <BaseInput v-model="search" class="input-search mb-3" :show-icon="true" />
     </div>
     <div class="tab">
-      <div class="tab-item" :class="{ active: tabActive === 'DOCTOR' }">
+      <div class="tab-item" :class="{ active: tabActive === 'DOCTOR' }" @click="tabActive = 'DOCTOR'">
         <p class="text-center text-xl font-medium text-[#11a2f3]">Bác sĩ</p>
       </div>
-      <div class="tab-item" :class="{ active: tabActive === 'DEPARTMENT' }">
+      <div class="tab-item" :class="{ active: tabActive === 'DEPARTMENT' }" @click="tabActive = 'DEPARTMENT'">
         <p class="text-center text-xl font-medium text-[#11a2f3]">Gói khám</p>
       </div>
     </div>
