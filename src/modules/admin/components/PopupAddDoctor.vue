@@ -347,9 +347,7 @@
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
-        <BaseButton type="plain" size="small" class="w-20" @click="setOpenPopup('popup-add-doctor', false)"
-          >Hủy</BaseButton
-        >
+        <BaseButton type="plain" size="small" class="w-20" @click="handleCancel">Hủy</BaseButton>
         <BaseButton :disabled="disabled" :loading="loadingBtn" size="small" class="w-32" @click="handleCreateUser"
           >Tạo bác sĩ</BaseButton
         >
@@ -475,6 +473,24 @@ const handleCreateUser = async () => {
     })
     ElMessage.success(rs.message)
     setOpenPopup('popup-add-doctor', false)
+    doctorCreate.value = {
+      trainingBy: '',
+      description: '',
+      user: {
+        name: '',
+        phoneNumber: '',
+        email: '',
+        cccd: '',
+        province: '',
+        district: '',
+        commune: '',
+        aboutAddress: '',
+        password: '',
+        confirmPassword: '',
+        dob: '',
+        gender: ''
+      }
+    }
     emit('created')
     loadingBtn.value = false
   } catch (error) {
@@ -498,6 +514,27 @@ const disabled = computed(() => {
     doctorCreate.value.user.province
   )
 })
+const handleCancel = () => {
+  doctorCreate.value = {
+    trainingBy: '',
+    description: '',
+    user: {
+      name: '',
+      phoneNumber: '',
+      email: '',
+      cccd: '',
+      province: '',
+      district: '',
+      commune: '',
+      aboutAddress: '',
+      password: '',
+      confirmPassword: '',
+      dob: '',
+      gender: ''
+    }
+  }
+  setOpenPopup('popup-add-doctor', false)
+}
 </script>
 
 <style scoped lang="scss">

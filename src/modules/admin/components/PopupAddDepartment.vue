@@ -41,9 +41,7 @@
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
-        <BaseButton type="plain" size="small" class="w-20" @click="setOpenPopup('popup-add-department', false)"
-          >Hủy</BaseButton
-        >
+        <BaseButton type="plain" size="small" class="w-20" @click="handleCancel">Hủy</BaseButton>
         <BaseButton :loading="isLoading" size="small" class="w-20" @click="handleCreateDepartment">Tạo</BaseButton>
       </div>
     </template>
@@ -56,6 +54,9 @@ import { apiDepartment } from '@/services'
 import { useBaseStore } from '@/stores/base'
 
 const { setOpenPopup } = useBaseStore()
+const emits = defineEmits<{
+  create: []
+}>()
 const file = ref<Record<string, any>>({})
 const isLoading = ref<boolean>(false)
 const department = ref<Record<string, any>>({
@@ -79,11 +80,25 @@ const handleCreateDepartment = async () => {
     const rs = await apiDepartment.createdDepartment(formData)
     ElMessage.success(rs.message)
     setOpenPopup('popup-add-department', false)
+    emits('create')
+    department.value = {
+      name: '',
+      description: '',
+      image: ''
+    }
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
     console.log(error)
   }
+}
+const handleCancel = () => {
+  department.value = {
+    name: '',
+    description: '',
+    image: ''
+  }
+  setOpenPopup('popup-add-department', false)
 }
 </script>
 

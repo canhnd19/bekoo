@@ -36,7 +36,7 @@
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
-        <BaseButton type="plain" size="small" class="w-20" @click="emits('cancel')">Hủy</BaseButton>
+        <BaseButton type="plain" size="small" class="w-20" @click="handleCancel">Hủy</BaseButton>
         <BaseButton :loading="props.isLoading" size="small" class="w-20" @click="handleAdd">Thêm</BaseButton>
       </div>
     </template>
@@ -61,6 +61,20 @@ const packageExmination = ref<Record<string, any>>({
 })
 const handleAdd = () => {
   emits('add', { ...packageExmination.value })
+  packageExmination.value = {
+    name: '',
+    description: '',
+    price: ''
+  }
+}
+
+const handleCancel = () => {
+  packageExmination.value = {
+    name: '',
+    description: '',
+    price: ''
+  }
+  emits('cancel')
 }
 </script>
 

@@ -40,7 +40,7 @@
       <component :is="component" :department-id="departmentIdActive" />
     </div>
   </template>
-  <PopupAddDepartment />
+  <PopupAddDepartment @create="handdleCreate" />
   <PopupConfirmDelete
     :name="departmentRow.name"
     type="chuyên khoa"
@@ -158,6 +158,10 @@ const handleSearch = () => {
     totalElements: 0
   }
   getAllDepartment('search')
+}
+
+const handdleCreate = () => {
+  getAllDepartment()
 }
 </script>
 
