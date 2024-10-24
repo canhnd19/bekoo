@@ -20,6 +20,7 @@ declare module 'vue' {
     BaseTab: typeof import('./src/components/base/tab/BaseTab.vue')['default']
     BaseTable: typeof import('./src/components/base/table/BaseTable.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']

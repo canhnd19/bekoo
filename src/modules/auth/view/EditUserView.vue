@@ -3,76 +3,83 @@
     <PageLoading />
   </template>
   <div v-else class="min-h-screen bg-[#e8f2f7]">
-    <div>
-      <span @click="uploadFile">Test upload image</span>
-      <ElUpload
-        :show-file-list="false"
-        :auto-upload="false"
-        list-type="picture"
-        accept=".png, .jpg, .webp, .jpeg"
-        :on-change="handleSelectFile"
-      >
-        <p class="cursor-pointer text-[#0A34C7]">Click to upload</p>
-      </ElUpload>
-    </div>
-
     <div class="container space-y-4 px-20 pb-6">
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
-      <div class="flex">
-        <div class="mr-[120px] space-y-2">
-          <div>
-            <span class="text-label">Họ và tên (có dấu) </span>
-            <span class="text-[#ff3b30]">*</span>
-          </div>
 
-          <ElForm ref="formRef" style="max-width: 500px" :model="userEdit" label-width="auto" class="demo-ruleForm">
-            <ElFormItem
-              prop="name"
-              :rules="[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập họ và tên',
-                  trigger: 'blur'
-                }
-              ]"
+      <div class="flex justify-between">
+        <div class="flex w-[500px] justify-center">
+          <div class="relative w-40">
+            <BaseIcon v-if="!user.linkAvatar" name="avatar-default" />
+            <img v-else :src="user.linkAvatar" alt="" class="h-40 w-full rounded-full object-cover" />
+            <ElUpload
+              :show-file-list="false"
+              :auto-upload="false"
+              accept=".png, .jpg, .webp, .jpeg"
+              :on-change="handleSelectFile"
+              class="absolute bottom-4 right-1"
             >
-              <ElInput
-                v-model="userEdit.name"
-                class="input"
-                style="height: 50px; width: 500px"
-                placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH"
-              />
-            </ElFormItem>
-          </ElForm>
+              <div class="border-border-table rounded-full border border-solid bg-white p-2">
+                <BaseIcon name="edit-avatar" />
+              </div>
+            </ElUpload>
+          </div>
         </div>
         <div>
-          <div class="mb-2">
-            <span class="text-label">Tỉnh / Thành </span>
-            <span class="text-[#ff3b30]">*</span>
-          </div>
-          <BaseSelect
-            v-model="userEdit.province"
-            :class="{ 'validate-select': checkProvince }"
-            clearable
-            placeholder="Chọn tỉnh thành"
-            class="select"
-            @change="getListDistrict"
-            @blur="blurProvince"
-          >
-            <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name">
-              <p
-                @click="
-                  () => {
-                    provinceName = item.name as string
-                    codeProvince = item.code
+          <div>
+            <div>
+              <span class="text-label">Họ và tên (có dấu) </span>
+              <span class="text-[#ff3b30]">*</span>
+            </div>
+
+            <ElForm ref="formRef" style="max-width: 500px" :model="userEdit" label-width="auto" class="demo-ruleForm">
+              <ElFormItem
+                prop="name"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'Vui lòng nhập họ và tên',
+                    trigger: 'blur'
                   }
-                "
+                ]"
               >
-                {{ item.name }}
-              </p></ElOption
+                <ElInput
+                  v-model="userEdit.name"
+                  class="input"
+                  style="height: 50px; width: 500px"
+                  placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH"
+                />
+              </ElFormItem>
+            </ElForm>
+          </div>
+          <div>
+            <div class="mb-2">
+              <span class="text-label">Tỉnh / Thành </span>
+              <span class="text-[#ff3b30]">*</span>
+            </div>
+            <BaseSelect
+              v-model="userEdit.province"
+              :class="{ 'validate-select': checkProvince }"
+              clearable
+              placeholder="Chọn tỉnh thành"
+              class="select"
+              @change="getListDistrict"
+              @blur="blurProvince"
             >
-          </BaseSelect>
-          <p v-if="checkProvince" class="-!mt-1 text-xs text-[#f56c6c]">Vui lòng chọn tỉnh/thành</p>
+              <ElOption v-for="(item, index) in province" :key="index" :value="item.code" :label="item.name">
+                <p
+                  @click="
+                    () => {
+                      provinceName = item.name as string
+                      codeProvince = item.code
+                    }
+                  "
+                >
+                  {{ item.name }}
+                </p></ElOption
+              >
+            </BaseSelect>
+            <p v-if="checkProvince" class="-!mt-1 text-xs text-[#f56c6c]">Vui lòng chọn tỉnh/thành</p>
+          </div>
         </div>
       </div>
 
@@ -252,6 +259,7 @@ const disabled = computed(() => {
 const handleEdit = async () => {
   try {
     loadingBtn.value = true
+    await uploadFile()
     const dataEdit = {
       ...userEdit.value,
       id: user.id,
@@ -270,7 +278,7 @@ const handleEdit = async () => {
 }
 const handleSelectFile = async (_file: Record<string, any>) => {
   file.value = _file
-  console.log('🚀 ~ handleSelectFile ~ _file:', _file)
+  user.linkAvatar = URL.createObjectURL(file.value.raw)
 }
 
 const uploadFile = async () => {
