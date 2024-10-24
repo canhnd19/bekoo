@@ -5,5 +5,6 @@ export type POPUP_NAME =
   | 'popup-add-department'
   | 'popup-add-exmination-package'
   | 'popup-add-doctor-to-package'
+  | 'popup-package-detail'
 
 export type DRAWER_NAME = 'drawer-root'

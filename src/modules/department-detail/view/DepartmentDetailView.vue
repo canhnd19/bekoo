@@ -32,7 +32,9 @@
                   <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
                 </div>
                 <div class="tab-item">
-                  <p class="text-center text-xl font-medium text-[#11a2f3]">Xem chi tiết</p>
+                  <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleSeeDetail(item)">
+                    Xem chi tiết
+                  </p>
                 </div>
               </div>
             </div>
@@ -51,6 +53,7 @@
       </div>
     </div>
   </div>
+  <PopupPackageDetail :package-detail="packageDetail" />
 </template>
 
 <script setup lang="ts">
@@ -61,6 +64,11 @@ import { apiSpecialize } from '@/services'
 import type { IPackage } from '@/types/package.types'
 import type { IQuery } from '@/types/query.type'
 
+import { useBaseStore } from '@/stores/base'
+
+import PopupPackageDetail from '../components/PopupPackageDetail.vue'
+
+const { setOpenPopup } = useBaseStore()
 const route = useRoute()
 onMounted(() => {
   tabActive.value === 'DOCTOR' ? getListPackage() : getListPackage()
@@ -72,6 +80,7 @@ const query = ref<IQuery>({
   ...DEFAULT_QUERY_PAGINATION
 })
 const data = ref<IPackage[]>([])
+const packageDetail = ref<IPackage>({} as IPackage)
 console.log('🚀 ~ route:', route.params.id)
 
 const handleClickHome = () => {
@@ -99,6 +108,11 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getListPackage()
+}
+
+const handleSeeDetail = (data: IPackage) => {
+  packageDetail.value = data
+  setOpenPopup('popup-package-detail')
 }
 </script>
 
