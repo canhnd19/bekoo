@@ -92,16 +92,16 @@ const component = computed(() => {
   return tabActive.value === 'doctors' ? TabDoctors : TabSpecializes
 })
 onMounted(() => {
-  getAllDepartment()
+  getListDepartment()
 })
 
-const getAllDepartment = async (type: string = '') => {
+const getListDepartment = async (type: string = '') => {
   try {
     query.value.loading = true
     const rs =
       type === 'search'
         ? await apiDepartment.getAllDepartmentByName(query.value)
-        : await apiDepartment.getAllDepartment(query.value)
+        : await apiDepartment.getListDepartment(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -124,7 +124,7 @@ const deleteDepartment = async () => {
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
     isLoadingDelete.value = false
-    getAllDepartment()
+    getListDepartment()
   } catch (error) {
     isLoadingDelete.value = false
     console.log(error)
@@ -143,12 +143,12 @@ const rowClick = (data: IDepartment) => {
 const handleLimitChange = (limit: unknown) => {
   query.value.pageSize = limit as number
   query.value.pageIndex = 1
-  getAllDepartment()
+  getListDepartment()
 }
 
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
-  getAllDepartment()
+  getListDepartment()
 }
 const handleSearch = () => {
   query.value = {
@@ -157,11 +157,11 @@ const handleSearch = () => {
     pageSize: 10,
     totalElements: 0
   }
-  getAllDepartment('search')
+  getListDepartment('search')
 }
 
 const handdleCreate = () => {
-  getAllDepartment()
+  getListDepartment()
 }
 </script>
 

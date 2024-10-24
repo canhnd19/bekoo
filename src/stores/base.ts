@@ -50,7 +50,7 @@ export const useBaseStore = defineStore('base', () => {
 
   const getDepartment = async () => {
     try {
-      const rs = await apiDepartment.getAllDepartment({
+      const rs = await apiDepartment.getListDepartment({
         pageIndex: 1,
         pageSize: 16
       })

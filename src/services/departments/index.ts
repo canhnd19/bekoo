@@ -17,7 +17,15 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
-  async getAllDepartment(params: Record<string, any>): Promise<IResponse<IResponseTable<IDepartment[]>>> {
+  async getAllDepartment(): Promise<IResponse<IResponseTable<IDepartment[]>>> {
+    try {
+      const rs = await requestQuery.post(`${this.prefix}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async getListDepartment(params: Record<string, any>): Promise<IResponse<IResponseTable<IDepartment[]>>> {
     try {
       const rs = await requestQuery.post(`${this.prefix}`, useRemoveParams(params))
       return Promise.resolve(rs.data)

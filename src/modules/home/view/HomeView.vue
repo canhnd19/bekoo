@@ -79,10 +79,10 @@ const query = ref<IQuery>({
   loading: false
 })
 
-const getAllDepartment = async () => {
+const getListDepartment = async () => {
   try {
     query.value.loading = true
-    const rs = await apiDepartment.getAllDepartment(query.value)
+    const rs = await apiDepartment.getAllDepartment()
     data.value = rs.value.contentResponse
     query.value.loading = false
   } catch (error) {
@@ -93,10 +93,11 @@ const getAllDepartment = async () => {
 const handleShowMore = () => {
   showMore.value = !showMore.value
   if (showMore.value) {
-    getAllDepartment()
+    getListDepartment()
   }
 }
 const handleClickDepartment = (data: IDepartment) => {
+  sessionStorage.setItem('department-name', data.name)
   router.push({ name: 'Department Detail', params: { id: data.id } })
 }
 </script>
