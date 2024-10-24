@@ -21,7 +21,7 @@
     <p class="label">CHUYÊN KHOA</p>
     <div class="my-8 grid grid-cols-8 gap-x-12 gap-y-8">
       <template v-for="(item, index) in showMore ? department : department" :key="index">
-        <div class="cursor-pointer">
+        <div class="cursor-pointer" @click="handleClickDepartment(item)">
           <img :src="item.urlImage" alt="" class="mx-auto w-20" />
           <p class="mt-2 text-center text-[20px]">{{ item.name }}</p>
         </div>
@@ -57,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router'
 import { apiDepartment } from '@/services'
 
 import type { IDepartment } from '@/types/department.types'
@@ -94,6 +95,9 @@ const handleShowMore = () => {
   if (showMore.value) {
     getAllDepartment()
   }
+}
+const handleClickDepartment = (data: IDepartment) => {
+  router.push({ name: 'Department Detail', params: { id: data.id } })
 }
 </script>
 
