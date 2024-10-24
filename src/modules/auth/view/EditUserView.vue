@@ -3,6 +3,19 @@
     <PageLoading />
   </template>
   <div v-else class="min-h-screen bg-[#e8f2f7]">
+    <div>
+      <span @click="uploadFile">Test upload image</span>
+      <ElUpload
+        :show-file-list="false"
+        :auto-upload="false"
+        list-type="picture"
+        accept=".png, .jpg, .webp, .jpeg"
+        :on-change="handleSelectFile"
+      >
+        <p class="cursor-pointer text-[#0A34C7]">Click to upload</p>
+      </ElUpload>
+    </div>
+
     <div class="container space-y-4 px-20 pb-6">
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
       <div class="flex">
@@ -146,7 +159,7 @@
 </template>
 
 <script setup lang="ts">
-import { apiAuth, apiParams } from '@/services'
+import { apiAuth, apiParams, apiUpload } from '@/services'
 
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
 import type { UserReq } from '@/types/user.types'
@@ -159,15 +172,16 @@ const { user } = useAuthStore()
 onMounted(() => {
   getListProvince()
 })
+const file = ref<Record<string, any>>({})
 const loading = ref<boolean>(false)
 const loadingBtn = ref<boolean>(false)
 const province = ref<IProvince[]>([])
 const districts = ref<IDistrict[]>([])
 const wards = ref<IWard[]>([])
 const codeProvince = ref<number | string>('')
-const provinceName = ref<string>('')
-const districtName = ref<string>('')
-const wardName = ref<string>('')
+const provinceName = ref<string>(user.province)
+const districtName = ref<string>(user.district)
+const wardName = ref<string>(user.commune)
 const codeDistrict = ref<number | string>('')
 const userEdit = ref<UserReq>({
   name: user.name,
@@ -237,21 +251,35 @@ const disabled = computed(() => {
 
 const handleEdit = async () => {
   try {
-    loading.value = true
+    loadingBtn.value = true
     const dataEdit = {
       ...userEdit.value,
+      id: user.id,
       province: provinceName.value,
-      districts: districtName.value,
+      district: districtName.value,
       commune: wardName.value
     }
     const rs = await apiAuth.editUser(dataEdit)
     ElMessage.success(rs.message)
     router.push({ name: 'Home' })
-    loading.value = false
+    loadingBtn.value = false
   } catch (error) {
-    loading.value = false
+    loadingBtn.value = false
     console.log(error)
   }
+}
+const handleSelectFile = async (_file: Record<string, any>) => {
+  file.value = _file
+  console.log('🚀 ~ handleSelectFile ~ _file:', _file)
+}
+
+const uploadFile = async () => {
+  const formData = new FormData()
+  formData.append('fileImage', file.value.raw)
+  formData.append('id', user.id)
+
+  const rs = await apiUpload.uploadFile(formData)
+  console.log('🚀 ~ uploadFile ~ rs:', rs)
 }
 </script>
 

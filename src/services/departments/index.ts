@@ -2,6 +2,7 @@ import request from '@/plugin/request'
 import requestQuery from '@/plugin/requestQuery'
 
 import type { IDepartment } from '@/types/department.types'
+import type { IDoctor } from '@/types/doctor.types'
 import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
@@ -42,7 +43,7 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
-  async getAllDoctorOfDepartment(ids: string): Promise<IResponse<IResponseTable<any[]>>> {
+  async getAllDoctorOfDepartment(ids: string): Promise<IResponse<IResponseTable<IDoctor[]>>> {
     try {
       const rs = await requestQuery.post(`${this.prefix}/doctor/${ids}`)
       return Promise.resolve(rs.data)
