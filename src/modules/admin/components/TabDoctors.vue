@@ -43,17 +43,25 @@
     </ElTableColumn>
   </BaseTable>
   <PopupAddDoctortoPackage :is-loading-add="isLoading" @add="handleAdd" @cancel="handleCancel" />
+  <PopupConfirmDelete
+    :name="doctorRow.info?.email"
+    type="bác sĩ"
+    :is-loading-delete="isLoadingDelete"
+    @delete="deleteDoctor"
+  />
 </template>
 
 <script setup lang="ts">
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiDepartment } from '@/services'
 
+import type { IDoctor } from '@/types/doctor.types'
 import type { IQuery } from '@/types/query.type'
 
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddDoctortoPackage from './PopupAddDoctortoPackage.vue'
+import PopupConfirmDelete from './PopupConfirmDelete.vue'
 
 const { setOpenPopup } = useBaseStore()
 
@@ -67,7 +75,8 @@ const props = withDefaults(defineProps<IProps>(), {
 onMounted(() => {
   getAllDoctorOfPackage()
 })
-
+const doctorRow = ref<IDoctor>({} as IDoctor)
+const isLoadingDelete = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const data = ref<any[]>([])
 const query = ref<IQuery>({
@@ -85,6 +94,8 @@ const handleAdd = async (id: string) => {
     }
     const rs = await apiDepartment.addDoctorDepartment(body)
     ElMessage.success(rs.message)
+    setOpenPopup('popup-add-doctor-to-package', false)
+    getAllDoctorOfPackage()
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
@@ -114,6 +125,30 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getAllDoctorOfPackage()
+}
+const handleDeleteUser = (data: IDoctor) => {
+  doctorRow.value = data
+  setOpenPopup('popup-confirm-delete')
+}
+
+const deleteDoctor = async () => {
+  try {
+    isLoadingDelete.value = true
+    const body = {
+      departmentId: props.departmentId,
+      doctorId: doctorRow.value.id
+    }
+    const rs = await apiDepartment.deleteDoctorDepartment({
+      values: [body]
+    })
+    ElMessage.success(rs.message)
+    setOpenPopup('popup-confirm-delete', false)
+    isLoadingDelete.value = false
+    getAllDoctorOfPackage()
+  } catch (error) {
+    isLoadingDelete.value = false
+    console.log(error)
+  }
 }
 </script>
 

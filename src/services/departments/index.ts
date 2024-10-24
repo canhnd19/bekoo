@@ -51,4 +51,12 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
+  async deleteDoctorDepartment(body: Record<string, any>): Promise<IResposeMessage> {
+    try {
+      const rs = await request.post(`${this.prefix}/doctor/delete`, body)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }
