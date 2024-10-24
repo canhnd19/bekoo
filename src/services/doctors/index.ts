@@ -24,6 +24,14 @@ export default class DoctorService {
       return Promise.reject(error)
     }
   }
+  async getAllDoctorByName(params: Record<string, any>): Promise<IResponse<IResponseTable<IDoctor[]>>> {
+    try {
+      const rs = await requestQuery.post(`${this.prefix}/name`, useRemoveParams(params))
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
   async deteteDoctor(params: Record<string, any>): Promise<IResposeMessage> {
     try {
       const rs = await request.delete(`${this.prefix}/${useRemoveParams(params)}`)

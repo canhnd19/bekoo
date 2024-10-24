@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-start justify-between">
-    <BaseInput v-model="search" class="input-search" :show-icon="true" />
+    <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
     <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
   </div>
   <BaseTable
@@ -66,23 +66,23 @@ import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 
 const { setOpenPopup } = useBaseStore()
 
-const search = ref<string>('')
 const data = ref<IDoctor[]>([])
 const doctorRow = ref<IDoctor>({} as IDoctor)
 const isLoadingDelete = ref<boolean>(false)
 const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
-  search: ''
+  name: ''
 })
 
 onMounted(() => {
   getAllDoctor()
 })
 
-const getAllDoctor = async () => {
+const getAllDoctor = async (type: string = '') => {
   try {
     query.value.loading = true
-    const rs = await apiDoctor.getAllDoctor(query.value)
+    const rs =
+      type === 'search' ? await apiDoctor.getAllDoctorByName(query.value) : await apiDoctor.getAllDoctor(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -120,6 +120,15 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getAllDoctor()
+}
+const handleSearch = () => {
+  query.value = {
+    ...query.value,
+    pageIndex: 1,
+    pageSize: 10,
+    totalElements: 0
+  }
+  getAllDoctor('search')
 }
 </script>
 

@@ -123,7 +123,12 @@ const handlePageChange = (page: unknown) => {
   getAllUser()
 }
 const handleSearch = () => {
-  query.value.pageIndex = 1
+  query.value = {
+    ...query.value,
+    pageIndex: 1,
+    pageSize: 10,
+    totalElements: 0
+  }
   getAllUser('search')
 }
 </script>
