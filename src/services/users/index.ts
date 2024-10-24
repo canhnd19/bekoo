@@ -16,6 +16,14 @@ export default class UserService {
       return Promise.reject(error)
     }
   }
+  async getAllUserByName(params: Record<string, any>): Promise<IResponse<IResponseTable<IUserTable[]>>> {
+    try {
+      const rs = await requestQuery.post(`${this.prefix}/name`, useRemoveParams(params))
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
   async deteteUser(params: Record<string, any>): Promise<IResposeMessage> {
     try {
       const rs = await request.delete(`${this.prefix}/${useRemoveParams(params)}`)

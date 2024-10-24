@@ -1,7 +1,7 @@
 <template>
   <div class="rounded-lg p-4">
     <div class="flex items-start justify-between">
-      <BaseInput v-model="query.search" class="input-search" :show-icon="true" />
+      <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
       <BaseButton size="small" class="w-20">Add</BaseButton>
     </div>
     <BaseTable
@@ -68,7 +68,7 @@ const { setOpenPopup } = useBaseStore()
 
 const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
-  search: ''
+  name: ''
 })
 
 const data = ref<IUserTable[]>([])
@@ -79,10 +79,10 @@ onMounted(() => {
   getAllUser()
 })
 
-const getAllUser = async () => {
+const getAllUser = async (type: string = '') => {
   try {
     query.value.loading = true
-    const rs = await apiUser.getAllUser(query.value)
+    const rs = type === 'search' ? await apiUser.getAllUserByName(query.value) : await apiUser.getAllUser(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -121,6 +121,10 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getAllUser()
+}
+const handleSearch = () => {
+  query.value.pageIndex = 1
+  getAllUser('search')
 }
 </script>
 
