@@ -53,7 +53,7 @@
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiDepartment } from '@/services'
 
-import type { IQueryUser } from '@/types/admin.types'
+import type { IQueryFilter } from '@/types/admin.types'
 import type { ITab } from '@/types/component.types'
 import type { IDepartment } from '@/types/department.types'
 
@@ -84,7 +84,7 @@ const departmentRow = ref<IDepartment>({} as IDepartment)
 const departmentIdActive = ref<string>('')
 const isLoadingDelete = ref<boolean>(false)
 const isConflictClick = ref<boolean>(false)
-const query = ref<IQueryUser>({
+const query = ref<IQueryFilter>({
   ...DEFAULT_QUERY_PAGINATION,
   name: ''
 })

@@ -56,7 +56,7 @@
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiDoctor } from '@/services'
 
-import type { IQueryUser } from '@/types/admin.types'
+import type { IQueryFilter } from '@/types/admin.types'
 import type { IDoctor } from '@/types/doctor.types'
 
 import { useBaseStore } from '@/stores/base'
@@ -69,7 +69,7 @@ const { setOpenPopup } = useBaseStore()
 const data = ref<IDoctor[]>([])
 const doctorRow = ref<IDoctor>({} as IDoctor)
 const isLoadingDelete = ref<boolean>(false)
-const query = ref<IQueryUser>({
+const query = ref<IQueryFilter>({
   ...DEFAULT_QUERY_PAGINATION,
   name: ''
 })

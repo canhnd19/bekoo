@@ -57,7 +57,7 @@
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiUser } from '@/services'
 
-import type { IQueryUser } from '@/types/admin.types'
+import type { IQueryFilter } from '@/types/admin.types'
 import type { IUserTable } from '@/types/user.types'
 
 import { useBaseStore } from '@/stores/base'
@@ -66,7 +66,7 @@ import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 
 const { setOpenPopup } = useBaseStore()
 
-const query = ref<IQueryUser>({
+const query = ref<IQueryFilter>({
   ...DEFAULT_QUERY_PAGINATION,
   name: ''
 })
