@@ -1,7 +1,8 @@
-import { apiParams } from '@/services'
+import { apiDepartment, apiParams } from '@/services'
 import { filter, union } from 'lodash-es'
 import { defineStore } from 'pinia'
 
+import type { IDepartment } from '@/types/department.types'
 import type { IProvince } from '@/types/param.types'
 import type { DRAWER_NAME, POPUP_NAME } from '@/types/popup.types'
 
@@ -10,6 +11,8 @@ export const useBaseStore = defineStore('base', () => {
   const drawer = ref<string[]>([])
   const isDesktop = ref(true)
   const province = ref<IProvince[]>([])
+  const department = ref<IDepartment[]>([])
+
   const setOpenPopup = (popupName: POPUP_NAME, isOpen = true) => {
     if (isOpen) {
       popup.value = union(popup.value, [popupName])
@@ -45,6 +48,18 @@ export const useBaseStore = defineStore('base', () => {
     }
   }
 
+  const getDepartment = async () => {
+    try {
+      const rs = await apiDepartment.getAllDepartment({
+        pageIndex: 1,
+        pageSize: 16
+      })
+      department.value = rs.value.contentResponse
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   return {
     popup,
     drawer,
@@ -53,6 +68,8 @@ export const useBaseStore = defineStore('base', () => {
     isDesktop,
     emptyDrawerAndPopup,
     province,
-    getListProvince
+    getListProvince,
+    getDepartment,
+    department
   }
 })

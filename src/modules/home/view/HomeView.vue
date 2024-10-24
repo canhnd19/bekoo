@@ -20,15 +20,18 @@
   <div class="container mt-28">
     <p class="label">CHUYÊN KHOA</p>
     <div class="my-8 grid grid-cols-8 gap-x-12 gap-y-8">
-      <template v-for="(item, index) in showMore ? SPECIALTY_MORE : SPECIALTY" :key="index">
+      <template v-for="(item, index) in showMore ? department : department" :key="index">
         <div class="cursor-pointer">
-          <img :src="item.icon" alt="" class="mx-auto w-20" />
-          <p class="mt-2 text-center text-[20px]">{{ item.label }}</p>
+          <img :src="item.urlImage" alt="" class="mx-auto w-20" />
+          <p class="mt-2 text-center text-[20px]">{{ item.name }}</p>
         </div>
       </template>
     </div>
-    <div class="flex items-center justify-center" @click="showMore = !showMore">
+    <div class="flex items-center justify-center" @click="handleShowMore">
       <div class="show-more">
+        <div v-if="query.loading" class="is-loading">
+          <BaseIcon name="loading" class="text-black" />
+        </div>
         <p v-if="showMore">Thu gọn</p>
         <p v-else>Xem tất cả</p>
         <BaseIcon :name="showMore ? 'direction-up' : 'direction-down'" class="ml-2" />
@@ -54,10 +57,44 @@
 </template>
 
 <script setup lang="ts">
-import { CAROUSEL_HOMEPAGE, SPECIALTY, SPECIALTY_MORE, STATISTICS } from '../constants/index'
+import { apiDepartment } from '@/services'
 
+import type { IDepartment } from '@/types/department.types'
+import type { IQuery } from '@/types/query.type'
+
+import { useBaseStore } from '@/stores/base'
+
+import { CAROUSEL_HOMEPAGE, STATISTICS } from '../constants/index'
+
+const data = ref<IDepartment[]>([])
 const search = ref<string>('')
 const showMore = ref<boolean>(false)
+
+const { department } = useBaseStore()
+const query = ref<IQuery>({
+  pageIndex: 1,
+  pageSize: 40,
+  totalElements: 0,
+  loading: false
+})
+
+const getAllDepartment = async () => {
+  try {
+    query.value.loading = true
+    const rs = await apiDepartment.getAllDepartment(query.value)
+    data.value = rs.value.contentResponse
+    query.value.loading = false
+  } catch (error) {
+    query.value.loading = false
+    console.log(error)
+  }
+}
+const handleShowMore = () => {
+  showMore.value = !showMore.value
+  if (showMore.value) {
+    getAllDepartment()
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -97,6 +134,18 @@ const showMore = ref<boolean>(false)
   @apply pb-16;
   .statistics-item {
     @apply mt-6 flex items-center justify-around rounded-3xl bg-white p-6;
+  }
+}
+.is-loading {
+  margin-right: 6px;
+  animation: rotating 2s linear infinite;
+}
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

@@ -24,7 +24,7 @@ import { useBaseStore } from '@/stores/base'
 import TheFooter from './TheFooter.vue'
 import TheHeader from './TheHeader.vue'
 
-const { getListProvince } = useBaseStore()
+const { getListProvince, getDepartment } = useBaseStore()
 
 // const route = useRoute()
 
@@ -32,7 +32,7 @@ const loading = ref(true)
 
 const init = async () => {
   try {
-    const promises = [getListProvince()]
+    const promises = [getListProvince(), getDepartment()]
     await Promise.all(promises)
     loading.value = false
   } catch (error) {
