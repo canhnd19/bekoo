@@ -25,6 +25,14 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
+  async getAllDepartmentByName(params: Record<string, any>): Promise<IResponse<IResponseTable<IDepartment[]>>> {
+    try {
+      const rs = await requestQuery.post(`${this.prefix}/name`, useRemoveParams(params))
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 
   async addDoctorDepartment(body: Record<string, any>): Promise<IResposeMessage> {
     try {

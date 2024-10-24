@@ -1,7 +1,7 @@
 <template>
   <template v-if="!departmentIdActive">
     <div class="flex items-start justify-between">
-      <BaseInput v-model="search" class="input-search" :show-icon="true" />
+      <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
       <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-department')">Add</BaseButton>
     </div>
     <BaseTable
@@ -79,7 +79,6 @@ const tabs = ref<ITab[]>([
 ])
 
 const tabActive = ref<string>('doctors')
-const search = ref<string>('')
 const data = ref<IDepartment[]>([])
 const departmentRow = ref<IDepartment>({} as IDepartment)
 const departmentIdActive = ref<string>('')
@@ -87,7 +86,7 @@ const isLoadingDelete = ref<boolean>(false)
 const isConflictClick = ref<boolean>(false)
 const query = ref<IQueryUser>({
   ...DEFAULT_QUERY_PAGINATION,
-  search: ''
+  name: ''
 })
 const component = computed(() => {
   return tabActive.value === 'doctors' ? TabDoctors : TabSpecializes
@@ -96,10 +95,13 @@ onMounted(() => {
   getAllDepartment()
 })
 
-const getAllDepartment = async () => {
+const getAllDepartment = async (type: string = '') => {
   try {
     query.value.loading = true
-    const rs = await apiDepartment.getAllDepartment(query.value)
+    const rs =
+      type === 'search'
+        ? await apiDepartment.getAllDepartmentByName(query.value)
+        : await apiDepartment.getAllDepartment(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -147,6 +149,15 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getAllDepartment()
+}
+const handleSearch = () => {
+  query.value = {
+    ...query.value,
+    pageIndex: 1,
+    pageSize: 10,
+    totalElements: 0
+  }
+  getAllDepartment('search')
 }
 </script>
 
