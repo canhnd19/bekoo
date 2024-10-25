@@ -4,38 +4,104 @@
       <p class="my-5 flex items-center justify-start space-x-2">
         <span class="cursor-pointer text-base font-semibold" @click="handleClickHome">Trang chủ</span>
         <BaseIcon name="arrow-right" />
-        <span class="font-semibold text-primary">Chọn gói khám</span>
+        <span
+          class="cursor-pointer font-semibold"
+          :class="{ 'text-primary': !isChooseDay }"
+          @click="handleClickChoosePackage"
+          >Chọn gói khám</span
+        >
+        <template v-if="isChooseDay">
+          <BaseIcon name="arrow-right" />
+          <span class="font-semibold text-primary">Chọn ngày khám</span>
+        </template>
       </p>
     </div>
   </div>
   <div class="bg-[#e8f2f7] py-10">
     <div class="container">
-      <div class="box-package">
-        <div class="header">
-          <p class="text-center text-2xl font-semibold">Vui lòng chọn gói khám</p>
-        </div>
-        <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
-          <div class="card-item">
-            <img src="/images/bac_si_gia_dinh.png" alt="" />
-            <div class="ml-3 w-full">
-              <p class="text-2xl font-medium">{{ item.name }}</p>
-              <div class="flex items-center justify-between">
-                <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
+      <template v-if="!isChooseDay">
+        <template v-if="query.loading">
+          <BaseLoading />
+        </template>
+        <div v-else class="box-package">
+          <div class="header">
+            <p class="text-center text-2xl font-semibold">Vui lòng chọn gói khám</p>
+          </div>
+          <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
+            <div class="card-item" @click="isChooseDay = true">
+              <img src="/images/bac_si_gia_dinh.png" alt="" />
+              <div class="ml-3 w-full">
+                <p class="text-2xl font-medium">{{ item.name }}</p>
+                <div class="flex items-center justify-between">
+                  <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
+                </div>
               </div>
             </div>
           </div>
+          <div class="mx-[26px] mb-[26px]">
+            <BasePagination
+              v-model:page-index="query.pageIndex"
+              v-model:page-size="query.pageSize"
+              :query="query"
+              label="package"
+              @limit-change="handleLimitChange"
+              @page-change="handlePageChange"
+            />
+          </div>
         </div>
-        <div class="mx-[26px] mb-[26px]">
-          <BasePagination
-            v-model:page-index="query.pageIndex"
-            v-model:page-size="query.pageSize"
-            :query="query"
-            label="package"
-            @limit-change="handleLimitChange"
-            @page-change="handlePageChange"
-          />
+      </template>
+      <template v-else>
+        <div class="box-package">
+          <div class="header">
+            <p class="text-center text-2xl font-semibold">Vui lòng chọn thời gian khám</p>
+          </div>
+          <div class="m-[26px]">
+            <ElCalendar ref="calendar" v-model="day" class="calender">
+              <template #header="{ date }">
+                <BaseIcon name="arrow-left" class="cursor-pointer" @click="selectDate('prev-month')" />
+                <p class="w-full text-center">{{ date }}</p>
+                <BaseIcon name="arrow-right2" class="cursor-pointer" @click="selectDate('next-month')" />
+              </template>
+            </ElCalendar>
+            <div class="mb-4">
+              <p class="mb-3 text-xl font-semibold">Buổi sáng</p>
+              <ul class="flex justify-around">
+                <li class="hour" :class="{ active: hour === '07:00:00' }" @click="selectedHour('07:00:00')">
+                  07:00 - 08:00
+                </li>
+                <li class="hour" :class="{ active: hour === '08:00:00' }" @click="selectedHour('08:00:00')">
+                  08:00 - 09:00
+                </li>
+                <li class="hour" :class="{ active: hour === '09:00:00' }" @click="selectedHour('09:00:00')">
+                  09:00 - 10:00
+                </li>
+                <li class="hour" :class="{ active: hour === '10:00:00' }" @click="selectedHour('10:00:00')">
+                  10:00 - 11:00
+                </li>
+              </ul>
+            </div>
+            <div class="mb-8">
+              <p class="mb-3 text-xl font-semibold">Buổi chiều</p>
+              <ul class="flex justify-around">
+                <li class="hour" :class="{ active: hour === '13:00:00' }" @click="selectedHour('13:00:00')">
+                  13:00 - 14:00
+                </li>
+                <li class="hour" :class="{ active: hour === '14:00:00' }" @click="selectedHour('14:00:00')">
+                  14:00 - 15:00
+                </li>
+                <li class="hour" :class="{ active: hour === '15:00:00' }" @click="selectedHour('15:00:00')">
+                  15:00 - 16:00
+                </li>
+                <li class="hour" :class="{ active: hour === '16:00:00' }" @click="selectedHour('16:00:00')">
+                  16:00 - 17:00
+                </li>
+              </ul>
+            </div>
+            <p class="text-lg text-[#d98634]">Tất cả thời gian theo múi giờ Việt Nam GMT +7</p>
+            <BaseButton size="small" class="mt-8" @click="handleClickContinue">Tiếp tục</BaseButton>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -44,6 +110,8 @@
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import router from '@/router'
 import { apiSpecialize } from '@/services'
+import type { CalendarDateType, CalendarInstance } from 'element-plus'
+import { ref } from 'vue'
 
 import type { IBookingQuery } from '@/types/booking.types'
 import type { IPackage } from '@/types/package.types'
@@ -51,8 +119,11 @@ import type { IPackage } from '@/types/package.types'
 onMounted(() => {
   getListPackage()
 })
-
+const calendar = ref<CalendarInstance>()
+const day = ref(new Date())
+const hour = ref<string>('')
 const dataPackage = ref<IPackage[]>([])
+const isChooseDay = ref<boolean>(false)
 const query = ref<IBookingQuery>({
   ...DEFAULT_QUERY_PAGINATION,
   name: ''
@@ -82,6 +153,21 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getListPackage()
+}
+
+const handleClickChoosePackage = () => {
+  isChooseDay.value = false
+}
+const selectDate = (val: CalendarDateType) => {
+  if (!calendar.value) return
+  calendar.value.selectDate(val)
+}
+const selectedHour = (value: string) => {
+  hour.value = value
+}
+const handleClickContinue = () => {
+  console.log(day.value.toISOString().split('T')[0])
+  console.log(hour.value)
 }
 </script>
 
@@ -127,7 +213,53 @@ const handlePageChange = (page: unknown) => {
     box-shadow: 0 0 5px #1da1f2;
   }
 }
-
+.hour {
+  text-align: center;
+  margin-right: 16px;
+  line-height: 1;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid #00e0ff;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  width: 151px;
+  height: auto;
+  padding: 12px 2px;
+  border-radius: 8px;
+  &:hover {
+    background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
+    color: #fff !important;
+    cursor: pointer;
+  }
+}
+.hour.active {
+  background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
+  color: #fff !important;
+}
+:deep(.calender.el-calendar) {
+  .el-calendar__header {
+    .el-calendar__button-group {
+      .el-button-group {
+        .el-button {
+          padding: 10px 20px;
+        }
+      }
+    }
+  }
+  .el-calendar__body {
+    .el-calendar-table {
+      .el-calendar-table__row {
+        .el-calendar-day {
+          span {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
 @keyframes styles_animation__RBREz {
   100% {
     transform: rotate(360deg);
