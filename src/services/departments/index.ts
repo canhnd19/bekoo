@@ -59,7 +59,7 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
-  async getAllDoctorOfDepartment(ids: string): Promise<IResponse<IResponseTable<IDoctor[]>>> {
+  async getListDoctorOfDepartment(ids: string): Promise<IResponse<IResponseTable<IDoctor[]>>> {
     try {
       const rs = await requestQuery.post(`${this.prefix}/doctor/${ids}`)
       return Promise.resolve(rs.data)

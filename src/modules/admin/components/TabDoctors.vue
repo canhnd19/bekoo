@@ -73,12 +73,12 @@ const props = withDefaults(defineProps<IProps>(), {
 })
 
 onMounted(() => {
-  getAllDoctorOfPackage()
+  getListDoctorOfDepartment()
 })
 const doctorRow = ref<IDoctor>({} as IDoctor)
 const isLoadingDelete = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
-const data = ref<any[]>([])
+const data = ref<IDoctor[]>([])
 const query = ref<IQuery>({
   ...DEFAULT_QUERY_PAGINATION
 })
@@ -95,7 +95,7 @@ const handleAdd = async (id: string) => {
     const rs = await apiDepartment.addDoctorDepartment(body)
     ElMessage.success(rs.message)
     setOpenPopup('popup-add-doctor-to-package', false)
-    getAllDoctorOfPackage()
+    getListDoctorOfDepartment()
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
@@ -103,11 +103,11 @@ const handleAdd = async (id: string) => {
   }
 }
 
-const getAllDoctorOfPackage = async () => {
+const getListDoctorOfDepartment = async () => {
   try {
     query.value.loading = true
     const id = props.departmentId
-    const rs = await apiDepartment.getAllDoctorOfDepartment(id)
+    const rs = await apiDepartment.getListDoctorOfDepartment(id)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -119,12 +119,12 @@ const getAllDoctorOfPackage = async () => {
 const handleLimitChange = (limit: unknown) => {
   query.value.pageSize = limit as number
   query.value.pageIndex = 1
-  getAllDoctorOfPackage()
+  getListDoctorOfDepartment()
 }
 
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
-  getAllDoctorOfPackage()
+  getListDoctorOfDepartment()
 }
 const handleDeleteUser = (data: IDoctor) => {
   doctorRow.value = data
@@ -144,7 +144,7 @@ const deleteDoctor = async () => {
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
     isLoadingDelete.value = false
-    getAllDoctorOfPackage()
+    getListDoctorOfDepartment()
   } catch (error) {
     isLoadingDelete.value = false
     console.log(error)

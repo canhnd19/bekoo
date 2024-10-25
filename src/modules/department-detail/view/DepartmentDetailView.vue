@@ -9,7 +9,7 @@
       <p class="my-2 text-center text-4xl font-bold text-primary">Kết quả tìm kiếm</p>
       <BaseInput v-model="search" class="input-search mb-3" :show-icon="true" />
     </div>
-    <div class="tab border-t py-6">
+    <div class="tab justify-center border-t py-6">
       <div class="tab-item" :class="{ active: tabActive === 'DOCTOR' }" @click="tabActive = 'DOCTOR'">
         <p class="text-center text-xl font-medium text-[#11a2f3]">Bác sĩ</p>
       </div>
@@ -20,27 +20,77 @@
   </div>
   <div class="bg-[#e8f2f7] py-10">
     <div class="container">
-      <div v-for="(item, index) in data" :key="index" class="flex items-center justify-center">
-        <div class="card-item">
-          <img src="/images/bac_si_gia_dinh.png" alt="" />
-          <div class="ml-3 w-full">
-            <p class="text-2xl font-medium">{{ item.name }}</p>
-            <div class="flex items-center justify-between">
-              <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
-              <div class="tab">
-                <div class="tab-item active">
-                  <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
-                </div>
-                <div class="tab-item">
-                  <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleSeeDetail(item)">
-                    Xem chi tiết
-                  </p>
+      <template v-if="tabActive === 'DEPARTMENT'">
+        <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
+          <div class="card-item">
+            <img src="/images/bac_si_gia_dinh.png" alt="" />
+            <div class="ml-3 w-full">
+              <p class="text-2xl font-medium">{{ item.name }}</p>
+              <div class="flex items-center justify-between">
+                <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
+                <div class="tab justify-center">
+                  <div class="tab-item active">
+                    <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
+                  </div>
+                  <div class="tab-item">
+                    <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleSeeDetail(item)">
+                      Xem chi tiết
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <div v-for="(item, index) in dataDoctors" :key="index" class="flex items-center justify-center">
+          <div class="doctor-card">
+            <div>
+              <div v-if="!item.info.linkAvatar" class="image-doctor">
+                <img
+                  v-if="item.info.gender === 'Female'"
+                  src="/images/avatar-default-doctor-female.png"
+                  alt=""
+                  class="h-[120px] w-[120px] rounded-xl object-cover"
+                />
+                <img
+                  v-else
+                  src="/images/avatar-default-doctor-male.png"
+                  alt=""
+                  class="h-[120px] w-[120px] rounded-xl object-cover"
+                />
+              </div>
+              <div v-else class="image-doctor">
+                <img :src="item.info.linkAvatar" alt="" class="h-[120px] w-[120px] rounded-xl object-cover" />
+              </div>
+            </div>
+            <div class="w-full">
+              <div>
+                <p class="mb-2 text-xl text-[#11a2f3]">
+                  <span>TS BS. </span>
+                  <strong>{{ item.info.name }} | {{ nameDepartment }} </strong>
+                </p>
+                <p>
+                  <strong>Chuyên trị: </strong>
+                </p>
+                <p>
+                  <strong>Lịch khám: </strong>
+                </p>
+              </div>
+
+              <div class="tab justify-end">
+                <div class="tab-item">
+                  <p class="text-center text-xl font-medium text-[#11a2f3]">Xem chi tiết</p>
+                </div>
+                <div class="tab-item active">
+                  <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
       <div class="mx-auto w-[700px]">
         <BasePagination
           v-model:page-index="query.pageIndex"
@@ -59,8 +109,9 @@
 <script setup lang="ts">
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import router from '@/router'
-import { apiSpecialize } from '@/services'
+import { apiDepartment, apiSpecialize } from '@/services'
 
+import type { IDoctor } from '@/types/doctor.types'
 import type { IPackage } from '@/types/package.types'
 import type { IQuery } from '@/types/query.type'
 
@@ -71,7 +122,7 @@ import PopupPackageDetail from '../components/PopupPackageDetail.vue'
 const { setOpenPopup } = useBaseStore()
 const route = useRoute()
 onMounted(() => {
-  tabActive.value === 'DOCTOR' ? getListPackage() : getListPackage()
+  tabActive.value === 'DOCTOR' ? getListDoctorOfDepartment() : getListPackage()
 })
 const nameDepartment = sessionStorage.getItem('department-name')
 const search = ref<string>(nameDepartment ? nameDepartment : '')
@@ -79,10 +130,16 @@ const tabActive = ref<'DOCTOR' | 'DEPARTMENT'>('DOCTOR')
 const query = ref<IQuery>({
   ...DEFAULT_QUERY_PAGINATION
 })
-const data = ref<IPackage[]>([])
+const dataPackage = ref<IPackage[]>([])
+const dataDoctors = ref<IDoctor[]>([])
 const packageDetail = ref<IPackage>({} as IPackage)
-console.log('🚀 ~ route:', route.params.id)
 
+watch(
+  () => tabActive.value,
+  (newData) => {
+    newData === 'DOCTOR' ? getListDoctorOfDepartment() : getListPackage()
+  }
+)
 const handleClickHome = () => {
   router.push({ name: 'Home' })
 }
@@ -91,7 +148,21 @@ const getListPackage = async () => {
   try {
     query.value.loading = true
     const rs = await apiSpecialize.getListPackage(query.value)
-    data.value = rs.value.contentResponse
+    dataPackage.value = rs.value.contentResponse
+    query.value.totalElements = rs.value.totalElements
+    query.value.loading = false
+  } catch (error) {
+    query.value.loading = false
+    console.log(error)
+  }
+}
+
+const getListDoctorOfDepartment = async () => {
+  try {
+    query.value.loading = true
+    const id = route.params.id as string
+    const rs = await apiDepartment.getListDoctorOfDepartment(id)
+    dataDoctors.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
   } catch (error) {
@@ -127,7 +198,7 @@ const handleSeeDetail = (data: IPackage) => {
   }
 }
 .tab {
-  @apply flex items-center justify-center space-x-3 border-solid border-[#e3e3e3];
+  @apply flex items-center space-x-3 border-solid border-[#e3e3e3];
   .active {
     background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
     p {
@@ -151,5 +222,25 @@ const handleSeeDetail = (data: IPackage) => {
   border: 2px solid transparent;
   transition: all 0.23s ease;
   overflow: hidden;
+}
+.doctor-card {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 26px;
+  border-radius: 12px;
+  width: 900px;
+  display: flex;
+  border: 1px solid #d7dbe0;
+  background: #fff;
+  .image-doctor {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    position: relative;
+    background: #eaeaea;
+    border-radius: 12px;
+    margin-right: 16px;
+  }
 }
 </style>
