@@ -21,11 +21,6 @@
               <p class="text-2xl font-medium">{{ item.name }}</p>
               <div class="flex items-center justify-between">
                 <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
-                <div class="tab justify-center">
-                  <div class="tab-item active">
-                    <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -110,25 +105,13 @@ const handlePageChange = (page: unknown) => {
     margin-bottom: 26px;
   }
 }
-.tab {
-  @apply flex items-center space-x-3 border-solid border-[#e3e3e3];
-  .active {
-    background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
-    p {
-      color: #fff;
-    }
-  }
-  .tab-item {
-    @apply cursor-pointer rounded-[50px] border border-solid border-transparent bg-[#ebf9fd] px-4 py-[10px] hover:border hover:border-solid hover:border-[#1da1f2];
-  }
-}
+
 .card-item {
   display: flex;
   align-items: center;
   padding: 20px;
   margin: 0 26px;
-  box-shadow: 0 4px 30px rgba(149, 179, 207, 0.2);
-  border-radius: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   width: 900px;
   min-height: 130px;
   margin-bottom: 26px;
@@ -136,5 +119,18 @@ const handlePageChange = (page: unknown) => {
   border: 2px solid transparent;
   transition: all 0.23s ease;
   overflow: hidden;
+  cursor: pointer;
+  border-radius: 12px;
+  transform: translateY(50px);
+  animation: styles_animation__RBREz 0.7s ease 0.3s forwards;
+  &:hover {
+    box-shadow: 0 0 5px #1da1f2;
+  }
+}
+
+@keyframes styles_animation__RBREz {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
