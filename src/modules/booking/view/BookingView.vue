@@ -197,6 +197,15 @@ const handlePageChange = (page: unknown) => {
 
 const handleClickChoosePackage = () => {
   isChooseDay.value = false
+  day.value = new Date()
+  hour.value = ''
+  bookingRequest.value = {
+    userId: '',
+    doctorId: '',
+    specializeId: '',
+    checkIn: '',
+    note: ''
+  }
 }
 const choosePackage = (data: IPackage) => {
   isChooseDay.value = true
