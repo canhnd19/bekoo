@@ -16,7 +16,7 @@
       </p>
       <p class="text-xl">
         <span> Thời gian: </span>
-        <strong> {{ props.data.checkIn }}</strong>
+        <strong> {{ props.bookingInfo.time }}</strong>
       </p>
       <p class="text-xl">
         <span> Tiền khám: </span>

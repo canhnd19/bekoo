@@ -220,7 +220,8 @@ const handleClickContinue = async () => {
     bookingInfo.value = {
       doctorName: rs.value.info.name,
       packageName: packageChoose.value.name,
-      price: packageChoose.value.price
+      price: packageChoose.value.price,
+      time: date
     }
     bookingRequest.value = {
       ...bookingRequest.value,
