@@ -87,7 +87,12 @@
                   <p class="text-center text-xl font-medium text-[#11a2f3]">Xem chi tiết</p>
                 </div>
                 <div class="tab-item active">
-                  <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
+                  <p
+                    class="text-center text-xl font-medium text-[#11a2f3]"
+                    @click="setOpenPopup('popup-warning-booking')"
+                  >
+                    Đặt khám ngay
+                  </p>
                 </div>
               </div>
             </div>
@@ -107,6 +112,7 @@
     </div>
   </div>
   <PopupPackageDetail :package-detail="packageDetail" />
+  <PopupWarningBooking @close="handleClosePopupWarning" @agree="handleAgreePopupWarning" />
 </template>
 
 <script setup lang="ts">
@@ -121,6 +127,7 @@ import type { IQuery } from '@/types/query.type'
 import { useBaseStore } from '@/stores/base'
 
 import PopupPackageDetail from '../components/PopupPackageDetail.vue'
+import PopupWarningBooking from '../components/PopupWarningBooking.vue'
 
 const { setOpenPopup } = useBaseStore()
 const route = useRoute()
@@ -180,6 +187,14 @@ const handlePageChange = (page: unknown) => {
 const handleSeeDetail = (data: IPackage) => {
   packageDetail.value = data
   setOpenPopup('popup-package-detail')
+}
+
+const handleClosePopupWarning = () => {
+  setOpenPopup('popup-warning-booking', false)
+}
+
+const handleAgreePopupWarning = () => {
+  setOpenPopup('popup-warning-booking', false)
 }
 </script>
 
