@@ -19,7 +19,10 @@
     </div>
   </div>
   <div class="bg-[#e8f2f7] py-10">
-    <div class="container">
+    <template v-if="query.loading">
+      <BaseLoading />
+    </template>
+    <div v-else class="container">
       <template v-if="tabActive === 'DEPARTMENT'">
         <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
           <div class="card-item">
@@ -91,7 +94,7 @@
           </div>
         </div>
       </template>
-      <div class="mx-auto w-[700px]">
+      <div class="mx-auto w-[900px]">
         <BasePagination
           v-model:page-index="query.pageIndex"
           v-model:page-size="query.pageSize"
@@ -122,7 +125,7 @@ import PopupPackageDetail from '../components/PopupPackageDetail.vue'
 const { setOpenPopup } = useBaseStore()
 const route = useRoute()
 onMounted(() => {
-  tabActive.value === 'DOCTOR' ? getListDoctorOfDepartment() : getListPackage()
+  getData()
 })
 const nameDepartment = sessionStorage.getItem('department-name')
 const search = ref<string>(nameDepartment ? nameDepartment : '')
@@ -136,20 +139,26 @@ const packageDetail = ref<IPackage>({} as IPackage)
 
 watch(
   () => tabActive.value,
-  (newData) => {
-    newData === 'DOCTOR' ? getListDoctorOfDepartment() : getListPackage()
+  () => {
+    getData()
   }
 )
 const handleClickHome = () => {
   router.push({ name: 'Home' })
 }
-
-const getListPackage = async () => {
+const getData = async () => {
   try {
     query.value.loading = true
-    const rs = await apiSpecialize.getListPackage(query.value)
-    dataPackage.value = rs.value.contentResponse
-    query.value.totalElements = rs.value.totalElements
+    if (tabActive.value === 'DOCTOR') {
+      const id = route.params.id as string
+      const rs = await apiDepartment.getListDoctorOfDepartment(id)
+      dataDoctors.value = rs.value.contentResponse
+      query.value.totalElements = rs.value.totalElements
+    } else {
+      const rs = await apiSpecialize.getListPackage(query.value)
+      dataPackage.value = rs.value.contentResponse
+      query.value.totalElements = rs.value.totalElements
+    }
     query.value.loading = false
   } catch (error) {
     query.value.loading = false
@@ -157,28 +166,15 @@ const getListPackage = async () => {
   }
 }
 
-const getListDoctorOfDepartment = async () => {
-  try {
-    query.value.loading = true
-    const id = route.params.id as string
-    const rs = await apiDepartment.getListDoctorOfDepartment(id)
-    dataDoctors.value = rs.value.contentResponse
-    query.value.totalElements = rs.value.totalElements
-    query.value.loading = false
-  } catch (error) {
-    query.value.loading = false
-    console.log(error)
-  }
-}
 const handleLimitChange = (limit: unknown) => {
   query.value.pageSize = limit as number
   query.value.pageIndex = 1
-  getListPackage()
+  getData()
 }
 
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
-  getListPackage()
+  getData()
 }
 
 const handleSeeDetail = (data: IPackage) => {
@@ -215,7 +211,7 @@ const handleSeeDetail = (data: IPackage) => {
   padding: 20px;
   box-shadow: 0 4px 30px rgba(149, 179, 207, 0.2);
   border-radius: 20px;
-  width: 700px;
+  width: 900px;
   min-height: 130px;
   margin-bottom: 26px;
   background: #fff;
