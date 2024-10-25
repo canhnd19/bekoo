@@ -1,5 +1,5 @@
 <template>
-  <BasePopup name="popup-warning-booking" width="500">
+  <BasePopup name="popup-warning-choose-doctor" width="500">
     <template #title> Thông báo </template>
     <p class="text-base">
       Quý khách lưu ý về tiện ích lựa chọn Bác sĩ, có một vài trường hợp Bác sĩ được chọn bận đột xuất, cơ sở y tế sẽ

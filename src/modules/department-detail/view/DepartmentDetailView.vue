@@ -89,7 +89,7 @@
                 <div class="tab-item active">
                   <p
                     class="text-center text-xl font-medium text-[#11a2f3]"
-                    @click="setOpenPopup('popup-warning-booking')"
+                    @click="setOpenPopup('popup-warning-choose-doctor')"
                   >
                     Đặt khám ngay
                   </p>
@@ -127,7 +127,7 @@ import type { IQuery } from '@/types/query.type'
 import { useBaseStore } from '@/stores/base'
 
 import PopupPackageDetail from '../components/PopupPackageDetail.vue'
-import PopupWarningBooking from '../components/PopupWarningBooking.vue'
+import PopupWarningBooking from '../components/PopupWarningChooseDoctor.vue'
 
 const { setOpenPopup } = useBaseStore()
 const route = useRoute()
@@ -190,11 +190,11 @@ const handleSeeDetail = (data: IPackage) => {
 }
 
 const handleClosePopupWarning = () => {
-  setOpenPopup('popup-warning-booking', false)
+  setOpenPopup('popup-warning-choose-doctor', false)
 }
 
 const handleAgreePopupWarning = () => {
-  setOpenPopup('popup-warning-booking', false)
+  setOpenPopup('popup-warning-choose-doctor', false)
 }
 </script>
 
