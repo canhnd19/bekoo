@@ -87,10 +87,7 @@
                   <p class="text-center text-xl font-medium text-[#11a2f3]">Xem chi tiết</p>
                 </div>
                 <div class="tab-item active">
-                  <p
-                    class="text-center text-xl font-medium text-[#11a2f3]"
-                    @click="setOpenPopup('popup-warning-choose-doctor')"
-                  >
+                  <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleBookingNow(item)">
                     Đặt khám ngay
                   </p>
                 </div>
@@ -143,7 +140,7 @@ const query = ref<IQuery>({
 const dataPackage = ref<IPackage[]>([])
 const dataDoctors = ref<IDoctor[]>([])
 const packageDetail = ref<IPackage>({} as IPackage)
-
+const idDoctorBooking = ref<string>('')
 watch(
   () => tabActive.value,
   () => {
@@ -189,12 +186,17 @@ const handleSeeDetail = (data: IPackage) => {
   setOpenPopup('popup-package-detail')
 }
 
+const handleBookingNow = (data: IDoctor) => {
+  idDoctorBooking.value = data.id
+  setOpenPopup('popup-warning-choose-doctor')
+}
 const handleClosePopupWarning = () => {
   setOpenPopup('popup-warning-choose-doctor', false)
 }
 
 const handleAgreePopupWarning = () => {
   setOpenPopup('popup-warning-choose-doctor', false)
+  router.push({ name: 'Booking', params: { id: idDoctorBooking.value } })
 }
 </script>
 
