@@ -48,4 +48,13 @@ export default class DoctorService {
       return Promise.reject(error)
     }
   }
+
+  async getDoctorById(id: string): Promise<IResponse<IDoctor>> {
+    try {
+      const rs = await requestQuery.get(`${this.prefix}/id/${id}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }

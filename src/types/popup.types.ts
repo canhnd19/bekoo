@@ -7,5 +7,6 @@ export type POPUP_NAME =
   | 'popup-add-doctor-to-package'
   | 'popup-package-detail'
   | 'popup-warning-choose-doctor'
+  | 'popup-confirm-booking'
 
 export type DRAWER_NAME = 'drawer-root'

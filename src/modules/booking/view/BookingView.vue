@@ -28,7 +28,7 @@
             <p class="text-center text-2xl font-semibold">Vui lòng chọn gói khám</p>
           </div>
           <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
-            <div class="card-item" @click="isChooseDay = true">
+            <div class="card-item" @click="choosePackage(item)">
               <img src="/images/bac_si_gia_dinh.png" alt="" />
               <div class="ml-3 w-full">
                 <p class="text-2xl font-medium">{{ item.name }}</p>
@@ -98,36 +98,76 @@
               </ul>
             </div>
             <p class="text-lg text-[#d98634]">Tất cả thời gian theo múi giờ Việt Nam GMT +7</p>
-            <BaseButton size="small" class="mt-8" @click="handleClickContinue">Tiếp tục</BaseButton>
+            <div class="mt-8">
+              <p class="mb-3 text-xl">Ghi chú</p>
+              <ElInput
+                v-model="bookingRequest.note"
+                class="input"
+                style="height: 50px; width: 100%"
+                :autosize="{ minRows: 2 }"
+                type="textarea"
+                placeholder="Vui lòng nhập ghi chú"
+              />
+            </div>
+            <BaseButton :loading="isLoadingBtn" size="small" class="mt-8" @click="handleClickContinue"
+              >Tiếp tục</BaseButton
+            >
           </div>
         </div>
       </template>
     </div>
   </div>
+  <PopupConfirmBooking
+    :is-loading-booking="isLoadingBooking"
+    :data="bookingRequest"
+    :name-department="nameDepartment"
+    :booking-info="bookingInfo"
+    @booking="handleBooking"
+    @cancel="handleCencalBooking"
+  />
 </template>
 
 <script setup lang="ts">
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import router from '@/router'
-import { apiSpecialize } from '@/services'
+import { apiBooking, apiDoctor, apiSpecialize } from '@/services'
 import type { CalendarDateType, CalendarInstance } from 'element-plus'
 import { ref } from 'vue'
 
-import type { IBookingQuery } from '@/types/booking.types'
+import type { IBookingQuery, IBookingRequest } from '@/types/booking.types'
 import type { IPackage } from '@/types/package.types'
 
+import { useAuthStore } from '@/stores/auth'
+import { useBaseStore } from '@/stores/base'
+
+import PopupConfirmBooking from '../components/PopupConfirmBooking.vue'
+
+const { setOpenPopup } = useBaseStore()
+const { user } = useAuthStore()
+const route = useRoute()
 onMounted(() => {
   getListPackage()
 })
+const nameDepartment = sessionStorage.getItem('department-name') as string
 const calendar = ref<CalendarInstance>()
 const day = ref(new Date())
 const hour = ref<string>('')
 const dataPackage = ref<IPackage[]>([])
+const packageChoose = ref<IPackage>({} as IPackage)
 const isChooseDay = ref<boolean>(false)
 const query = ref<IBookingQuery>({
   ...DEFAULT_QUERY_PAGINATION,
   name: ''
 })
+const isLoadingBooking = ref<boolean>(false)
+const isLoadingBtn = ref<boolean>(false)
+const bookingRequest = ref<IBookingRequest>({} as IBookingRequest)
+const bookingInfo = ref<Record<string, any>>({
+  doctorName: '',
+  packageName: '',
+  price: ''
+})
+
 const handleClickHome = () => {
   router.push({ name: 'Home' })
 }
@@ -158,6 +198,10 @@ const handlePageChange = (page: unknown) => {
 const handleClickChoosePackage = () => {
   isChooseDay.value = false
 }
+const choosePackage = (data: IPackage) => {
+  isChooseDay.value = true
+  packageChoose.value = data
+}
 const selectDate = (val: CalendarDateType) => {
   if (!calendar.value) return
   calendar.value.selectDate(val)
@@ -165,9 +209,48 @@ const selectDate = (val: CalendarDateType) => {
 const selectedHour = (value: string) => {
   hour.value = value
 }
-const handleClickContinue = () => {
-  console.log(day.value.toISOString().split('T')[0])
-  console.log(hour.value)
+const handleClickContinue = async () => {
+  try {
+    isLoadingBtn.value = true
+    const doctorId = route.params.id as string
+    const date = `${day.value.toISOString().split('T')[0]} ${hour.value}`
+    const conver = new Date(date).toISOString()
+    const dateConvert = conver.substring(0, conver.length - 1)
+    const rs = await apiDoctor.getDoctorById(doctorId)
+    bookingInfo.value = {
+      doctorName: rs.value.info.name,
+      packageName: packageChoose.value.name,
+      price: packageChoose.value.price
+    }
+    bookingRequest.value = {
+      ...bookingRequest.value,
+      userId: user.id,
+      doctorId: route.params.id as string,
+      specializeId: packageChoose.value.id,
+      checkIn: dateConvert
+    }
+    isLoadingBtn.value = false
+    setOpenPopup('popup-confirm-booking')
+  } catch (error) {
+    isLoadingBtn.value = false
+    console.log(error)
+  }
+}
+const handleCencalBooking = () => {
+  setOpenPopup('popup-confirm-booking', false)
+}
+
+const handleBooking = async () => {
+  try {
+    isLoadingBooking.value = true
+    const rs = await apiBooking.booking(bookingRequest.value)
+    ElMessage.success(rs.message)
+    setOpenPopup('popup-confirm-booking', false)
+    isLoadingBooking.value = false
+  } catch (error) {
+    isLoadingBooking.value = false
+    console.log(error)
+  }
 }
 </script>
 
@@ -258,6 +341,12 @@ const handleClickContinue = () => {
         }
       }
     }
+  }
+}
+:deep(.input.el-textarea) {
+  .el-textarea__inner {
+    font-size: 16px;
+    border-radius: 8px;
   }
 }
 @keyframes styles_animation__RBREz {
