@@ -17,6 +17,15 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
+  async editDepartment(body: Record<string, any>): Promise<IResponse<IDepartment>> {
+    try {
+      const rs = await request.post(`${this.prefix}/info`, body)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   async getAllDepartment(): Promise<IResponse<IResponseTable<IDepartment[]>>> {
     try {
       const rs = await requestQuery.post(`${this.prefix}`)

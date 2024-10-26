@@ -48,7 +48,7 @@
   <PopupConfirmDelete
     :name="userRow.email"
     type="người dùng"
-    :is-loading-delete="isLoadingDelete"
+    :is-loading-button="isLoadingButton"
     @delete="deleteUser"
   />
 </template>
@@ -73,7 +73,7 @@ const query = ref<IQueryFilter>({
 
 const data = ref<IUserTable[]>([])
 const userRow = ref<IUserTable>({} as IUserTable)
-const isLoadingDelete = ref<boolean>(false)
+const isLoadingButton = ref<boolean>(false)
 
 onMounted(() => {
   getAllUser()
@@ -101,14 +101,14 @@ const handleDeleteUser = (data: IUserTable) => {
 
 const deleteUser = async () => {
   try {
-    isLoadingDelete.value = true
+    isLoadingButton.value = true
     const rs = await apiUser.deteteUser([userRow.value.id])
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     getAllUser()
   } catch (error) {
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     console.log(error)
   }
 }

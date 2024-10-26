@@ -7,7 +7,7 @@
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
         <BaseButton type="plain" size="small" class="w-20">Hủy</BaseButton>
-        <BaseButton :loading="props.isLoadingDelete" size="small" class="w-20" @click="emits('delete')">Xóa</BaseButton>
+        <BaseButton :loading="props.isLoadingButton" size="small" class="w-20" @click="emits('delete')">Xóa</BaseButton>
       </div>
     </template>
   </BasePopup>
@@ -17,12 +17,12 @@
 interface IProps {
   name?: string
   type: string
-  isLoadingDelete: boolean
+  isLoadingButton: boolean
 }
 const props = withDefaults(defineProps<IProps>(), {
   name: '',
   type: '',
-  isLoadingDelete: false
+  isLoadingButton: false
 })
 const emits = defineEmits<{
   cancel: []

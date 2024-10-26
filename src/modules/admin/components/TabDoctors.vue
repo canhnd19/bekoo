@@ -46,7 +46,7 @@
   <PopupConfirmDelete
     :name="doctorRow.info?.email"
     type="bác sĩ"
-    :is-loading-delete="isLoadingDelete"
+    :is-loading-button="isLoadingButton"
     @delete="deleteDoctor"
   />
 </template>
@@ -76,7 +76,7 @@ onMounted(() => {
   getListDoctorOfDepartment()
 })
 const doctorRow = ref<IDoctor>({} as IDoctor)
-const isLoadingDelete = ref<boolean>(false)
+const isLoadingButton = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const data = ref<IDoctor[]>([])
 const query = ref<IQuery>({
@@ -133,7 +133,7 @@ const handleDeleteUser = (data: IDoctor) => {
 
 const deleteDoctor = async () => {
   try {
-    isLoadingDelete.value = true
+    isLoadingButton.value = true
     const body = {
       departmentId: props.departmentId,
       doctorId: doctorRow.value.id
@@ -143,10 +143,10 @@ const deleteDoctor = async () => {
     })
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     getListDoctorOfDepartment()
   } catch (error) {
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     console.log(error)
   }
 }

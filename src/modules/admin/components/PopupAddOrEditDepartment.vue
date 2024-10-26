@@ -1,10 +1,10 @@
 <template>
-  <BasePopup name="popup-add-department" width="700">
-    <template #title> Add department </template>
+  <BasePopup name="popup-add-or-edit-department" width="700">
+    <template #title>{{ props.typeAction === 'ADD' ? 'Thêm chuyên khoa' : 'Sửa chuyên khoa' }} </template>
     <div class="space-y-3">
       <div class="flex justify-center">
         <div class="relative w-40">
-          <img :src="department.image" alt="" class="h-40 w-full rounded-full object-cover" />
+          <img :src="department.urlImage" alt="" class="h-40 w-full rounded-full object-cover" />
           <ElUpload
             :show-file-list="false"
             :auto-upload="false"
@@ -42,7 +42,9 @@
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
         <BaseButton type="plain" size="small" class="w-20" @click="handleCancel">Hủy</BaseButton>
-        <BaseButton :loading="isLoading" size="small" class="w-20" @click="handleCreateDepartment">Tạo</BaseButton>
+        <BaseButton :loading="isLoading" size="small" class="w-20" @click="handleAddOrEditDepartment">
+          {{ props.typeAction === 'ADD' ? 'Tạo' : 'Sửa' }}
+        </BaseButton>
       </div>
     </template>
   </BasePopup>
@@ -51,40 +53,69 @@
 <script setup lang="ts">
 import { apiDepartment } from '@/services'
 
+import type { DepartmentRequest, IDepartment } from '@/types/department.types'
+
 import { useBaseStore } from '@/stores/base'
 
 const { setOpenPopup } = useBaseStore()
+
+interface IProps {
+  data: IDepartment
+  typeAction: 'ADD' | 'EDIT' | ''
+}
 const emits = defineEmits<{
-  create: []
+  'add-or-edit': []
 }>()
+
+const props = withDefaults(defineProps<IProps>(), {
+  data: () => ({}) as IDepartment,
+  typeAction: ''
+})
 const file = ref<Record<string, any>>({})
 const isLoading = ref<boolean>(false)
-const department = ref<Record<string, any>>({
+const department = ref<DepartmentRequest>({
   name: '',
   description: '',
-  image: ''
+  urlImage: ''
 })
+
+watch(
+  () => props.data,
+  (newData) => {
+    department.value = {
+      name: newData.name,
+      description: newData.description,
+      urlImage: newData.urlImage
+    }
+  }
+)
 
 const handleSelectFile = async (_file: Record<string, any>) => {
   file.value = _file
-  department.value.image = URL.createObjectURL(file.value.raw)
+
+  department.value.urlImage = URL.createObjectURL(file.value.raw)
 }
 
-const handleCreateDepartment = async () => {
+const handleAddOrEditDepartment = async () => {
   try {
     isLoading.value = true
+    const id = props.data.id
     const formData = new FormData()
-    formData.append('image', file.value.raw)
+    if (props.typeAction === 'EDIT') formData.append('id', id)
+    if (file.value.raw) formData.append('image', file.value.raw)
     formData.append('name', department.value.name)
     formData.append('description', department.value.description)
-    const rs = await apiDepartment.createdDepartment(formData)
+    const rs =
+      props.typeAction === 'ADD'
+        ? await apiDepartment.createdDepartment(formData)
+        : await apiDepartment.editDepartment(formData)
     ElMessage.success(rs.message)
-    setOpenPopup('popup-add-department', false)
-    emits('create')
+    setOpenPopup('popup-add-or-edit-department', false)
+    emits('add-or-edit')
     department.value = {
       name: '',
       description: '',
-      image: ''
+      urlImage: ''
     }
     isLoading.value = false
   } catch (error) {
@@ -96,9 +127,9 @@ const handleCancel = () => {
   department.value = {
     name: '',
     description: '',
-    image: ''
+    urlImage: ''
   }
-  setOpenPopup('popup-add-department', false)
+  setOpenPopup('popup-add-or-edit-department', false)
 }
 </script>
 

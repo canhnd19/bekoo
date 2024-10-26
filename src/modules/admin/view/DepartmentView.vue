@@ -2,7 +2,7 @@
   <template v-if="!departmentIdActive">
     <div class="flex items-start justify-between">
       <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
-      <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-department')">Add</BaseButton>
+      <BaseButton size="small" class="w-20" @click="handleAddDepartment">Add</BaseButton>
     </div>
     <BaseTable
       v-model:page="query.pageIndex"
@@ -24,6 +24,7 @@
       <ElTableColumn label="ACTION">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
+            <BaseIcon name="edit" @click="handleEditDepartment(row)" />
             <BaseIcon name="delete" @click="handleDelete(row)" />
           </div>
         </template>
@@ -40,13 +41,14 @@
       <component :is="component" :department-id="departmentIdActive" />
     </div>
   </template>
-  <PopupAddDepartment @create="handdleCreate" />
+  <PopupAddOrEditDepartment :data="departmentRow" :type-action="typeAction" @add-or-edit="addDepartment" />
   <PopupConfirmDelete
     :name="departmentRow.name"
     type="chuyên khoa"
-    :is-loading-delete="isLoadingDelete"
+    :is-loading-button="isLoadingButton"
     @delete="deleteDepartment"
   />
+  <PopupEditDepartment :data="departmentRow" :is-loading-button="isLoadingButton" />
 </template>
 
 <script setup lang="ts">
@@ -59,7 +61,7 @@ import type { IDepartment } from '@/types/department.types'
 
 import { useBaseStore } from '@/stores/base'
 
-import PopupAddDepartment from '../components/PopupAddDepartment.vue'
+import PopupAddOrEditDepartment from '../components/PopupAddOrEditDepartment.vue'
 import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 import TabDoctors from '../components/TabDoctors.vue'
 import TabSpecializes from '../components/TabSpecializes.vue'
@@ -78,11 +80,12 @@ const tabs = ref<ITab[]>([
   }
 ])
 
+const typeAction = ref<'ADD' | 'EDIT' | ''>('')
 const tabActive = ref<string>('doctors')
 const data = ref<IDepartment[]>([])
 const departmentRow = ref<IDepartment>({} as IDepartment)
 const departmentIdActive = ref<string>('')
-const isLoadingDelete = ref<boolean>(false)
+const isLoadingButton = ref<boolean>(false)
 const isConflictClick = ref<boolean>(false)
 const query = ref<IQueryFilter>({
   ...DEFAULT_QUERY_PAGINATION,
@@ -111,6 +114,17 @@ const getListDepartment = async (type: string = '') => {
   }
 }
 
+const handleAddDepartment = () => {
+  typeAction.value = 'ADD'
+  setOpenPopup('popup-add-or-edit-department')
+}
+const handleEditDepartment = (data: IDepartment) => {
+  typeAction.value = 'EDIT'
+  isConflictClick.value = true
+  departmentRow.value = data
+  setOpenPopup('popup-add-or-edit-department')
+}
+
 const handleDelete = (data: IDepartment) => {
   isConflictClick.value = true
   departmentRow.value = data
@@ -119,14 +133,14 @@ const handleDelete = (data: IDepartment) => {
 
 const deleteDepartment = async () => {
   try {
-    isLoadingDelete.value = true
+    isLoadingButton.value = true
     const rs = await apiDepartment.deteteDepartment(departmentRow.value.id)
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     getListDepartment()
   } catch (error) {
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     console.log(error)
   }
 }
@@ -160,7 +174,7 @@ const handleSearch = () => {
   getListDepartment('search')
 }
 
-const handdleCreate = () => {
+const addDepartment = () => {
   getListDepartment()
 }
 </script>
