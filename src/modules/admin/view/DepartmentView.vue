@@ -21,7 +21,7 @@
           <p>{{ row.name }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="ACTION">
+      <ElTableColumn label="ACTION" align="right">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
             <BaseIcon name="edit" @click="handleEditDepartment(row)" />
