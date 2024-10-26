@@ -163,13 +163,13 @@ const handleClickHome = () => {
 const getData = async () => {
   try {
     query.value.loading = true
+    const id = route.params.id as string
     if (tabActive.value === 'DOCTOR') {
-      const id = route.params.id as string
       const rs = await apiDepartment.getListDoctorOfDepartment(id)
       dataDoctors.value = rs.value.contentResponse
       query.value.totalElements = rs.value.totalElements
     } else {
-      const rs = await apiSpecialize.getListPackage(query.value)
+      const rs = await apiSpecialize.getListByDeparmentId(query.value, id)
       dataPackage.value = rs.value.contentResponse
       query.value.totalElements = rs.value.totalElements
     }
