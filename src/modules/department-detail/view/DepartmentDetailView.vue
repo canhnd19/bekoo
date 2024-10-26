@@ -36,9 +36,9 @@
                 <div class="flex items-center justify-between">
                   <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
                   <div class="tab justify-center">
-                    <div class="tab-item active">
+                    <!-- <div class="tab-item active">
                       <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
-                    </div>
+                    </div> -->
                     <div class="tab-item">
                       <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleSeeDetail(item)">
                         Xem chi tiết
