@@ -131,11 +131,13 @@ import type { IDoctor } from '@/types/doctor.types'
 import type { IPackage } from '@/types/package.types'
 import type { IQuery } from '@/types/query.type'
 
+import { useAuthStore } from '@/stores/auth'
 import { useBaseStore } from '@/stores/base'
 
 import PopupPackageDetail from '../components/PopupPackageDetail.vue'
 import PopupWarningBooking from '../components/PopupWarningChooseDoctor.vue'
 
+const { isLoggedIn } = storeToRefs(useAuthStore())
 const { setOpenPopup } = useBaseStore()
 const route = useRoute()
 onMounted(() => {
@@ -197,6 +199,10 @@ const handleSeeDetail = (data: IPackage) => {
 }
 
 const handleBookingNow = (data: IDoctor) => {
+  if (!isLoggedIn.value) {
+    router.push({ name: 'Login' })
+    return
+  }
   idDoctorBooking.value = data.id
   setOpenPopup('popup-warning-choose-doctor')
 }
