@@ -24,77 +24,87 @@
     </template>
     <div v-else class="container">
       <template v-if="tabActive === 'DEPARTMENT'">
-        <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
-          <div class="card-item">
-            <img src="/images/bac_si_gia_dinh.png" alt="" />
-            <div class="ml-3 w-full">
-              <p class="text-2xl font-medium">{{ item.name }}</p>
-              <div class="flex items-center justify-between">
-                <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
-                <div class="tab justify-center">
-                  <div class="tab-item active">
-                    <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
+        <template v-if="!dataPackage.length">
+          <BaseEmpty />
+        </template>
+        <template v-else>
+          <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
+            <div class="card-item">
+              <img src="/images/bac_si_gia_dinh.png" alt="" />
+              <div class="ml-3 w-full">
+                <p class="text-2xl font-medium">{{ item.name }}</p>
+                <div class="flex items-center justify-between">
+                  <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
+                  <div class="tab justify-center">
+                    <div class="tab-item active">
+                      <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>
+                    </div>
+                    <div class="tab-item">
+                      <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleSeeDetail(item)">
+                        Xem chi tiết
+                      </p>
+                    </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </template>
+      <template v-else>
+        <template v-if="!dataDoctors.length">
+          <BaseEmpty />
+        </template>
+        <template v-else>
+          <div v-for="(item, index) in dataDoctors" :key="index" class="flex items-center justify-center">
+            <div class="doctor-card">
+              <div>
+                <div v-if="!item.info.linkAvatar" class="image-doctor">
+                  <img
+                    v-if="item.info.gender === 'Female'"
+                    src="/images/avatar-default-doctor-female.png"
+                    alt=""
+                    class="h-[120px] w-[120px] rounded-xl object-cover"
+                  />
+                  <img
+                    v-else
+                    src="/images/avatar-default-doctor-male.png"
+                    alt=""
+                    class="h-[120px] w-[120px] rounded-xl object-cover"
+                  />
+                </div>
+                <div v-else class="image-doctor">
+                  <img :src="item.info.linkAvatar" alt="" class="h-[120px] w-[120px] rounded-xl object-cover" />
+                </div>
+              </div>
+              <div class="w-full">
+                <div>
+                  <p class="mb-2 text-xl text-[#11a2f3]">
+                    <span>TS BS. </span>
+                    <strong>{{ item.info.name }} | {{ nameDepartment }} </strong>
+                  </p>
+                  <p>
+                    <strong>Chuyên trị: </strong>
+                  </p>
+                  <p>
+                    <strong>Lịch khám: </strong>
+                  </p>
+                </div>
+
+                <div class="tab justify-end">
                   <div class="tab-item">
-                    <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleSeeDetail(item)">
-                      Xem chi tiết
+                    <p class="text-center text-xl font-medium text-[#11a2f3]">Xem chi tiết</p>
+                  </div>
+                  <div class="tab-item active">
+                    <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleBookingNow(item)">
+                      Đặt khám ngay
                     </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </template>
-      <template v-else>
-        <div v-for="(item, index) in dataDoctors" :key="index" class="flex items-center justify-center">
-          <div class="doctor-card">
-            <div>
-              <div v-if="!item.info.linkAvatar" class="image-doctor">
-                <img
-                  v-if="item.info.gender === 'Female'"
-                  src="/images/avatar-default-doctor-female.png"
-                  alt=""
-                  class="h-[120px] w-[120px] rounded-xl object-cover"
-                />
-                <img
-                  v-else
-                  src="/images/avatar-default-doctor-male.png"
-                  alt=""
-                  class="h-[120px] w-[120px] rounded-xl object-cover"
-                />
-              </div>
-              <div v-else class="image-doctor">
-                <img :src="item.info.linkAvatar" alt="" class="h-[120px] w-[120px] rounded-xl object-cover" />
-              </div>
-            </div>
-            <div class="w-full">
-              <div>
-                <p class="mb-2 text-xl text-[#11a2f3]">
-                  <span>TS BS. </span>
-                  <strong>{{ item.info.name }} | {{ nameDepartment }} </strong>
-                </p>
-                <p>
-                  <strong>Chuyên trị: </strong>
-                </p>
-                <p>
-                  <strong>Lịch khám: </strong>
-                </p>
-              </div>
-
-              <div class="tab justify-end">
-                <div class="tab-item">
-                  <p class="text-center text-xl font-medium text-[#11a2f3]">Xem chi tiết</p>
-                </div>
-                <div class="tab-item active">
-                  <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleBookingNow(item)">
-                    Đặt khám ngay
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        </template>
       </template>
       <div class="mx-auto w-[900px]">
         <BasePagination

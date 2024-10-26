@@ -27,17 +27,22 @@
           <div class="header">
             <p class="text-center text-2xl font-semibold">Vui lòng chọn gói khám</p>
           </div>
-          <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
-            <div class="card-item" @click="choosePackage(item)">
-              <img src="/images/bac_si_gia_dinh.png" alt="" />
-              <div class="ml-3 w-full">
-                <p class="text-2xl font-medium">{{ item.name }}</p>
-                <div class="flex items-center justify-between">
-                  <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
+          <template v-if="!dataPackage.length">
+            <BaseEmpty />
+          </template>
+          <template v-else>
+            <div v-for="(item, index) in dataPackage" :key="index" class="flex items-center justify-center">
+              <div class="card-item" @click="choosePackage(item)">
+                <img src="/images/bac_si_gia_dinh.png" alt="" />
+                <div class="ml-3 w-full">
+                  <p class="text-2xl font-medium">{{ item.name }}</p>
+                  <div class="flex items-center justify-between">
+                    <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </template>
           <div class="mx-[26px] mb-[26px]">
             <BasePagination
               v-model:page-index="query.pageIndex"
