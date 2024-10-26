@@ -114,7 +114,12 @@
                 placeholder="Vui lòng nhập ghi chú"
               />
             </div>
-            <BaseButton :loading="isLoadingBtn" size="small" class="mt-8" @click="handleClickContinue"
+            <BaseButton
+              :loading="isLoadingBtn"
+              :disabled="disabled"
+              size="small"
+              class="mt-8"
+              @click="handleClickContinue"
               >Tiếp tục</BaseButton
             >
           </div>
@@ -267,6 +272,10 @@ const handleBooking = async () => {
     console.log(error)
   }
 }
+
+const disabled = computed(() => {
+  return !hour.value
+})
 </script>
 
 <style scoped lang="scss">
