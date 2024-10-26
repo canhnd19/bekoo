@@ -108,6 +108,7 @@
       </template>
       <div class="mx-auto w-[900px]">
         <BasePagination
+          v-if="dataPackage.length || dataDoctors.length"
           v-model:page-index="query.pageIndex"
           v-model:page-size="query.pageSize"
           :query="query"
