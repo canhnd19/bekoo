@@ -37,7 +37,7 @@
   <PopupConfirmDelete
     :name="packageRow.name"
     type="gói khám"
-    :is-loading-delete="isLoadingDelete"
+    :is-loading-button="isLoadingButton"
     @delete="deleteDepartment"
   />
 </template>
@@ -65,7 +65,7 @@ onMounted(() => {
 const packageRow = ref<IPackage>({} as IPackage)
 const data = ref<IPackage[]>([])
 const isLoading = ref<boolean>(false)
-const isLoadingDelete = ref<boolean>(false)
+const isLoadingButton = ref<boolean>(false)
 const props = withDefaults(defineProps<IProps>(), {
   departmentId: ''
 })
@@ -118,14 +118,14 @@ const handleDelete = (data: IPackage) => {
 
 const deleteDepartment = async () => {
   try {
-    isLoadingDelete.value = true
+    isLoadingButton.value = true
     const rs = await apiSpecialize.detetePackage(packageRow.value.id)
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     getListPackage()
   } catch (error) {
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     console.log(error)
   }
 }

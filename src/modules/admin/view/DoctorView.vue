@@ -47,7 +47,7 @@
   <PopupConfirmDelete
     :name="doctorRow.info?.email"
     type="bác sĩ"
-    :is-loading-delete="isLoadingDelete"
+    :is-loading-button="isLoadingButton"
     @delete="deleteDoctor"
   />
 </template>
@@ -68,7 +68,7 @@ const { setOpenPopup } = useBaseStore()
 
 const data = ref<IDoctor[]>([])
 const doctorRow = ref<IDoctor>({} as IDoctor)
-const isLoadingDelete = ref<boolean>(false)
+const isLoadingButton = ref<boolean>(false)
 const query = ref<IQueryFilter>({
   ...DEFAULT_QUERY_PAGINATION,
   name: ''
@@ -99,14 +99,14 @@ const handleDeleteUser = (data: IDoctor) => {
 
 const deleteDoctor = async () => {
   try {
-    isLoadingDelete.value = true
+    isLoadingButton.value = true
     const rs = await apiDoctor.deteteDoctor([doctorRow.value.id])
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-delete', false)
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     getAllDoctor()
   } catch (error) {
-    isLoadingDelete.value = false
+    isLoadingButton.value = false
     console.log(error)
   }
 }
