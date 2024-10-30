@@ -266,7 +266,7 @@
           <ElInput
             v-model="doctorCreate.trainingBy"
             class="input"
-            style="height: 50px; width: 500px"
+            style="width: 500px"
             :autosize="{ minRows: 2 }"
             type="textarea"
             placeholder="Vui lòng nhập mô tả"
@@ -277,7 +277,7 @@
           <ElInput
             v-model="doctorCreate.description"
             class="input"
-            style="height: 50px; width: 500px"
+            style="width: 500px"
             :autosize="{ minRows: 2 }"
             type="textarea"
             placeholder="Vui lòng nhập mô tả"
@@ -344,11 +344,20 @@
           </ElForm>
         </div>
       </div>
+      <div class="text-2xl font-bold">Công việc</div>
+
+      <p class="text-label">Số lượng người khám tối đa trong một ngày</p>
+      <ElInput
+        v-model="maxPaitentADay"
+        class="input"
+        style="height: 50px; width: 500px"
+        placeholder="Vui lòng nhập địa chỉ hiện tại"
+      />
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
         <BaseButton type="plain" size="small" class="w-20" @click="handleCancel">Hủy</BaseButton>
-        <BaseButton :disabled="disabled" :loading="loadingBtn" size="small" class="w-32" @click="handleCreateUser"
+        <BaseButton :disabled="disabled" :loading="loadingBtn" size="small" class="w-32" @click="handleCreateDoctor"
           >Tạo bác sĩ</BaseButton
         >
       </div>
@@ -383,6 +392,13 @@ const districts = ref<IDistrict[]>([])
 const wards = ref<IWard[]>([])
 const codeProvince = ref<number | string>('')
 const codeDistrict = ref<number | string>('')
+const province = ref<IProvince[]>([])
+const checkDob = ref<boolean>(false)
+const checkGender = ref<boolean>(false)
+const checkProvince = ref<boolean>(false)
+const checkValDistrict = ref<boolean>(false)
+const checkValWard = ref<boolean>(false)
+const maxPaitentADay = ref<string>('')
 const doctorCreate = ref<DoctorReq>({
   trainingBy: '',
   description: '',
@@ -401,13 +417,6 @@ const doctorCreate = ref<DoctorReq>({
     gender: ''
   }
 })
-const province = ref<IProvince[]>([])
-const checkDob = ref<boolean>(false)
-const checkGender = ref<boolean>(false)
-const checkProvince = ref<boolean>(false)
-const checkValDistrict = ref<boolean>(false)
-const checkValWard = ref<boolean>(false)
-
 const getListProvince = async () => {
   try {
     loading.value = true
@@ -464,13 +473,15 @@ const blurWard = () => {
   }
 }
 
-const handleCreateUser = async () => {
+const handleCreateDoctor = async () => {
   try {
     loadingBtn.value = true
+
     const rs = await apiDoctor.createDoctor({
       ...doctorCreate.value,
       user: { ...doctorCreate.value.user, dob: useConvertUTCTime(doctorCreate.value.user.dob, 'FROM') }
     })
+    if (maxPaitentADay.value) await apiDoctor.setPatientADay({ id: rs.value.id, value: maxPaitentADay.value })
     ElMessage.success(rs.message)
     setOpenPopup('popup-add-doctor', false)
     doctorCreate.value = {

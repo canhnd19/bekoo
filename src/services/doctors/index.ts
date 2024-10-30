@@ -8,7 +8,7 @@ import useRemoveParams from '@/composables/useRemoveParams'
 
 export default class DoctorService {
   prefix = 'doctor'
-  async createDoctor(body: DoctorReq): Promise<any> {
+  async createDoctor(body: DoctorReq): Promise<IResponse<IDoctor>> {
     try {
       const rs = await request.post(`${this.prefix}`, body)
       return Promise.resolve(rs.data)
@@ -52,6 +52,14 @@ export default class DoctorService {
   async getDoctorById(id: string): Promise<IResponse<IDoctor>> {
     try {
       const rs = await requestQuery.get(`${this.prefix}/id/${id}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async setPatientADay(body: Record<string, any>): Promise<IResposeMessage> {
+    try {
+      const rs = await request.put(`${this.prefix}/day`, body)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
