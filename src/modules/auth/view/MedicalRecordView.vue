@@ -1,9 +1,6 @@
 <template>
-  <template v-if="isLoading">
-    <PageLoading />
-  </template>
-  <div v-else class="bg-[#e8f2f7]">
-    <div class="container">
+  <div class="bg-[#e8f2f7]">
+    <div class="container pb-10 pt-2">
       <div class="mb-10">
         <p class="my-5 flex items-center justify-start space-x-2">
           <span class="cursor-pointer text-base font-semibold" @click="handleClickHome">Trang chủ</span>
@@ -12,8 +9,43 @@
         </p>
       </div>
       <p class="text-center text-4xl font-semibold text-primary">Hồ sơ bệnh nhân</p>
+
+      <template v-if="isLoading">
+        <BaseLoading />
+      </template>
+      <template v-else-if="!medicalRecord.length">
+        <BaseEmpty />
+      </template>
+      <template v-else>
+        <div v-for="(item, index) in medicalRecord" :key="index" class="mx-auto my-4 w-[600px]">
+          <div class="cursor-pointer space-y-2 rounded-lg border border-solid bg-white p-6 hover:border-[#00b5f1]">
+            <p>
+              <span>Họ và tên: </span>
+              <strong>{{ item.name }}</strong>
+            </p>
+            <p>
+              <span>Ngày khám: </span>
+              <strong>{{ item.dateOfVisit }}</strong>
+            </p>
+            <p>
+              <span>Chuẩn đoán: </span>
+              <strong>{{ item.diagnosis }}</strong>
+            </p>
+            <p>
+              <span>Ghi chú của bác sĩ: </span>
+              <strong>{{ item.doctorNotes }}</strong>
+            </p>
+            <p>
+              <span>Đơn thuốc: </span>
+              <strong>{{ item.prescribedMedication }}</strong>
+            </p>
+          </div>
+        </div>
+      </template>
       <div class="add">
-        <div class="rounded-full bg-white p-1"><BaseIcon name="add-user" size="14" class="text-primary" /></div>
+        <div class="rounded-full bg-white p-1">
+          <BaseIcon name="add-user" size="14" class="text-primary" />
+        </div>
         <span class="text-sm text-white" @click="setOpenPopup('popup-add-medical-record')">Thêm hồ sơ</span>
       </div>
     </div>
@@ -29,7 +61,7 @@
 import router from '@/router'
 import { apiPatient } from '@/services'
 
-import type { MedicalRecordReq } from '@/types/user.types'
+import type { MedicalRecordReq, MedicalRecordRes } from '@/types/user.types'
 
 import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
@@ -47,11 +79,12 @@ onMounted(() => {
 const { patient } = useAuthStore()
 const isLoading = ref<boolean>(false)
 const isLoadingButton = ref<boolean>(false)
+const medicalRecord = ref<MedicalRecordRes[]>([])
 const getMedicalRecoed = async () => {
   try {
     isLoading.value = true
     const rs = await apiPatient.getMedicalRecord(patient.id)
-    console.log('🚀 ~ getMedicalRecoed ~ rs:', rs)
+    medicalRecord.value = rs.value.contentResponse
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
@@ -89,6 +122,6 @@ const handleAddMedicalRecord = async (data: MedicalRecordReq) => {
   border: none;
   background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%) !important;
   border-radius: 8px;
-  @apply flex w-32 cursor-pointer items-center justify-center space-x-2;
+  @apply mx-auto flex w-32 cursor-pointer items-center justify-center space-x-2;
 }
 </style>

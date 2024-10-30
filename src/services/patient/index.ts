@@ -1,7 +1,7 @@
 import request from '@/plugin/request'
 
 import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
-import type { IPatient, InfoPatientReq, MedicalRecordReq } from '@/types/user.types'
+import type { IPatient, InfoPatientReq, MedicalRecordReq, MedicalRecordRes } from '@/types/user.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
 
@@ -25,7 +25,7 @@ export default class PatientService {
     }
   }
 
-  async getMedicalRecord(id: string): Promise<IResponse<IResponseTable<IPatient[]>>> {
+  async getMedicalRecord(id: string): Promise<IResponse<IResponseTable<MedicalRecordRes[]>>> {
     try {
       const rs = await request.get(`${this.prefix}/history/${id}`)
       return Promise.resolve(rs.data)

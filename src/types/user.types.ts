@@ -61,12 +61,19 @@ export interface IPatient {
   info: IUser
 }
 
-export interface MedicalRecordReq {
-  patientId: string
+export interface IMedicalRecord {
   name: string
   dateOfVisit: string
   diagnosis: string
   treatment: string
   doctorNotes: string
   prescribedMedication: string
+}
+
+export interface MedicalRecordReq extends IMedicalRecord {
+  patientId: string
+}
+
+export interface MedicalRecordRes extends IMedicalRecord {
+  id: string
 }
