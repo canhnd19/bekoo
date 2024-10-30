@@ -7,7 +7,7 @@ import useRemoveParams from '@/composables/useRemoveParams'
 
 export default class PatientService {
   prefix = 'patient'
-  async updatePatientInfo(body: InfoPatientReq): Promise<any> {
+  async updatePatientInfo(body: InfoPatientReq): Promise<IResponse<IPatient>> {
     try {
       const rs = await request.post(`${this.prefix}`, useRemoveParams(body))
       return Promise.resolve(rs.data)
