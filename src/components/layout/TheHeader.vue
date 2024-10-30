@@ -56,6 +56,7 @@
         <div>
           <ul>
             <li class="option-label" @click="router.push({ name: 'Users' })">Quản lý</li>
+            <li class="option-label" @click="handleSeeMedicalRecord">Hồ sơ bệnh án</li>
             <li class="option-label" @click="router.push({ name: 'EditUser' })">Sửa thông tin cá nhân</li>
             <li class="option-label" @click="router.push({ name: 'ChangePassword' })">Thay đổi mật khẩu</li>
             <li class="option-label" @click="logout">Đăng xuất</li>
@@ -79,7 +80,16 @@ import { CONTACT_FOR_COOPERATION, INSTRUCT, MEDICAL_SERVICES, NEWS } from '../..
 
 const { logout } = useAuthStore()
 const router = useRouter()
-const { user } = useAuthStore()
+const { user, patient } = useAuthStore()
+
+const handleSeeMedicalRecord = () => {
+  if (patient.id) {
+    router.push({ name: 'MedicalRecord', params: { id: patient.id } })
+  } else {
+    ElMessage.warning('Vui lòng cập nhật Thông tin bệnh nhân')
+    router.push({ name: 'EditUser' })
+  }
+}
 </script>
 <style scoped lang="scss">
 .box-shadow {

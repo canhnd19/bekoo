@@ -1,5 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+const TheLayout = () => import('@/components/layout/TheLayout.vue')
+
 const AuthRouter: RouteRecordRaw[] = [
   {
     path: '/login',
@@ -56,6 +58,20 @@ const AuthRouter: RouteRecordRaw[] = [
       auth: false
     },
     name: 'EditUser'
+  },
+  {
+    path: '/medical-record',
+    component: TheLayout,
+    children: [
+      {
+        path: ':id',
+        component: () => import('../view/MedicalRecordView.vue'),
+        meta: {
+          auth: true
+        },
+        name: 'MedicalRecord'
+      }
+    ]
   }
 ]
 

@@ -153,15 +153,6 @@
             placeholder="Vui lòng nhập địa chỉ hiện tại"
           />
         </div>
-        <div class="space-y-2">
-          <p class="text-label">Số bảo hiểm y tế</p>
-          <ElInput
-            v-model="infoPatient.healthInsuranceNumber"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Vui lòng nhập số bảo hiểm y tế"
-          />
-        </div>
       </div>
       <div class="flex justify-end">
         <BaseButton :disabled="disabled" :loading="loadingBtn" size="large" class="w-36" @click="handleEdit"
@@ -247,7 +238,7 @@ import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 
-const { user, patient } = useAuthStore()
+const { user, patient, getPatientInfo } = useAuthStore()
 onMounted(() => {
   getListProvince()
 })
@@ -377,6 +368,7 @@ const handleUpdate = async () => {
   try {
     loadingBtnUpdate.value = true
     const rs = await apiPatient.updatePatientInfo(infoPatient)
+    await getPatientInfo()
     ElMessage.success(rs.message)
     router.push({ name: 'Home' })
     loadingBtnUpdate.value = false
