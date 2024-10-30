@@ -42,4 +42,12 @@ export default class PatientService {
       return Promise.reject(error)
     }
   }
+  async deleteMedicalRecord(id: string): Promise<IResposeMessage> {
+    try {
+      const rs = await request.delete(`${this.prefix}/history/${id}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }

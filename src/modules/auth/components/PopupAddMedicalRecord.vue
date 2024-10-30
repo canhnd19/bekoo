@@ -3,14 +3,9 @@
     <template #title> Thêm hồ sơ bệnh án </template>
     <div class="space-y-3">
       <div class="style-flex">
-        <div class="mr-[86px] space-y-2">
-          <span class="text-label">Họ và tên </span>
-          <ElInput
-            v-model="medicalRecord.name"
-            class="input"
-            style="height: 50px; width: 400px"
-            placeholder="VÍ DỤ: NGỌ ĐỨC CẢNH"
-          />
+        <div class="space-y-2">
+          <p class="text-label">Họ và tên</p>
+          <ElInput v-model="medicalRecord.name" class="input" style="height: 50px; width: 400px" />
         </div>
         <div class="space-y-2">
           <span class="text-label"> Ngày khám </span>
@@ -113,6 +108,7 @@ const handleAdd = () => {
   @apply text-xl font-medium text-[#003553];
 }
 :deep(.date-picker.el-input) {
+  display: flex;
   height: 50px;
   width: 400px;
   .el-input__wrapper {

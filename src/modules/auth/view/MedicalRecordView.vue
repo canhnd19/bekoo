@@ -18,7 +18,10 @@
       </template>
       <template v-else>
         <div v-for="(item, index) in medicalRecord" :key="index" class="mx-auto my-4 w-[600px]">
-          <div class="cursor-pointer space-y-2 rounded-lg border border-solid bg-white p-6 hover:border-[#00b5f1]">
+          <div
+            class="cursor-pointer space-y-2 rounded-lg border border-solid bg-white p-6 hover:border-[#00b5f1]"
+            @click="isActive = item.id"
+          >
             <p>
               <span>Họ và tên: </span>
               <strong>{{ item.name }}</strong>
@@ -38,6 +41,10 @@
             <p>
               <span>Đơn thuốc: </span>
               <strong>{{ item.prescribedMedication }}</strong>
+            </p>
+            <p v-if="isActive === item.id" class="btn-delete" @click="handleDelete(item)">
+              <BaseIcon name="delete" />
+              <span>Xóa</span>
             </p>
           </div>
         </div>
@@ -79,7 +86,9 @@ onMounted(() => {
 const { patient } = useAuthStore()
 const isLoading = ref<boolean>(false)
 const isLoadingButton = ref<boolean>(false)
+const isLoadingDetele = ref<boolean>(false)
 const medicalRecord = ref<MedicalRecordRes[]>([])
+const isActive = ref<string>('')
 const getMedicalRecoed = async () => {
   try {
     isLoading.value = true
@@ -113,7 +122,18 @@ const handleAddMedicalRecord = async (data: MedicalRecordReq) => {
   }
 }
 
-// dob: useConvertUTCTime(userSignUp.value.dob, 'FROM')
+const handleDelete = async (data: MedicalRecordRes) => {
+  try {
+    isLoadingDetele.value = true
+    const rs = await apiPatient.deleteMedicalRecord(data.id)
+    ElMessage.success(rs.message)
+    isLoadingDetele.value = false
+    getMedicalRecoed()
+  } catch (error) {
+    console.log(error)
+    isLoadingDetele.value = false
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -123,5 +143,9 @@ const handleAddMedicalRecord = async (data: MedicalRecordReq) => {
   background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%) !important;
   border-radius: 8px;
   @apply mx-auto flex w-32 cursor-pointer items-center justify-center space-x-2;
+}
+.btn-delete {
+  background-color: rgba(253, 57, 122, 0.1);
+  @apply mx-auto flex w-24 items-center justify-center space-x-1 rounded-lg py-1 text-[#ff2e2e];
 }
 </style>
