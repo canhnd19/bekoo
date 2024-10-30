@@ -5,7 +5,6 @@
   <div v-else class="min-h-screen bg-[#e8f2f7]">
     <div class="container space-y-4 px-20 pb-6">
       <div class="pt-6 text-2xl font-bold">Thông tin cá nhân</div>
-
       <div class="flex justify-between">
         <div class="flex w-[500px] justify-center">
           <div class="relative w-40">
@@ -154,22 +153,95 @@
             placeholder="Vui lòng nhập địa chỉ hiện tại"
           />
         </div>
+        <div class="space-y-2">
+          <p class="text-label">Số bảo hiểm y tế</p>
+          <ElInput
+            v-model="infoPatient.healthInsuranceNumber"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập số bảo hiểm y tế"
+          />
+        </div>
       </div>
-
       <div class="flex justify-end">
         <BaseButton :disabled="disabled" :loading="loadingBtn" size="large" class="w-40" @click="handleEdit"
           >Sửa</BaseButton
         >
+      </div>
+      <div class="pt-6 text-2xl font-bold">Thông tin bệnh nhân</div>
+      <div class="style-flex">
+        <div class="space-y-2">
+          <p class="text-label">Số bảo hiểm y tế</p>
+          <ElInput
+            v-model="infoPatient.healthInsuranceNumber"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập số bảo hiểm y tế"
+          />
+        </div>
+        <div class="space-y-2">
+          <p class="text-label">Nhóm máu</p>
+          <ElInput
+            v-model="infoPatient.bloodType"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Vui lòng nhập nhóm máu"
+          />
+        </div>
+      </div>
+      <div class="pt-6 text-2xl font-bold">Thông tin liên hệ khẩn cấp</div>
+      <div class="style-flex">
+        <div class="space-y-2">
+          <p class="text-label">Tên</p>
+          <ElInput
+            v-model="infoPatient.emergencyContactCommand.name"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Nhập tên người liên hệ khẩn cấp"
+          />
+        </div>
+        <div class="space-y-2">
+          <p class="text-label">Số điện thoại</p>
+          <ElInput
+            v-model="infoPatient.emergencyContactCommand.phone"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Nhập số điện thoại người liên hệ khẩn cấp"
+          />
+        </div>
+      </div>
+      <div class="style-flex">
+        <div class="space-y-2">
+          <p class="text-label">Địa chỉ</p>
+          <ElInput
+            v-model="infoPatient.emergencyContactCommand.address"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Nhập địa chỉ người liên hệ khẩn cấp"
+          />
+        </div>
+        <div class="space-y-2">
+          <p class="text-label">Mối quan hệ với bênh nhân</p>
+          <ElInput
+            v-model="infoPatient.emergencyContactCommand.relationship"
+            class="input"
+            style="height: 50px; width: 500px"
+            placeholder="Nhập mối quan hệ giữa người liên hệ khẩn cấp và bệnh nhân"
+          />
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <BaseButton :loading="loadingBtnUpdate" size="large" class="w-40" @click="handleUpdate">Cập nhật</BaseButton>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { apiAuth, apiParams, apiUpload } from '@/services'
+import { apiAuth, apiParams, apiPatient, apiUpload } from '@/services'
 
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
-import type { UserReq } from '@/types/user.types'
+import type { InfoPatientReq, UserReq } from '@/types/user.types'
 
 import { useAuthStore } from '@/stores/auth'
 
@@ -182,6 +254,7 @@ onMounted(() => {
 const file = ref<Record<string, any>>({})
 const loading = ref<boolean>(false)
 const loadingBtn = ref<boolean>(false)
+const loadingBtnUpdate = ref<boolean>(false)
 const province = ref<IProvince[]>([])
 const districts = ref<IDistrict[]>([])
 const wards = ref<IWard[]>([])
@@ -197,6 +270,18 @@ const userEdit = ref<UserReq>({
   commune: user.commune,
   aboutAddress: user.aboutAddress
 } as UserReq)
+
+const infoPatient = reactive<InfoPatientReq>({
+  userId: user.id,
+  healthInsuranceNumber: '',
+  bloodType: '',
+  emergencyContactCommand: {
+    name: '',
+    phone: '',
+    address: '',
+    relationship: ''
+  }
+})
 const checkProvince = ref<boolean>(false)
 const checkValDistrict = ref<boolean>(false)
 const checkValWard = ref<boolean>(false)
@@ -285,9 +370,21 @@ const uploadFile = async () => {
   const formData = new FormData()
   formData.append('fileImage', file.value.raw)
   formData.append('id', user.id)
+  await apiUpload.uploadFile(formData)
+}
 
-  const rs = await apiUpload.uploadFile(formData)
-  console.log('🚀 ~ uploadFile ~ rs:', rs)
+const handleUpdate = async () => {
+  try {
+    loadingBtnUpdate.value = true
+    const rs = await apiPatient.updatePatientInfo(infoPatient)
+    console.log('🚀 ~ handleUpdate ~ rs:', rs)
+    ElMessage.success(rs.message)
+    router.push({ name: 'Home' })
+    loadingBtnUpdate.value = false
+  } catch (error) {
+    loadingBtnUpdate.value = false
+    console.log(error)
+  }
 }
 </script>
 

@@ -38,3 +38,15 @@ export interface IUserTable {
   linkAvatar: string
   gender: string
 }
+
+export interface InfoPatientReq {
+  userId: string
+  healthInsuranceNumber: string
+  bloodType: string
+  emergencyContactCommand: {
+    name: string
+    phone: string
+    address: string
+    relationship: string
+  }
+}
