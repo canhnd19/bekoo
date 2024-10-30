@@ -28,7 +28,6 @@
           <ElInput v-model="medicalRecord.treatment" class="input" style="height: 50px; width: 400px" />
         </div>
       </div>
-
       <div class="style-flex">
         <div class="space-y-2">
           <p class="text-label">Ghi chú của bác sĩ</p>

@@ -32,6 +32,20 @@ const AdminRouter: RouteRecordRaw[] = [
         name: 'Departments'
       }
     ]
+  },
+  {
+    path: '/doctor',
+    component: AdminView,
+    children: [
+      {
+        path: ':id',
+        component: () => import('../view/MedicalScheduleView.vue'),
+        meta: {
+          auth: true
+        },
+        name: 'MedicalSchedule'
+      }
+    ]
   }
 ]
 

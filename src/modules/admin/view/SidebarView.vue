@@ -7,7 +7,7 @@
       <div
         class="h-16 w-full cursor-pointer text-center hover:!text-primary"
         :class="{ active: menu.routerName === route.name }"
-        @click="router.push({ name: menu.routerName })"
+        @click="router.push({ name: menu.routerName, params: { id: menu.id } })"
       >
         <BaseIcon :name="menu.icon" class="mx-auto w-full" />
         <span class="text-xs">{{ menu.title }}</span>
@@ -17,24 +17,33 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
+
 const router = useRouter()
 const route = useRoute()
+const { user } = useAuthStore()
 
 const listMenu = [
   {
-    title: 'Users',
+    title: 'Người dùng',
     icon: 'menu-user',
     routerName: 'Users'
   },
   {
-    title: 'Doctors',
+    title: 'Bác sĩ',
     icon: 'menu-user',
     routerName: 'Doctors'
   },
   {
-    title: 'Departments',
+    title: 'Chuyên khoa',
     icon: 'menu-user',
     routerName: 'Departments'
+  },
+  {
+    title: 'Lịch khám',
+    icon: 'menu-user',
+    routerName: 'MedicalSchedule',
+    id: user.id
   }
 ]
 </script>
