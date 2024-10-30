@@ -26,6 +26,7 @@ export interface IUser {
   dob: string
   gender: string
   linkAvatar: string
+  roles: []
   createdAt: string
   updatedAt: string
 }
@@ -49,4 +50,11 @@ export interface InfoPatientReq {
     address: string
     relationship: string
   }
+}
+
+export interface IPatient {
+  bloodType: string
+  healthInsuranceNumber: string
+  id: string
+  info: IUser
 }

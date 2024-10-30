@@ -19,7 +19,7 @@ app.use(createPinia())
 
 const init = async () => {
   const { isDesktop } = storeToRefs(useBaseStore())
-  const { getUserInfo } = useAuthStore()
+  const { getUserInfo, getPatientInfo } = useAuthStore()
   const isLoggedIn = Cookies.get('access_token') ? true : false
   isDesktop.value = window.innerWidth > 1023
   // add event resize window
@@ -27,7 +27,9 @@ const init = async () => {
     isDesktop.value = window.innerWidth > 1023
   })
   if (isLoggedIn) {
+    // await Promise.all([getUserInfo(), getPatientInfo()])
     await getUserInfo()
+    await getPatientInfo()
   }
   app.use(router)
   app.mount('#app')

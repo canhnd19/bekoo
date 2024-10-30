@@ -1,14 +1,15 @@
 import request from '@/plugin/request'
 import requestQuery from '@/plugin/requestQuery'
-import { apiAuth } from '@/services'
+import { apiAuth, apiPatient } from '@/services'
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 
 import type { IBodyLogin } from '@/types/auth.types'
-import type { IUser } from '@/types/user.types'
+import type { IPatient, IUser } from '@/types/user.types'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<IUser>({} as IUser)
+  const patient = ref<IPatient>({} as IPatient)
   const access_token = Cookies.get('access_token') || ''
   const accessToken = ref(access_token)
   const isLoggedIn = computed(() => !!Cookies.get('access_token'))
@@ -19,6 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
       Cookies.set('access_token', accessToken.value, { expires: 3 })
       request.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
       await getUserInfo()
+      await getPatientInfo()
       return Promise.resolve(rs.value)
     } catch (error) {
       return Promise.reject(error)
@@ -53,5 +55,15 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { login, user, isLoggedIn, setBearerToken, getUserInfo, logout }
+  const getPatientInfo = async () => {
+    try {
+      const rs = await apiPatient.getPatientInfo(user.value.id)
+      patient.value = rs.value
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  return { login, user, isLoggedIn, setBearerToken, getUserInfo, logout, getPatientInfo, patient }
 })

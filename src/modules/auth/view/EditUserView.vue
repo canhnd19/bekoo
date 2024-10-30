@@ -164,7 +164,7 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <BaseButton :disabled="disabled" :loading="loadingBtn" size="large" class="w-40" @click="handleEdit"
+        <BaseButton :disabled="disabled" :loading="loadingBtn" size="large" class="w-36" @click="handleEdit"
           >Sửa</BaseButton
         >
       </div>
@@ -247,7 +247,7 @@ import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 
-const { user } = useAuthStore()
+const { user, patient } = useAuthStore()
 onMounted(() => {
   getListProvince()
 })
@@ -273,8 +273,8 @@ const userEdit = ref<UserReq>({
 
 const infoPatient = reactive<InfoPatientReq>({
   userId: user.id,
-  healthInsuranceNumber: '',
-  bloodType: '',
+  healthInsuranceNumber: patient.healthInsuranceNumber,
+  bloodType: patient.bloodType,
   emergencyContactCommand: {
     name: '',
     phone: '',
@@ -377,7 +377,6 @@ const handleUpdate = async () => {
   try {
     loadingBtnUpdate.value = true
     const rs = await apiPatient.updatePatientInfo(infoPatient)
-    console.log('🚀 ~ handleUpdate ~ rs:', rs)
     ElMessage.success(rs.message)
     router.push({ name: 'Home' })
     loadingBtnUpdate.value = false
