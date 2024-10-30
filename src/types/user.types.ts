@@ -58,3 +58,13 @@ export interface IPatient {
   id: string
   info: IUser
 }
+
+export interface MedicalRecordReq {
+  patientId: string
+  name: string
+  dateOfVisit: string
+  diagnosis: string
+  treatment: string
+  doctorNotes: string
+  prescribedMedication: string
+}

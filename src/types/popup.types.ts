@@ -9,5 +9,6 @@ export type POPUP_NAME =
   | 'popup-warning-choose-doctor'
   | 'popup-confirm-booking'
   | 'popup-edit-department'
+  | 'popup-add-medical-record'
 
 export type DRAWER_NAME = 'drawer-root'
