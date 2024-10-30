@@ -26,7 +26,7 @@ export interface IUser {
   dob: string
   gender: string
   linkAvatar: string
-  roles: []
+  roles: [{ name: string }]
   createdAt: string
   updatedAt: string
 }
