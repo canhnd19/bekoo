@@ -5,7 +5,7 @@ export interface IBookingQuery extends IQuery {
 }
 
 export interface IBookingRequest {
-  userId: string
+  patientId: string
   doctorId: string
   specializeId: string
   checkIn: string

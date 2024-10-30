@@ -153,7 +153,7 @@ import { useBaseStore } from '@/stores/base'
 import PopupConfirmBooking from '../components/PopupConfirmBooking.vue'
 
 const { setOpenPopup } = useBaseStore()
-const { user } = useAuthStore()
+const { patient } = useAuthStore()
 const route = useRoute()
 onMounted(() => {
   getListPackage()
@@ -210,7 +210,7 @@ const handleClickChoosePackage = () => {
   day.value = new Date()
   hour.value = ''
   bookingRequest.value = {
-    userId: '',
+    patientId: '',
     doctorId: '',
     specializeId: '',
     checkIn: '',
@@ -244,7 +244,7 @@ const handleClickContinue = async () => {
     }
     bookingRequest.value = {
       ...bookingRequest.value,
-      userId: user.id,
+      patientId: patient.id,
       doctorId: route.params.id as string,
       specializeId: packageChoose.value.id,
       checkIn: dateConvert
