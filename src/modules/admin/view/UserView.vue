@@ -38,7 +38,6 @@
       <ElTableColumn label="ACTION" width="120" align="right">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
-            <BaseIcon name="edit" @click="handleEditUser" />
             <BaseIcon name="delete" @click="handleDeleteUser(row)" />
           </div>
         </template>
@@ -91,8 +90,6 @@ const getAllUser = async (type: string = '') => {
     console.log(error)
   }
 }
-
-const handleEditUser = () => {}
 
 const handleDeleteUser = (data: IUserTable) => {
   userRow.value = data

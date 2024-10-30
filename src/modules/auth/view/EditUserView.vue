@@ -9,14 +9,14 @@
       <div class="flex justify-between">
         <div class="flex w-[500px] justify-center">
           <div class="relative w-40">
-            <BaseIcon v-if="!user.linkAvatar" name="avatar-default" />
+            <BaseIcon v-if="!user.linkAvatar" name="avatar-default" size="170" />
             <img v-else :src="user.linkAvatar" alt="" class="h-40 w-full rounded-full object-cover" />
             <ElUpload
               :show-file-list="false"
               :auto-upload="false"
               accept=".png, .jpg, .webp, .jpeg"
               :on-change="handleSelectFile"
-              class="absolute bottom-4 right-1"
+              class="absolute bottom-5 right-2"
             >
               <div class="border-border-table rounded-full border border-solid bg-white p-2">
                 <BaseIcon name="edit-avatar" />
