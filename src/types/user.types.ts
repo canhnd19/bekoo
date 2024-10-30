@@ -40,22 +40,24 @@ export interface IUserTable {
   gender: string
 }
 
+export interface EmergencyContact {
+  name: string
+  phone: string
+  address: string
+  relationship: string
+}
 export interface InfoPatientReq {
   userId: string
   healthInsuranceNumber: string
   bloodType: string
-  emergencyContactCommand: {
-    name: string
-    phone: string
-    address: string
-    relationship: string
-  }
+  emergencyContactCommand: EmergencyContact
 }
 
 export interface IPatient {
   bloodType: string
   healthInsuranceNumber: string
   id: string
+  emergencyContacts: [EmergencyContact]
   info: IUser
 }
 

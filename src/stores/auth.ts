@@ -59,6 +59,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       if (user.value.roles[0].name === 'USER') {
         const rs = await apiPatient.getPatientInfo(user.value.id)
+        console.log('🚀 ~ getPatientInfo ~ rs:', rs)
         patient.value = rs.value ? rs.value : ({} as IPatient)
         return Promise.resolve()
       }

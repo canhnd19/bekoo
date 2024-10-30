@@ -267,10 +267,10 @@ const infoPatient = reactive<InfoPatientReq>({
   healthInsuranceNumber: patient.healthInsuranceNumber,
   bloodType: patient.bloodType,
   emergencyContactCommand: {
-    name: '',
-    phone: '',
-    address: '',
-    relationship: ''
+    name: patient.emergencyContacts[0].name,
+    phone: patient.emergencyContacts[0]?.phone,
+    address: patient.emergencyContacts[0]?.address,
+    relationship: patient.emergencyContacts[0]?.relationship
   }
 })
 const checkProvince = ref<boolean>(false)
