@@ -12,7 +12,7 @@
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
     <ElTableColumn label="tên bệnh nhân">
       <template #default="{ row }">
-        <p>{{ row.user }}</p>
+        <p>{{ row.patient.info.name }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="gói khám">
@@ -32,7 +32,7 @@
     </ElTableColumn>
     <ElTableColumn label="thời gian khám">
       <template #default="{ row }">
-        <p>{{ row.checkIn }}</p>
+        <p>{{ useConvertUTCTime(row.checkIn, 'FROM') }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="thời gian khám">
@@ -57,6 +57,8 @@ import { apiBooking } from '@/services'
 
 import type { IResBooking } from '@/types/booking.types'
 import type { IQuery } from '@/types/query.type'
+
+import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
 const data = ref<IResBooking[]>([])
 interface IProps {

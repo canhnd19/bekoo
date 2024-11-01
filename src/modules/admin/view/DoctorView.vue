@@ -1,48 +1,61 @@
 <template>
-  <div class="flex items-start justify-between">
-    <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
-    <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
-  </div>
-  <BaseTable
-    v-model:page="query.pageIndex"
-    v-model:limit="query.pageSize"
-    :data="data"
-    :query="query"
-    class="mt-6"
-    label="doctor"
-    @page-change="handlePageChange"
-    @limit-change="handleLimitChange"
-  >
-    <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-    <ElTableColumn label="NAME">
-      <template #default="{ row }">
-        <p>{{ row.info.name }}</p>
-      </template>
-    </ElTableColumn>
-    <ElTableColumn label="EMAIL">
-      <template #default="{ row }">
-        <p>{{ row.info.email }}</p>
-      </template>
-    </ElTableColumn>
-    <ElTableColumn label="PHONE NUMBER" width="200">
-      <template #default="{ row }">
-        <p>{{ row.info.phoneNumber }}</p>
-      </template>
-    </ElTableColumn>
-    <ElTableColumn label="GENDER" width="90">
-      <template #default="{ row }">
-        <p>{{ row.info.gender }}</p>
-      </template>
-    </ElTableColumn>
-    <ElTableColumn label="ACTION" width="120" align="right">
-      <template #default="{ row }">
-        <div class="flex items-center justify-end space-x-3">
-          <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
-          <BaseIcon name="delete" @click="handleDeleteUser(row)" />
-        </div>
-      </template>
-    </ElTableColumn>
-  </BaseTable>
+  <template v-if="!doctorId">
+    <div class="flex items-start justify-between">
+      <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
+      <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
+    </div>
+    <BaseTable
+      v-model:page="query.pageIndex"
+      v-model:limit="query.pageSize"
+      :data="data"
+      :query="query"
+      class="mt-6"
+      label="doctor"
+      @page-change="handlePageChange"
+      @limit-change="handleLimitChange"
+      @row-click="rowClick"
+    >
+      <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
+      <ElTableColumn label="NAME">
+        <template #default="{ row }">
+          <p>{{ row.info.name }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="EMAIL">
+        <template #default="{ row }">
+          <p>{{ row.info.email }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="PHONE NUMBER" width="200">
+        <template #default="{ row }">
+          <p>{{ row.info.phoneNumber }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="GENDER" width="90">
+        <template #default="{ row }">
+          <p>{{ row.info.gender }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="ACTION" width="120" align="right">
+        <template #default="{ row }">
+          <div class="flex items-center justify-end space-x-3">
+            <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
+            <BaseIcon name="delete" @click="handleDeleteUser(row)" />
+          </div>
+        </template>
+      </ElTableColumn>
+    </BaseTable>
+  </template>
+  <template v-else>
+    <div class="flex items-center justify-start">
+      <BaseIcon name="back" class="mr-3 cursor-pointer" @click="doctorId = ''" />
+      <p class="text-lg">{{ doctorRow.info.name }}</p>
+    </div>
+    <div class="pb-6 pt-4">
+      <BaseTab v-model="tabActive" :tabs="tabs" />
+      <component :is="component" :doctor-id="doctorId" />
+    </div>
+  </template>
   <PopupAddDoctor @created="getAllDoctor" />
   <PopupConfirmDelete
     :name="doctorRow.info?.email"
@@ -54,18 +67,24 @@
 
 <script setup lang="ts">
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
+// import router from '@/router'
 import { apiDoctor } from '@/services'
 
 import type { IQueryFilter } from '@/types/admin.types'
+import type { ITab } from '@/types/component.types'
 import type { IDoctor } from '@/types/doctor.types'
 
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddDoctor from '../components/PopupAddDoctor.vue'
 import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
+import TabAllDays from '../components/TabAllDays.vue'
+import TabDay from '../components/TabDay.vue'
 
 const { setOpenPopup } = useBaseStore()
-
+const doctorId = ref<string>('')
+const tabActive = ref<string>('day')
+const isConflictClick = ref<boolean>(false)
 const data = ref<IDoctor[]>([])
 const doctorRow = ref<IDoctor>({} as IDoctor)
 const isLoadingButton = ref<boolean>(false)
@@ -73,7 +92,18 @@ const query = ref<IQueryFilter>({
   ...DEFAULT_QUERY_PAGINATION,
   name: ''
 })
-
+const tabs = ref<ITab[]>([
+  {
+    id: 1,
+    title: 'Hôm nay',
+    tabValue: 'day'
+  },
+  {
+    id: 2,
+    title: 'Tất cả',
+    tabValue: 'allDays'
+  }
+])
 onMounted(() => {
   getAllDoctor()
 })
@@ -93,6 +123,7 @@ const getAllDoctor = async (type: string = '') => {
 }
 
 const handleDeleteUser = (data: IDoctor) => {
+  isConflictClick.value = true
   doctorRow.value = data
   setOpenPopup('popup-confirm-delete')
 }
@@ -130,6 +161,18 @@ const handleSearch = () => {
   }
   getAllDoctor('search')
 }
+const rowClick = (data: IDoctor) => {
+  if (isConflictClick.value) {
+    isConflictClick.value = false
+    return
+  }
+  doctorRow.value = data
+  doctorId.value = data.id
+  // router.push({ name: 'MedicalSchedule', params: { id: data.id } })
+}
+const component = computed(() => {
+  return tabActive.value === 'day' ? TabDay : TabAllDays
+})
 </script>
 
 <style scoped lang="scss">

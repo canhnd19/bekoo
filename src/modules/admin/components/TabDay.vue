@@ -12,7 +12,7 @@
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
     <ElTableColumn label="tên bệnh nhân">
       <template #default="{ row }">
-        <p>{{ row.user }}</p>
+        <p>{{ row.patient.info.name }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="gói khám">
@@ -40,7 +40,6 @@
         <p>{{ row.status }}</p>
       </template>
     </ElTableColumn>
-
     <!-- <ElTableColumn label="ACTION">
       <template #default="{ row }">
         <div class="flex items-center space-x-3">

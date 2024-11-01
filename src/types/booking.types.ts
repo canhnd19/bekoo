@@ -1,4 +1,6 @@
+import type { IPackage } from './package.types'
 import type { IQuery } from './query.type'
+import type { IPatient } from './user.types'
 
 export interface IBookingQuery extends IQuery {
   name: string
@@ -14,19 +16,8 @@ export interface IBookingRequest {
 
 export interface IResBooking {
   id: string
-  user: string
-  specialize: {
-    id: string
-    name: string
-    description: string
-    price: number | string
-    department: {
-      id: string
-      name: string
-      description: string
-      urlImage: string
-    }
-  }
+  patient: IPatient
+  specialize: IPackage
   checkIn: string
   status: string
 }
