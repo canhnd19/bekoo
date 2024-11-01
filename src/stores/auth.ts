@@ -58,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
   const getPatientInfo = async () => {
     try {
       if (user.value.patient?.info.roles[0].name === 'USER') {
-        const rs = await apiPatient.getPatientInfo(user.value.patient.id)
+        const rs = await apiPatient.getPatientInfo(user.value.patient.info.id)
         patient.value = rs.value ? rs.value : ({} as IPatient)
         return Promise.resolve()
       }

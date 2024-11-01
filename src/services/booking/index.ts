@@ -1,6 +1,6 @@
 import request from '@/plugin/request'
 
-import type { IBookingRequest } from '@/types/booking.types'
+import type { IBookingRequest, IResBooking } from '@/types/booking.types'
 import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
@@ -16,7 +16,10 @@ export default class BookingService {
     }
   }
 
-  async getMedicalScheduleDay(params: Record<string, any>, id: string): Promise<IResponse<IResponseTable<any>>> {
+  async getMedicalScheduleDay(
+    params: Record<string, any>,
+    id: string
+  ): Promise<IResponse<IResponseTable<IResBooking[]>>> {
     try {
       const rs = await request.get(`${this.prefix}/doctor/day/${id}`, {
         params: useRemoveParams(params)
@@ -27,7 +30,10 @@ export default class BookingService {
     }
   }
 
-  async getMedicalAllDay(params: Record<string, any>, id: string): Promise<IResponse<IResponseTable<any>>> {
+  async getMedicalScheduleAllDay(
+    params: Record<string, any>,
+    id: string
+  ): Promise<IResponse<IResponseTable<IResBooking[]>>> {
     try {
       const rs = await request.get(`${this.prefix}/doctor/${id}`, {
         params: useRemoveParams(params)

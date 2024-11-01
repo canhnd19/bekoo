@@ -1,5 +1,5 @@
 <template>
-  <!-- <BaseTable
+  <BaseTable
     v-model:page="query.pageIndex"
     v-model:limit="query.pageSize"
     :data="data"
@@ -10,33 +10,55 @@
     @limit-change="handleLimitChange"
   >
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-    <ElTableColumn label="NAME">
+    <ElTableColumn label="tên bệnh nhân">
       <template #default="{ row }">
-        <p>{{ row.name }}</p>
+        <p>{{ row.user }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="price">
+    <ElTableColumn label="gói khám">
       <template #default="{ row }">
-        <p>{{ row.price }}</p>
+        <p>{{ row.specialize.name }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="ACTION">
+    <ElTableColumn label="mô tả">
+      <template #default="{ row }">
+        <p>{{ row.specialize.description }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="giá khám">
+      <template #default="{ row }">
+        <p>{{ row.specialize.price }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="thời gian khám">
+      <template #default="{ row }">
+        <p>{{ row.checkIn }}</p>
+      </template>
+    </ElTableColumn>
+    <ElTableColumn label="thời gian khám">
+      <template #default="{ row }">
+        <p>{{ row.status }}</p>
+      </template>
+    </ElTableColumn>
+
+    <!-- <ElTableColumn label="ACTION">
       <template #default="{ row }">
         <div class="flex items-center space-x-3">
           <BaseIcon name="delete" @click="handleDelete(row)" />
         </div>
       </template>
-    </ElTableColumn>
-  </BaseTable> -->
-  <div>sdfbsdf</div>
+    </ElTableColumn> -->
+  </BaseTable>
 </template>
 
 <script setup lang="ts">
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiBooking } from '@/services'
 
+import type { IResBooking } from '@/types/booking.types'
 import type { IQuery } from '@/types/query.type'
 
+const data = ref<IResBooking[]>([])
 interface IProps {
   doctorId: string
 }
@@ -56,8 +78,7 @@ const getMedicalScheduleDay = async () => {
     query.value.loading = true
     const doctorId = props.doctorId
     const rs = await apiBooking.getMedicalScheduleDay(query.value, doctorId)
-    console.log('🚀 ~ getMedicalScheduleDay ~ rs:', rs)
-    // data.value = rs.value.contentResponse
+    data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
   } catch (error) {
@@ -65,8 +86,16 @@ const getMedicalScheduleDay = async () => {
     console.log(error)
   }
 }
+const handleLimitChange = (limit: unknown) => {
+  query.value.pageSize = limit as number
+  query.value.pageIndex = 1
+  getMedicalScheduleDay()
+}
 
-// const rs = await apiBooking.getMedicalAllDay(query.value, doctorId)
+const handlePageChange = (page: unknown) => {
+  query.value.pageIndex = page as number
+  getMedicalScheduleDay()
+}
 </script>
 
 <style scoped></style>

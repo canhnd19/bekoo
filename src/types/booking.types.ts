@@ -11,3 +11,22 @@ export interface IBookingRequest {
   checkIn: string
   note: string
 }
+
+export interface IResBooking {
+  id: string
+  user: string
+  specialize: {
+    id: string
+    name: string
+    description: string
+    price: number | string
+    department: {
+      id: string
+      name: string
+      description: string
+      urlImage: string
+    }
+  }
+  checkIn: string
+  status: string
+}
