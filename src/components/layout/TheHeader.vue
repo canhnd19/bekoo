@@ -46,7 +46,13 @@
         </BaseDropdown>
       </div>
 
-      <ElPopover v-if="user" placement="bottom" :width="200" trigger="click" popper-class="!p-4 !rounded-xl">
+      <ElPopover
+        v-if="user.doctor || user.patient"
+        placement="bottom"
+        :width="200"
+        trigger="click"
+        popper-class="!p-4 !rounded-xl"
+      >
         <template #reference>
           <div class="account relative">
             <BaseIcon name="user" class="mr-2.5" />

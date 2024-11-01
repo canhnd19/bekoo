@@ -11,7 +11,7 @@ const AdminRouter: RouteRecordRaw[] = [
         path: 'users',
         component: () => import('../view/UserView.vue'),
         meta: {
-          auth: false
+          auth: true
         },
         name: 'Users'
       },
@@ -19,7 +19,7 @@ const AdminRouter: RouteRecordRaw[] = [
         path: 'doctors',
         component: () => import('../view/DoctorView.vue'),
         meta: {
-          auth: false
+          auth: true
         },
         name: 'Doctors'
       },
@@ -27,7 +27,7 @@ const AdminRouter: RouteRecordRaw[] = [
         path: 'departments',
         component: () => import('../view/DepartmentView.vue'),
         meta: {
-          auth: false
+          auth: true
         },
         name: 'Departments'
       }
