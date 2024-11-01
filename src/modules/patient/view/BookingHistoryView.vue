@@ -1,6 +1,15 @@
 <template>
-  <div class="bg-[#e8f2f7] py-10">
-    <div class="container">
+  <div class="bg-[#e8f2f7]">
+    <div class="container pb-6">
+      <p class="flex items-center justify-start space-x-2 py-6">
+        <span class="cursor-pointer text-base font-semibold" @click="handleClickHome">Trang chủ</span>
+        <BaseIcon name="arrow-right" />
+        <span class="cursor-pointer font-semibold text-primary">Lịch sử khám bệnh</span>
+      </p>
+
+      <BaseSelect v-model="statusId" placeholder="Chọn giới tính" class="select" @change="handleFilter">
+        <ElOption v-for="(item, index) in FILTER" :key="index" :value="item.value" :label="item.label"> </ElOption>
+      </BaseSelect>
       <BaseTable
         v-model:page="query.pageIndex"
         v-model:limit="query.pageSize"
@@ -43,10 +52,13 @@
 
 <script setup lang="ts">
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
+import router from '@/router'
 import { apiBooking } from '@/services'
 
 import type { IQuery } from '@/types/query.type'
 import type { IHistoryBoking } from '@/types/user.types'
+
+import { FILTER } from '../constants/index'
 
 const route = useRoute()
 onMounted(() => {
@@ -63,7 +75,6 @@ const getDataBookingHistory = async () => {
     const patientId = route.params.id as string
     const rs = await apiBooking.getDataBookingHistory(patientId, statusId.value, query.value)
     data.value = rs.value.contentResponse
-    console.log('🚀 ~ getDataBookingHistory ~  data.value:', data.value)
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
   } catch (error) {
@@ -81,6 +92,26 @@ const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getDataBookingHistory()
 }
+const handleFilter = (data: number) => {
+  statusId.value = data
+  getDataBookingHistory()
+}
+const handleClickHome = () => {
+  router.push({ name: 'Home' })
+}
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.select {
+  :deep(.el-select) {
+    width: 500px;
+    .el-select__wrapper {
+      height: 50px;
+      border-radius: 8px;
+      .el-select__placeholder {
+        font-size: 16px;
+      }
+    }
+  }
+}
+</style>
