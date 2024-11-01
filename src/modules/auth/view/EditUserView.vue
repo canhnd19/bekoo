@@ -8,8 +8,17 @@
       <div class="flex justify-between">
         <div class="flex w-[500px] justify-center">
           <div class="relative w-40">
-            <BaseIcon v-if="!user.linkAvatar" name="avatar-default" size="170" />
-            <img v-else :src="user.linkAvatar" alt="" class="h-40 w-full rounded-full object-cover" />
+            <BaseIcon
+              v-if="!(user.doctor?.info.linkAvatar || user.patient?.info.linkAvatar)"
+              name="avatar-default"
+              size="170"
+            />
+            <img
+              v-else
+              :src="user.patient?.info ? user.patient?.info.linkAvatar : user.doctor?.info.linkAvatar"
+              alt=""
+              class="h-40 w-full rounded-full object-cover"
+            />
             <ElUpload
               :show-file-list="false"
               :auto-upload="false"
@@ -250,20 +259,20 @@ const province = ref<IProvince[]>([])
 const districts = ref<IDistrict[]>([])
 const wards = ref<IWard[]>([])
 const codeProvince = ref<number | string>('')
-const provinceName = ref<string>(user.province)
-const districtName = ref<string>(user.district)
-const wardName = ref<string>(user.commune)
+const provinceName = ref<string>(user.patient?.info ? user.patient.info.province : user.doctor!.info.province)
+const districtName = ref<string>(user.patient?.info ? user.patient.info.district : user.doctor!.info.district)
+const wardName = ref<string>(user.patient?.info ? user.patient.info.commune : user.doctor!.info.commune)
 const codeDistrict = ref<number | string>('')
 const userEdit = ref<UserReq>({
-  name: user.name,
-  province: user.province,
-  district: user.district,
-  commune: user.commune,
-  aboutAddress: user.aboutAddress
+  name: user.patient?.info ? user.patient.info.name : user.doctor!.info.name,
+  province: user.patient?.info ? user.patient.info.province : user.doctor!.info.province,
+  district: user.patient?.info ? user.patient.info.district : user.doctor!.info.district,
+  commune: user.patient?.info ? user.patient.info.commune : user.doctor!.info.commune,
+  aboutAddress: user.patient?.info ? user.patient.info.aboutAddress : user.doctor!.info.aboutAddress
 } as UserReq)
 
 const infoPatient = reactive<InfoPatientReq>({
-  userId: user.id,
+  userId: user.patient?.info ? user.patient.info.id : user.doctor!.info.id,
   healthInsuranceNumber: patient.healthInsuranceNumber,
   bloodType: patient.bloodType,
   emergencyContactCommand: {
@@ -338,7 +347,7 @@ const handleEdit = async () => {
     await uploadFile()
     const dataEdit = {
       ...userEdit.value,
-      id: user.id,
+      id: user.patient?.info ? user.patient.info.id : user.doctor!.info.id,
       province: provinceName.value,
       district: districtName.value,
       commune: wardName.value
@@ -354,13 +363,15 @@ const handleEdit = async () => {
 }
 const handleSelectFile = async (_file: Record<string, any>) => {
   file.value = _file
-  user.linkAvatar = URL.createObjectURL(file.value.raw)
+  user.patient?.info
+    ? (user.patient.info.linkAvatar = URL.createObjectURL(file.value.raw))
+    : (user.doctor!.info.linkAvatar = URL.createObjectURL(file.value.raw))
 }
 
 const uploadFile = async () => {
   const formData = new FormData()
   formData.append('fileImage', file.value.raw)
-  formData.append('id', user.id)
+  formData.append('id', user.patient?.info ? user.patient.info.id : user.doctor!.info.id)
   await apiUpload.uploadFile(formData)
 }
 
