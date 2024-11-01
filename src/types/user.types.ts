@@ -1,3 +1,5 @@
+import type { IDoctor } from './doctor.types'
+
 export interface UserReq {
   name: string
   phoneNumber: string
@@ -76,4 +78,9 @@ export interface MedicalRecordReq extends IMedicalRecord {
 
 export interface MedicalRecordRes extends IMedicalRecord {
   id: string
+}
+
+export interface IResAccount {
+  patient: IPatient | null
+  doctor: IDoctor | null
 }

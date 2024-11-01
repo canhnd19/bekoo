@@ -43,7 +43,7 @@ const listMenu = [
     title: 'Lịch khám',
     icon: 'menu-user',
     routerName: 'MedicalSchedule',
-    id: user.id
+    id: user.doctor?.id
   }
 ]
 </script>

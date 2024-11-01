@@ -76,7 +76,10 @@ const conFirm = async () => {
   try {
     loading.value = true
     const OTP = combineNumbers(num1.value, num2.value, num3.value, num4.value, num5.value, num6.value)
-    await apiAuth.pinCode({ code: OTP as string, email: user.email })
+    await apiAuth.pinCode({
+      code: OTP as string,
+      email: user.patient ? user.patient.info.email : user.doctor!.info.email
+    })
     router.push({ name: 'SetNewPassword' })
     loading.value = false
   } catch (error) {
@@ -86,7 +89,7 @@ const conFirm = async () => {
 }
 const resendOtp = async () => {
   try {
-    await apiAuth.forgotPass({ email: user.email })
+    await apiAuth.forgotPass({ email: user.patient ? user.patient.info.email : user.doctor!.info.email })
     startCountdown()
   } catch (error) {
     console.log(error)

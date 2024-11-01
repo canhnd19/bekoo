@@ -2,7 +2,7 @@ import request from '@/plugin/request'
 
 import type { IBodyLogin, ILogin } from '@/types/auth.types'
 import type { IResponse, IResposeMessage } from '@/types/response.types'
-import type { IUser, UserReq } from '@/types/user.types'
+import type { IResAccount, UserReq } from '@/types/user.types'
 
 export default class AuthService {
   prefix = '/user'
@@ -57,7 +57,7 @@ export default class AuthService {
     }
   }
 
-  async getUserInfo(): Promise<IResponse<IUser>> {
+  async getUserInfo(): Promise<IResponse<IResAccount>> {
     try {
       const result = await request.post('/token')
       return Promise.resolve(result.data)

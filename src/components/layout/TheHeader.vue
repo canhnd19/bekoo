@@ -46,11 +46,11 @@
         </BaseDropdown>
       </div>
 
-      <ElPopover v-if="user.name" placement="bottom" :width="200" trigger="click" popper-class="!p-4 !rounded-xl">
+      <ElPopover v-if="user" placement="bottom" :width="200" trigger="click" popper-class="!p-4 !rounded-xl">
         <template #reference>
           <div class="account relative">
             <BaseIcon name="user" class="mr-2.5" />
-            <span class="text-label"> {{ user.name }}</span>
+            <span class="text-label"> {{ user.doctor ? user.doctor.info.name : user.patient?.info.name }}</span>
           </div>
         </template>
         <div>

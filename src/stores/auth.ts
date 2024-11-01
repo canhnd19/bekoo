@@ -5,10 +5,10 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 
 import type { IBodyLogin } from '@/types/auth.types'
-import type { IPatient, IUser } from '@/types/user.types'
+import type { IPatient, IResAccount } from '@/types/user.types'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<IUser>({} as IUser)
+  const user = ref<IResAccount>({} as IResAccount)
   const patient = ref<IPatient>({} as IPatient)
   const access_token = Cookies.get('access_token') || ''
   const accessToken = ref(access_token)
@@ -57,9 +57,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const getPatientInfo = async () => {
     try {
-      if (user.value.roles[0].name === 'USER') {
-        const rs = await apiPatient.getPatientInfo(user.value.id)
-        console.log('🚀 ~ getPatientInfo ~ rs:', rs)
+      if (user.value.patient?.info.roles[0].name === 'USER') {
+        const rs = await apiPatient.getPatientInfo(user.value.patient.id)
         patient.value = rs.value ? rs.value : ({} as IPatient)
         return Promise.resolve()
       }

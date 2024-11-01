@@ -52,7 +52,7 @@ const confirm = async () => {
   try {
     loading.value = true
     const rs = await apiAuth.newPass({
-      email: user.email,
+      email: user.patient ? user.patient.info.email : user.doctor!.info.email,
       newPassword: newPass.password,
       confirmPassword: newPass.confirmPassword
     })
