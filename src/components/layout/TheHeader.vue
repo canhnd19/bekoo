@@ -107,7 +107,7 @@ const handleSeeMedicalRecord = () => {
     0 2px 6px rgba(0, 0, 0, 0.04),
     0 0 1px rgba(0, 0, 0, 0.04);
   .layout-header {
-    @apply mx-auto flex w-full max-w-7xl items-center justify-around;
+    @apply mx-auto flex w-full max-w-7xl items-center justify-between;
 
     .text {
       @apply text-base font-semibold text-secondary hover:text-primary;

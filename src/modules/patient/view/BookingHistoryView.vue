@@ -1,12 +1,13 @@
 <template>
+  <div class="container">
+    <p class="flex items-center justify-start space-x-2 py-6">
+      <span class="cursor-pointer text-base font-semibold" @click="handleClickHome">Trang chủ</span>
+      <BaseIcon name="arrow-right" />
+      <span class="cursor-pointer font-semibold text-primary">Lịch sử khám bệnh</span>
+    </p>
+  </div>
   <div class="bg-[#e8f2f7]">
-    <div class="container pb-6">
-      <p class="flex items-center justify-start space-x-2 py-6">
-        <span class="cursor-pointer text-base font-semibold" @click="handleClickHome">Trang chủ</span>
-        <BaseIcon name="arrow-right" />
-        <span class="cursor-pointer font-semibold text-primary">Lịch sử khám bệnh</span>
-      </p>
-
+    <div class="container py-6">
       <BaseSelect v-model="statusId" placeholder="Chọn giới tính" class="select" @change="handleFilter">
         <ElOption v-for="(item, index) in FILTER" :key="index" :value="item.value" :label="item.label"> </ElOption>
       </BaseSelect>
