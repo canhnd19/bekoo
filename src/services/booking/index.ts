@@ -2,6 +2,7 @@ import request from '@/plugin/request'
 
 import type { IBookingRequest, IResBooking } from '@/types/booking.types'
 import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
+import type { IHistoryBoking } from '@/types/user.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
 
@@ -36,6 +37,21 @@ export default class BookingService {
   ): Promise<IResponse<IResponseTable<IResBooking[]>>> {
     try {
       const rs = await request.get(`${this.prefix}/doctor/${id}`, {
+        params: useRemoveParams(params)
+      })
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  async getDataBookingHistory(
+    id: string,
+    statusId: number,
+    params: Record<string, any>
+  ): Promise<IResponse<IResponseTable<IHistoryBoking[]>>> {
+    try {
+      const rs = await request.get(`${this.prefix}/patient/${id}/${statusId}`, {
         params: useRemoveParams(params)
       })
       return Promise.resolve(rs.data)

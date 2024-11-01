@@ -1,4 +1,5 @@
 import type { IDoctor } from './doctor.types'
+import type { IPackage } from './package.types'
 
 export interface UserReq {
   name: string
@@ -83,4 +84,12 @@ export interface MedicalRecordRes extends IMedicalRecord {
 export interface IResAccount {
   patient: IPatient | null
   doctor: IDoctor | null
+}
+
+export interface IHistoryBoking {
+  checkIn: string
+  doctor: IDoctor
+  id: string
+  specialize: IPackage
+  status: string
 }
