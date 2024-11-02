@@ -16,24 +16,39 @@
       @row-click="rowClick"
     >
       <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-      <ElTableColumn label="NAME">
+      <ElTableColumn label="tên" min-width="162">
         <template #default="{ row }">
           <p>{{ row.info.name }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="EMAIL">
+      <ElTableColumn label="học vấn" min-width="112">
+        <template #default="{ row }">
+          <p>{{ row.trainingBy }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="email" min-width="200">
         <template #default="{ row }">
           <p>{{ row.info.email }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="PHONE NUMBER" width="200">
+      <ElTableColumn label="số điện thoại" width="192">
         <template #default="{ row }">
           <p>{{ row.info.phoneNumber }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="GENDER" width="90">
+      <ElTableColumn label="giới tính" min-width="112">
         <template #default="{ row }">
           <p>{{ row.info.gender }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="số lượng bệnh nhân hôm nay" min-width="300" align="right">
+        <template #default="{ row }">
+          <p>{{ row.totalPatientsVisited }}</p>
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="số lượng bệnh nhân tối đa / ngày" min-width="320" align="right">
+        <template #default="{ row }">
+          <p>{{ row.maximumPeoplePerDay }}</p>
         </template>
       </ElTableColumn>
       <ElTableColumn label="ACTION" width="120" align="right">
