@@ -64,6 +64,10 @@
         <span>Mối quan hệ với bệnh nhân: </span>
         <strong> {{ props.data.patient.emergencyContacts[0].relationship }}</strong>
       </p>
+
+      <p class="cursor-pointer text-blue-600 underline" @click="viewPatientMedicalRecord">
+        Xem hồ sơ bệnh án của bệnh nhân
+      </p>
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
@@ -76,6 +80,8 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router'
+
 import type { IResBooking } from '@/types/booking.types'
 
 import useDateFormat from '@/composables/useDateFormat'
@@ -90,6 +96,10 @@ interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   data: () => ({}) as IResBooking
 })
+
+const viewPatientMedicalRecord = () => {
+  router.push({ name: 'MedicalRecord', params: { id: props.data.patient.id } })
+}
 </script>
 
 <style scoped></style>

@@ -62,7 +62,7 @@
         <div>
           <ul>
             <li class="option-label" @click="router.push({ name: 'Users' })">Quản lý</li>
-            <li class="option-label" @click="handleSeeMedicalRecord">Hồ sơ bệnh án</li>
+            <li class="option-label" @click="handleViewMedicalRecord">Hồ sơ bệnh án</li>
             <li class="option-label" @click="router.push({ name: 'BookingHistory', params: { id: user.patient?.id } })">
               Lịch sử đặt lịch khám
             </li>
@@ -91,7 +91,7 @@ const { logout } = useAuthStore()
 const router = useRouter()
 const { user, patient } = useAuthStore()
 
-const handleSeeMedicalRecord = () => {
+const handleViewMedicalRecord = () => {
   if (patient.id) {
     router.push({ name: 'MedicalRecord', params: { id: patient.id } })
   } else {
