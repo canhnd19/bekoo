@@ -4,6 +4,7 @@ import DepartmentService from './departments'
 import DoctorService from './doctors'
 import ParamService from './param'
 import PatientService from './patient'
+import ReportService from './report'
 import SpecializeService from './specializes'
 import UploadService from './upload'
 import UserService from './users'
@@ -17,3 +18,4 @@ export const apiSpecialize: SpecializeService = new SpecializeService()
 export const apiUpload: UploadService = new UploadService()
 export const apiBooking: BookingService = new BookingService()
 export const apiPatient: PatientService = new PatientService()
+export const apiReport: ReportService = new ReportService()

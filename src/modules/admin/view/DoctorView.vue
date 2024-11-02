@@ -68,7 +68,15 @@
     </div>
     <div class="pb-6 pt-4">
       <BaseTab v-model="tabActive" :tabs="tabs" />
-      <component :is="component" :doctor-id="doctorId" />
+      <component
+        :is="component"
+        :doctor-id="doctorId"
+        :label="labelChart"
+        :legend-chart="legendChart"
+        :datasets="datasets"
+        :is-loading="isLoading"
+        @filter="handleFilter"
+      />
     </div>
   </template>
   <PopupAddDoctor @created="getAllDoctor" />
@@ -88,14 +96,20 @@
 <script setup lang="ts">
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 // import router from '@/router'
-import { apiDoctor } from '@/services'
+import { apiDoctor, apiReport } from '@/services'
+import { useDateFormat } from '@vueuse/core'
+import type { ChartDataset } from 'chart.js'
+import { forEach } from 'lodash-es'
 
 import type { ITab } from '@/types/component.types'
 import type { IDoctor } from '@/types/doctor.types'
 import type { IQuery } from '@/types/query.type'
 
+import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
+
 import { useBaseStore } from '@/stores/base'
 
+import BaseChart, { type VALUE_DAY } from '../components/BaseChart.vue'
 import PopupAddDoctor from '../components/PopupAddDoctor.vue'
 import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 import PopupEditDoctor from '../components/PopupEditDoctor.vue'
@@ -113,6 +127,8 @@ const isLoadingButton = ref<boolean>(false)
 const query = ref<IQuery>({
   ...DEFAULT_QUERY_PAGINATION
 })
+const isLoading = ref<boolean>(false)
+const daysActive = ref<VALUE_DAY>('7_DAYS')
 const tabs = ref<ITab[]>([
   {
     id: 1,
@@ -123,8 +139,27 @@ const tabs = ref<ITab[]>([
     id: 2,
     title: 'Tất cả',
     tabValue: 'allDays'
+  },
+  {
+    id: 3,
+    title: 'Chart',
+    tabValue: 'chart'
   }
 ])
+const labelChart = ref<string[]>([])
+const datasets = ref<ChartDataset[]>([])
+const legendChart = ref<Array<Record<string, any>>>([
+  {
+    name: 'Số bệnh nhân',
+    color: '#0A94FF'
+  }
+])
+
+const params = ref<Record<string, any>>({
+  groupType: 1,
+  fromDate: '',
+  toDate: ''
+})
 onMounted(() => {
   getAllDoctor()
 })
@@ -208,11 +243,61 @@ const rowClick = (data: IDoctor) => {
   }
   doctorRow.value = data
   doctorId.value = data.id
+  initChart()
   // router.push({ name: 'MedicalSchedule', params: { id: data.id } })
 }
 const component = computed(() => {
-  return tabActive.value === 'day' ? TabDay : TabAllDays
+  if (tabActive.value === 'day') return TabDay
+  else if (tabActive.value === 'allDays') return TabAllDays
+  else return BaseChart
 })
+
+const handleFilter = (data: VALUE_DAY) => {
+  daysActive.value = data
+  initChart()
+}
+
+const getDayStartAndEnd = () => {
+  const now = new Date()
+  const endDate = useConvertUTCTime(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) as any, 'TO')
+  const dayDiff = daysActive.value.split('_')[0]
+  const startDate = useConvertUTCTime(
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() - Number(dayDiff), 0, 0, 0, 0) as any,
+    'FROM'
+  )
+  params.value.fromDate = startDate
+  params.value.toDate = endDate
+}
+
+const initChart = async () => {
+  try {
+    isLoading.value = true
+    getDayStartAndEnd()
+    const rs = await apiReport.getDataChartDoctor({ ...params.value, doctorId: doctorId.value })
+    mapChart(rs)
+    isLoading.value = false
+  } catch (error) {
+    console.log(error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const mapChart = (data: any) => {
+  labelChart.value = []
+  datasets.value = []
+  const _data: number[] = []
+  forEach(data.value, (value) => {
+    labelChart.value.push(useDateFormat(value.time, 'MMM DD').value)
+    _data.push(value.value)
+  })
+  datasets.value.push({
+    label: 'Số lượng bệnh nhân',
+    data: _data,
+    tension: 0,
+    borderColor: '#027BFE'
+  })
+}
 </script>
 
 <style scoped lang="scss">
