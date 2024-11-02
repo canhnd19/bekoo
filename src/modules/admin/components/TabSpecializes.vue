@@ -83,6 +83,7 @@ const handleAdd = async (data: Record<string, any>) => {
     const departmentId = props.departmentId
     const rs = await apiSpecialize.createPackage({ ...data, departmentId })
     ElMessage.success(rs.message)
+    setOpenPopup('popup-add-exmination-package', false)
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
@@ -93,7 +94,8 @@ const handleAdd = async (data: Record<string, any>) => {
 const getListPackage = async () => {
   try {
     query.value.loading = true
-    const rs = await apiSpecialize.getListPackage(query.value)
+    const departmentId = props.departmentId
+    const rs = await apiSpecialize.getListByDeparmentId(query.value, departmentId)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false

@@ -17,7 +17,9 @@ export default class SpecializeService {
   }
   async getListPackage(params: Record<string, any>): Promise<IResponse<IResponseTable<IPackage[]>>> {
     try {
-      const rs = await request.post(`${this.prefix}/query-all`, useRemoveParams(params))
+      const rs = await request.get(`${this.prefix}`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
@@ -25,7 +27,9 @@ export default class SpecializeService {
   }
   async getListByDeparmentId(params: Record<string, any>, id: string): Promise<IResponse<IResponseTable<IPackage[]>>> {
     try {
-      const rs = await request.post(`${this.prefix}/department/${id}`, useRemoveParams(params))
+      const rs = await request.get(`${this.prefix}/department/${id}`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)

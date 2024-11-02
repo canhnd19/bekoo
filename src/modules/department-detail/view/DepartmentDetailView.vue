@@ -170,7 +170,7 @@ const getData = async () => {
     query.value.loading = true
     const id = route.params.id as string
     if (tabActive.value === 'DOCTOR') {
-      const rs = await apiDepartment.getListDoctorOfDepartment(id)
+      const rs = await apiDepartment.getListDoctorOfDepartment(id, query.value)
       dataDoctors.value = rs.value.contentResponse
       query.value.totalElements = rs.value.totalElements
     } else {
