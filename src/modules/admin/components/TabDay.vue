@@ -27,7 +27,7 @@
     </ElTableColumn>
     <ElTableColumn label="giá khám">
       <template #default="{ row }">
-        <p>{{ row.specialize.price }}</p>
+        <p>{{ useFormatCurrency(row.specialize.price) }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="thời gian khám">
@@ -56,6 +56,8 @@ import { apiBooking } from '@/services'
 
 import type { IResBooking } from '@/types/booking.types'
 import type { IQuery } from '@/types/query.type'
+
+import useFormatCurrency from '@/composables/useFormatCurrency'
 
 const data = ref<IResBooking[]>([])
 interface IProps {

@@ -22,7 +22,7 @@
     </ElTableColumn>
     <ElTableColumn label="price">
       <template #default="{ row }">
-        <p>{{ row.price }}</p>
+        <p>{{ useFormatCurrency(row.price) }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="ACTION">
@@ -48,6 +48,8 @@ import { apiSpecialize } from '@/services'
 
 import type { IPackage } from '@/types/package.types'
 import type { IQuery } from '@/types/query.type'
+
+import useFormatCurrency from '@/composables/useFormatCurrency'
 
 import { useBaseStore } from '@/stores/base'
 

@@ -43,7 +43,7 @@
         </ElTableColumn>
         <ElTableColumn label="giá" align="right">
           <template #default="{ row }">
-            <p>{{ row.specialize.price }}</p>
+            <p>{{ useFormatCurrency(row.specialize.price) }}</p>
           </template>
         </ElTableColumn>
       </BaseTable>
@@ -60,6 +60,7 @@ import type { IQuery } from '@/types/query.type'
 import type { IHistoryBoking } from '@/types/user.types'
 
 import useDateFormat from '@/composables/useDateFormat'
+import useFormatCurrency from '@/composables/useFormatCurrency'
 
 import { FILTER } from '../constants/index'
 

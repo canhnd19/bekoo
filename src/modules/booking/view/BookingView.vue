@@ -37,7 +37,7 @@
                 <div class="ml-3 w-full">
                   <p class="text-2xl font-medium">{{ item.name }}</p>
                   <div class="flex items-center justify-between">
-                    <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ item.price }}đ</p>
+                    <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ useFormatCurrency(item.price) }}đ</p>
                   </div>
                 </div>
               </div>
@@ -146,6 +146,8 @@ import { ref } from 'vue'
 
 import type { IBookingQuery, IBookingRequest } from '@/types/booking.types'
 import type { IPackage } from '@/types/package.types'
+
+import useFormatCurrency from '@/composables/useFormatCurrency'
 
 import { useAuthStore } from '@/stores/auth'
 import { useBaseStore } from '@/stores/base'

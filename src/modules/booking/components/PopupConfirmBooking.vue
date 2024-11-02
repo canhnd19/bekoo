@@ -20,7 +20,7 @@
       </p>
       <p class="text-xl">
         <span> Tiền khám: </span>
-        <strong> {{ formatCurrency(props.bookingInfo.price) }}</strong>
+        <strong> {{ useFormatCurrency(props.bookingInfo.price) }}</strong>
       </p>
     </div>
     <template #footer>
@@ -36,6 +36,8 @@
 
 <script setup lang="ts">
 import type { IBookingRequest } from '@/types/booking.types'
+
+import useFormatCurrency from '@/composables/useFormatCurrency'
 
 const emits = defineEmits<{
   cancel: []
@@ -54,14 +56,6 @@ const props = withDefaults(defineProps<IProps>(), {
   nameDepartment: '',
   isLoadingBooking: false
 })
-
-const formatCurrency = (number: string | number) =>
-  Number(number).toLocaleString('vi', {
-    style: 'currency',
-    currency: 'vnd',
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 2
-  })
 </script>
 
 <style scoped></style>

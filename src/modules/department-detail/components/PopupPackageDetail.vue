@@ -21,7 +21,7 @@
         </div>
 
         <div class="space-y-4">
-          <p class="text-4xl font-bold text-[#ffb54a]">Giá: {{ props.packageDetail.price }}đ</p>
+          <p class="text-4xl font-bold text-[#ffb54a]">Giá: {{ useFormatCurrency(props.packageDetail.price) }}đ</p>
           <div class="button">
             <span>Đặt khám ngay</span>
           </div>
@@ -35,6 +35,8 @@
 
 <script setup lang="ts">
 import type { IPackage } from '@/types/package.types'
+
+import useFormatCurrency from '@/composables/useFormatCurrency'
 
 interface IProps {
   packageDetail: IPackage
