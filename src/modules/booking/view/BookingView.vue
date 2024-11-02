@@ -144,8 +144,9 @@ import { apiBooking, apiDoctor, apiSpecialize } from '@/services'
 import type { CalendarDateType, CalendarInstance } from 'element-plus'
 import { ref } from 'vue'
 
-import type { IBookingQuery, IBookingRequest } from '@/types/booking.types'
+import type { IBookingRequest } from '@/types/booking.types'
 import type { IPackage } from '@/types/package.types'
+import type { IQuery } from '@/types/query.type'
 
 import useFormatCurrency from '@/composables/useFormatCurrency'
 
@@ -167,9 +168,8 @@ const hour = ref<string>('')
 const dataPackage = ref<IPackage[]>([])
 const packageChoose = ref<IPackage>({} as IPackage)
 const isChooseDay = ref<boolean>(false)
-const query = ref<IBookingQuery>({
-  ...DEFAULT_QUERY_PAGINATION,
-  name: ''
+const query = ref<IQuery>({
+  ...DEFAULT_QUERY_PAGINATION
 })
 const isLoadingBooking = ref<boolean>(false)
 const isLoadingBtn = ref<boolean>(false)

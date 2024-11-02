@@ -1,10 +1,5 @@
 import type { IPackage } from './package.types'
-import type { IQuery } from './query.type'
 import type { IPatient } from './user.types'
-
-export interface IBookingQuery extends IQuery {
-  name: string
-}
 
 export interface IBookingRequest {
   patientId: string

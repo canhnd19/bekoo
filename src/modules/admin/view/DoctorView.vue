@@ -1,7 +1,7 @@
 <template>
   <template v-if="!doctorId">
     <div class="flex items-start justify-between">
-      <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
+      <BaseInput v-model="search" class="input-search" :show-icon="true" @change="handleSearch" />
       <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
     </div>
     <BaseTable
@@ -90,9 +90,9 @@ import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 // import router from '@/router'
 import { apiDoctor } from '@/services'
 
-import type { IQueryFilter } from '@/types/admin.types'
 import type { ITab } from '@/types/component.types'
 import type { IDoctor } from '@/types/doctor.types'
+import type { IQuery } from '@/types/query.type'
 
 import { useBaseStore } from '@/stores/base'
 
@@ -103,15 +103,15 @@ import TabAllDays from '../components/TabAllDays.vue'
 import TabDay from '../components/TabDay.vue'
 
 const { setOpenPopup } = useBaseStore()
+const search = ref<string>('')
 const doctorId = ref<string>('')
 const tabActive = ref<string>('day')
 const isConflictClick = ref<boolean>(false)
 const data = ref<IDoctor[]>([])
 const doctorRow = ref<IDoctor>({} as IDoctor)
 const isLoadingButton = ref<boolean>(false)
-const query = ref<IQueryFilter>({
-  ...DEFAULT_QUERY_PAGINATION,
-  name: ''
+const query = ref<IQuery>({
+  ...DEFAULT_QUERY_PAGINATION
 })
 const tabs = ref<ITab[]>([
   {
@@ -134,7 +134,7 @@ const getAllDoctor = async (type: string = '') => {
     query.value.loading = true
     const rs =
       type === 'search'
-        ? await apiDoctor.getAllDoctorByName(query.value.name, query.value)
+        ? await apiDoctor.getAllDoctorByName(search.value, query.value)
         : await apiDoctor.getAllDoctor(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements

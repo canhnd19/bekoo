@@ -16,9 +16,11 @@ export default class UserService {
       return Promise.reject(error)
     }
   }
-  async getAllUserByName(params: Record<string, any>): Promise<IResponse<IResponseTable<IUserTable[]>>> {
+  async getAllUserByName(name: string, params: Record<string, any>): Promise<IResponse<IResponseTable<IUserTable[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}/name`, useRemoveParams(params))
+      const rs = await requestQuery.post(`${this.prefix}/name/${name}`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)

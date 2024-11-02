@@ -1,7 +1,7 @@
 <template>
   <template v-if="!departmentIdActive">
     <div class="flex items-start justify-between">
-      <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
+      <BaseInput v-model="search" class="input-search" :show-icon="true" @change="handleSearch" />
       <BaseButton size="small" class="w-20" @click="handleAddDepartment">Add</BaseButton>
     </div>
     <BaseTable
@@ -55,9 +55,9 @@
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiDepartment } from '@/services'
 
-import type { IQueryFilter } from '@/types/admin.types'
 import type { ITab } from '@/types/component.types'
 import type { IDepartment } from '@/types/department.types'
+import type { IQuery } from '@/types/query.type'
 
 import { useBaseStore } from '@/stores/base'
 
@@ -80,6 +80,7 @@ const tabs = ref<ITab[]>([
   }
 ])
 
+const search = ref<string>('')
 const typeAction = ref<'ADD' | 'EDIT' | ''>('')
 const tabActive = ref<string>('doctors')
 const data = ref<IDepartment[]>([])
@@ -87,9 +88,8 @@ const departmentRow = ref<IDepartment>({} as IDepartment)
 const departmentIdActive = ref<string>('')
 const isLoadingButton = ref<boolean>(false)
 const isConflictClick = ref<boolean>(false)
-const query = ref<IQueryFilter>({
-  ...DEFAULT_QUERY_PAGINATION,
-  name: ''
+const query = ref<IQuery>({
+  ...DEFAULT_QUERY_PAGINATION
 })
 const component = computed(() => {
   return tabActive.value === 'doctors' ? TabDoctors : TabSpecializes
@@ -103,7 +103,7 @@ const getListDepartment = async (type: string = '') => {
     query.value.loading = true
     const rs =
       type === 'search'
-        ? await apiDepartment.getAllDepartmentByName(query.value.name, query.value)
+        ? await apiDepartment.getAllDepartmentByName(search.value, query.value)
         : await apiDepartment.getListDepartment(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
