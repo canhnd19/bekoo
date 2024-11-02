@@ -23,7 +23,7 @@
         <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
         <ElTableColumn label="thời gian">
           <template #default="{ row }">
-            <p>{{ row.checkIn }}</p>
+            <p>{{ useDateFormat(row.checkIn, 'DD/MM/YYYY HH:mm:ss') }}</p>
           </template>
         </ElTableColumn>
         <ElTableColumn label="bác sĩ">
@@ -58,6 +58,8 @@ import { apiBooking } from '@/services'
 
 import type { IQuery } from '@/types/query.type'
 import type { IHistoryBoking } from '@/types/user.types'
+
+import useDateFormat from '@/composables/useDateFormat'
 
 import { FILTER } from '../constants/index'
 

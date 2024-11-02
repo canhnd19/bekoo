@@ -43,7 +43,14 @@ export default defineConfig({
     AutoImport({
       dirs: ['src/utils'],
       resolvers: [ElementPlusResolver()],
-      imports: ['vue', 'vue-router', 'pinia'],
+      imports: [
+        'vue',
+        'vue-router',
+        'pinia',
+        {
+          '@vueuse/core': [['useDateFormat', 'useFormatDate']]
+        }
+      ],
       eslintrc: {
         enabled: true
       },

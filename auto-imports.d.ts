@@ -75,6 +75,8 @@ declare global {
   const useAttrs: (typeof import('vue'))['useAttrs']
   const useCssModule: (typeof import('vue'))['useCssModule']
   const useCssVars: (typeof import('vue'))['useCssVars']
+  const useFormatDate: (typeof import('@vueuse/core'))['useDateFormat']
+  const useFormatTimeAgo: (typeof import('@vueuse/core'))['useTimeAgo']
   const useId: (typeof import('vue'))['useId']
   const useLink: (typeof import('vue-router'))['useLink']
   const useModel: (typeof import('vue'))['useModel']
@@ -175,6 +177,7 @@ declare module 'vue' {
     readonly useAttrs: UnwrapRef<(typeof import('vue'))['useAttrs']>
     readonly useCssModule: UnwrapRef<(typeof import('vue'))['useCssModule']>
     readonly useCssVars: UnwrapRef<(typeof import('vue'))['useCssVars']>
+    readonly useFormatDate: UnwrapRef<(typeof import('@vueuse/core'))['useDateFormat']>
     readonly useId: UnwrapRef<(typeof import('vue'))['useId']>
     readonly useLink: UnwrapRef<(typeof import('vue-router'))['useLink']>
     readonly useModel: UnwrapRef<(typeof import('vue'))['useModel']>
