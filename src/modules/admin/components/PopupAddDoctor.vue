@@ -351,7 +351,7 @@
         v-model="maxPaitentADay"
         class="input"
         style="height: 50px; width: 500px"
-        placeholder="Vui lòng nhập địa chỉ hiện tại"
+        placeholder="Vui lòng nhập số lượng bệnh nhân tối đa một ngày"
       />
     </div>
     <template #footer>

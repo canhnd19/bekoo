@@ -39,8 +39,8 @@
       <ElTableColumn label="ACTION" width="120" align="right">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
-            <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->
-            <BaseIcon name="delete" @click="handleDeleteUser(row)" />
+            <BaseIcon name="edit" @click="handleActionDoctor(row, 'EDIT')" />
+            <BaseIcon name="delete" @click="handleActionDoctor(row, 'DELETE')" />
           </div>
         </template>
       </ElTableColumn>
@@ -63,6 +63,11 @@
     :is-loading-button="isLoadingButton"
     @delete="deleteDoctor"
   />
+  <PopupEditDoctor
+    :is-loading-button="isLoadingButton"
+    @cancel="setOpenPopup('popup-edit-doctor', false)"
+    @edit="editDcotor"
+  />
 </template>
 
 <script setup lang="ts">
@@ -78,6 +83,7 @@ import { useBaseStore } from '@/stores/base'
 
 import PopupAddDoctor from '../components/PopupAddDoctor.vue'
 import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
+import PopupEditDoctor from '../components/PopupEditDoctor.vue'
 import TabAllDays from '../components/TabAllDays.vue'
 import TabDay from '../components/TabDay.vue'
 
@@ -121,11 +127,28 @@ const getAllDoctor = async (type: string = '') => {
     console.log(error)
   }
 }
-
-const handleDeleteUser = (data: IDoctor) => {
+const handleActionDoctor = (data: IDoctor, type: string) => {
   isConflictClick.value = true
   doctorRow.value = data
-  setOpenPopup('popup-confirm-delete')
+  type === 'EDIT' ? setOpenPopup('popup-edit-doctor') : setOpenPopup('popup-confirm-delete')
+}
+
+const editDcotor = async (value: string) => {
+  try {
+    isLoadingButton.value = true
+    const body = {
+      id: doctorRow.value.id,
+      value
+    }
+    const rs = await apiDoctor.setPatientADay(body)
+    ElMessage.success(rs.message)
+    isLoadingButton.value = false
+    setOpenPopup('popup-edit-doctor', false)
+    getAllDoctor()
+  } catch (error) {
+    isLoadingButton.value = false
+    console.log(error)
+  }
 }
 
 const deleteDoctor = async () => {
