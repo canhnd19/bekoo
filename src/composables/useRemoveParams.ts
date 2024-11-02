@@ -12,6 +12,9 @@ export default function useRemoveParams(params: Record<string, any>) {
       if (key === 'loading') {
         delete _params[key]
       }
+      if (key === 'name') {
+        delete _params[key]
+      }
     })
     return _params
   }

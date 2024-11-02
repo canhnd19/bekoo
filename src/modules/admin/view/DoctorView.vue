@@ -133,7 +133,9 @@ const getAllDoctor = async (type: string = '') => {
   try {
     query.value.loading = true
     const rs =
-      type === 'search' ? await apiDoctor.getAllDoctorByName(query.value) : await apiDoctor.getAllDoctor(query.value)
+      type === 'search'
+        ? await apiDoctor.getAllDoctorByName(query.value.name, query.value)
+        : await apiDoctor.getAllDoctor(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false

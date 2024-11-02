@@ -18,15 +18,19 @@ export default class DoctorService {
   }
   async getAllDoctor(params: Record<string, any>): Promise<IResponse<IResponseTable<IDoctor[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}`, useRemoveParams(params))
+      const rs = await requestQuery.get(`${this.prefix}`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
     }
   }
-  async getAllDoctorByName(params: Record<string, any>): Promise<IResponse<IResponseTable<IDoctor[]>>> {
+  async getAllDoctorByName(name: string, params: Record<string, any>): Promise<IResponse<IResponseTable<IDoctor[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}/name`, useRemoveParams(params))
+      const rs = await requestQuery.get(`${this.prefix}/name/${name}`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
