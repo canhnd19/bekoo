@@ -32,7 +32,7 @@
     </ElTableColumn>
     <ElTableColumn label="thời gian khám">
       <template #default="{ row }">
-        <p>{{ row.checkIn }}</p>
+        <p>{{ useDateFormat(row.checkIn, 'DD/MM/YYYY HH:mm:ss') }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="thời gian khám">
@@ -40,14 +40,15 @@
         <p>{{ row.status }}</p>
       </template>
     </ElTableColumn>
-    <!-- <ElTableColumn label="ACTION">
+    <ElTableColumn align="right">
       <template #default="{ row }">
-        <div class="flex items-center space-x-3">
-          <BaseIcon name="delete" @click="handleDelete(row)" />
+        <div class="mr-3 flex items-center justify-end">
+          <BaseIcon name="eye" @click="viewPatientDetail(row)" />
         </div>
       </template>
-    </ElTableColumn> -->
+    </ElTableColumn>
   </BaseTable>
+  <PopupPatientDetail :data="dataRow" />
 </template>
 
 <script setup lang="ts">
@@ -57,9 +58,15 @@ import { apiBooking } from '@/services'
 import type { IResBooking } from '@/types/booking.types'
 import type { IQuery } from '@/types/query.type'
 
+import useDateFormat from '@/composables/useDateFormat'
 import useFormatCurrency from '@/composables/useFormatCurrency'
 
-const data = ref<IResBooking[]>([])
+import { useBaseStore } from '@/stores/base'
+
+import PopupPatientDetail from './PopupPatientDetail.vue'
+
+const { setOpenPopup } = useBaseStore()
+
 interface IProps {
   doctorId: string
 }
@@ -70,6 +77,8 @@ onMounted(() => {
 const query = ref<IQuery>({
   ...DEFAULT_QUERY_PAGINATION
 })
+const data = ref<IResBooking[]>([])
+const dataRow = ref<IResBooking>({} as IResBooking)
 const props = withDefaults(defineProps<IProps>(), {
   doctorId: ''
 })
@@ -96,6 +105,11 @@ const handleLimitChange = (limit: unknown) => {
 const handlePageChange = (page: unknown) => {
   query.value.pageIndex = page as number
   getMedicalScheduleDay()
+}
+
+const viewPatientDetail = (data: IResBooking) => {
+  dataRow.value = data
+  setOpenPopup('popup-patient-detail')
 }
 </script>
 

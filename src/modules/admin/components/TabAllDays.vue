@@ -32,7 +32,7 @@
     </ElTableColumn>
     <ElTableColumn label="thời gian khám">
       <template #default="{ row }">
-        <p>{{ useConvertUTCTime(row.checkIn, 'FROM') }}</p>
+        <p>{{ useDateFormat(row.checkIn, 'DD/MM/YYYY HH:mm:ss') }}</p>
       </template>
     </ElTableColumn>
     <ElTableColumn label="thời gian khám">
@@ -58,7 +58,7 @@ import { apiBooking } from '@/services'
 import type { IResBooking } from '@/types/booking.types'
 import type { IQuery } from '@/types/query.type'
 
-import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
+import useDateFormat from '@/composables/useDateFormat'
 import useFormatCurrency from '@/composables/useFormatCurrency'
 
 const data = ref<IResBooking[]>([])
