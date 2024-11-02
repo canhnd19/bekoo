@@ -168,77 +168,111 @@
           >Sửa</BaseButton
         >
       </div>
-      <div class="pt-6 text-2xl font-bold">Thông tin bệnh nhân</div>
-      <div class="style-flex">
-        <div class="space-y-2">
-          <p class="text-label">Số bảo hiểm y tế</p>
-          <ElInput
-            v-model="infoPatient.healthInsuranceNumber"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Vui lòng nhập số bảo hiểm y tế"
-          />
+
+      <template v-if="user.patient?.id">
+        <div class="pt-6 text-2xl font-bold">Thông tin bệnh nhân</div>
+        <div class="style-flex">
+          <div class="space-y-2">
+            <p class="text-label">Số bảo hiểm y tế</p>
+            <ElInput
+              v-model="infoPatient.healthInsuranceNumber"
+              class="input"
+              style="height: 50px; width: 500px"
+              placeholder="Vui lòng nhập số bảo hiểm y tế"
+            />
+          </div>
+          <div class="space-y-2">
+            <p class="text-label">Nhóm máu</p>
+            <ElInput
+              v-model="infoPatient.bloodType"
+              class="input"
+              style="height: 50px; width: 500px"
+              placeholder="Vui lòng nhập nhóm máu"
+            />
+          </div>
         </div>
-        <div class="space-y-2">
-          <p class="text-label">Nhóm máu</p>
-          <ElInput
-            v-model="infoPatient.bloodType"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Vui lòng nhập nhóm máu"
-          />
+        <div class="pt-6 text-2xl font-bold">Thông tin liên hệ khẩn cấp</div>
+        <div class="style-flex">
+          <div class="space-y-2">
+            <p class="text-label">Tên</p>
+            <ElInput
+              v-model="infoPatient.emergencyContactCommand.name"
+              class="input"
+              style="height: 50px; width: 500px"
+              placeholder="Nhập tên người liên hệ khẩn cấp"
+            />
+          </div>
+          <div class="space-y-2">
+            <p class="text-label">Số điện thoại</p>
+            <ElInput
+              v-model="infoPatient.emergencyContactCommand.phone"
+              class="input"
+              style="height: 50px; width: 500px"
+              placeholder="Nhập số điện thoại người liên hệ khẩn cấp"
+            />
+          </div>
         </div>
-      </div>
-      <div class="pt-6 text-2xl font-bold">Thông tin liên hệ khẩn cấp</div>
-      <div class="style-flex">
-        <div class="space-y-2">
-          <p class="text-label">Tên</p>
-          <ElInput
-            v-model="infoPatient.emergencyContactCommand.name"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Nhập tên người liên hệ khẩn cấp"
-          />
+        <div class="style-flex">
+          <div class="space-y-2">
+            <p class="text-label">Địa chỉ</p>
+            <ElInput
+              v-model="infoPatient.emergencyContactCommand.address"
+              class="input"
+              style="height: 50px; width: 500px"
+              placeholder="Nhập địa chỉ người liên hệ khẩn cấp"
+            />
+          </div>
+          <div class="space-y-2">
+            <p class="text-label">Mối quan hệ với bênh nhân</p>
+            <ElInput
+              v-model="infoPatient.emergencyContactCommand.relationship"
+              class="input"
+              style="height: 50px; width: 500px"
+              placeholder="Nhập mối quan hệ giữa người liên hệ khẩn cấp và bệnh nhân"
+            />
+          </div>
         </div>
-        <div class="space-y-2">
-          <p class="text-label">Số điện thoại</p>
-          <ElInput
-            v-model="infoPatient.emergencyContactCommand.phone"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Nhập số điện thoại người liên hệ khẩn cấp"
-          />
+        <div class="flex justify-end">
+          <BaseButton :loading="loadingBtnUpdate" size="large" class="w-40" @click="handleUpdate">Cập nhật</BaseButton>
         </div>
-      </div>
-      <div class="style-flex">
-        <div class="space-y-2">
-          <p class="text-label">Địa chỉ</p>
-          <ElInput
-            v-model="infoPatient.emergencyContactCommand.address"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Nhập địa chỉ người liên hệ khẩn cấp"
-          />
+      </template>
+      <template v-else-if="user.doctor?.id">
+        <div class="pt-6 text-2xl font-bold">Thông tin nghề nghiệp</div>
+
+        <div class="style-flex">
+          <div class="space-y-2">
+            <p class="text-label">Mô tả học vấn</p>
+            <ElInput
+              v-model="doctorEdit.trainingBy"
+              class="input"
+              style="width: 500px"
+              :autosize="{ minRows: 2 }"
+              type="textarea"
+              placeholder="Vui lòng nhập mô tả"
+            />
+          </div>
+          <div class="space-y-2">
+            <p class="text-label">Mô tả</p>
+            <ElInput
+              v-model="doctorEdit.description"
+              class="input"
+              style="width: 500px"
+              :autosize="{ minRows: 2 }"
+              type="textarea"
+              placeholder="Vui lòng nhập mô tả"
+            />
+          </div>
         </div>
-        <div class="space-y-2">
-          <p class="text-label">Mối quan hệ với bênh nhân</p>
-          <ElInput
-            v-model="infoPatient.emergencyContactCommand.relationship"
-            class="input"
-            style="height: 50px; width: 500px"
-            placeholder="Nhập mối quan hệ giữa người liên hệ khẩn cấp và bệnh nhân"
-          />
+        <div class="flex justify-end">
+          <BaseButton :loading="loadingBtnUpdate" size="large" class="w-36" @click="handleEditDoctor">Sửa</BaseButton>
         </div>
-      </div>
-      <div class="flex justify-end">
-        <BaseButton :loading="loadingBtnUpdate" size="large" class="w-40" @click="handleUpdate">Cập nhật</BaseButton>
-      </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { apiAuth, apiParams, apiPatient, apiUpload } from '@/services'
+import { apiAuth, apiDoctor, apiParams, apiPatient, apiUpload } from '@/services'
 
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
 import type { InfoPatientReq, UserReq } from '@/types/user.types'
@@ -276,11 +310,18 @@ const infoPatient = reactive<InfoPatientReq>({
   healthInsuranceNumber: patient.healthInsuranceNumber,
   bloodType: patient.bloodType,
   emergencyContactCommand: {
-    name: patient.emergencyContacts[0].name,
-    phone: patient.emergencyContacts[0]?.phone,
-    address: patient.emergencyContacts[0]?.address,
-    relationship: patient.emergencyContacts[0]?.relationship
+    name: patient.emergencyContacts ? patient.emergencyContacts[0].name : '',
+    phone: patient.emergencyContacts ? patient.emergencyContacts[0]?.phone : '',
+    address: patient.emergencyContacts ? patient.emergencyContacts[0]?.address : '',
+    relationship: patient.emergencyContacts ? patient.emergencyContacts[0]?.relationship : ''
   }
+})
+const doctorEdit = reactive<{
+  trainingBy: string
+  description: string
+}>({
+  trainingBy: user.doctor ? user.doctor.trainingBy : '',
+  description: user.doctor ? user.doctor.description : ''
 })
 const checkProvince = ref<boolean>(false)
 const checkValDistrict = ref<boolean>(false)
@@ -344,7 +385,7 @@ const disabled = computed(() => {
 const handleEdit = async () => {
   try {
     loadingBtn.value = true
-    await uploadFile()
+    file.value ? await uploadFile() : null
     const dataEdit = {
       ...userEdit.value,
       id: user.patient?.info ? user.patient.info.id : user.doctor!.info.id,
@@ -388,6 +429,24 @@ const handleUpdate = async () => {
     console.log(error)
   }
 }
+
+const handleEditDoctor = async () => {
+  try {
+    loadingBtnUpdate.value = true
+    const body = {
+      id: user.doctor?.id,
+      trainingBy: doctorEdit.trainingBy,
+      description: doctorEdit.description
+    }
+    const rs = await apiDoctor.editDoctor(body)
+    ElMessage.success(rs.message)
+    router.push({ name: 'Home' })
+    loadingBtnUpdate.value = false
+  } catch (error) {
+    loadingBtnUpdate.value = false
+    console.log(error)
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -405,7 +464,12 @@ const handleUpdate = async () => {
     }
   }
 }
-
+:deep(.input.el-textarea) {
+  .el-textarea__inner {
+    font-size: 16px;
+    border-radius: 8px;
+  }
+}
 .select {
   :deep(.el-select) {
     .el-select__wrapper {
