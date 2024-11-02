@@ -72,18 +72,17 @@ import type { MedicalRecordReq, MedicalRecordRes } from '@/types/user.types'
 
 import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
-import { useAuthStore } from '@/stores/auth'
 import { useBaseStore } from '@/stores/base'
 
 import PopupAddMedicalRecord from '../components/PopupAddMedicalRecord.vue'
 
+const route = useRoute()
 const { setOpenPopup } = useBaseStore()
 
 onMounted(() => {
   getMedicalRecoed()
 })
 
-const { patient } = useAuthStore()
 const isLoading = ref<boolean>(false)
 const isLoadingButton = ref<boolean>(false)
 const isLoadingDetele = ref<boolean>(false)
@@ -92,7 +91,8 @@ const isActive = ref<string>('')
 const getMedicalRecoed = async () => {
   try {
     isLoading.value = true
-    const rs = await apiPatient.getMedicalRecord(patient.id)
+    const patientId = route.params.id as string
+    const rs = await apiPatient.getMedicalRecord(patientId)
     medicalRecord.value = rs.value.contentResponse
     isLoading.value = false
   } catch (error) {
