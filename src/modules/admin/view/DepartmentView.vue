@@ -103,7 +103,7 @@ const getListDepartment = async (type: string = '') => {
     query.value.loading = true
     const rs =
       type === 'search'
-        ? await apiDepartment.getAllDepartmentByName(query.value)
+        ? await apiDepartment.getAllDepartmentByName(query.value.name, query.value)
         : await apiDepartment.getListDepartment(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements

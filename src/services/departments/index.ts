@@ -28,7 +28,7 @@ export default class DepartmentService {
 
   async getAllDepartment(): Promise<IResponse<IResponseTable<IDepartment[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}`)
+      const rs = await requestQuery.get(`${this.prefix}/departments`)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
@@ -36,15 +36,22 @@ export default class DepartmentService {
   }
   async getListDepartment(params: Record<string, any>): Promise<IResponse<IResponseTable<IDepartment[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}`, useRemoveParams(params))
+      const rs = await requestQuery.get(`${this.prefix}/departments`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
     }
   }
-  async getAllDepartmentByName(params: Record<string, any>): Promise<IResponse<IResponseTable<IDepartment[]>>> {
+  async getAllDepartmentByName(
+    name: string,
+    params: Record<string, any>
+  ): Promise<IResponse<IResponseTable<IDepartment[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}/name`, useRemoveParams(params))
+      const rs = await requestQuery.get(`${this.prefix}/name/${name}`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
@@ -68,9 +75,14 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
-  async getListDoctorOfDepartment(ids: string): Promise<IResponse<IResponseTable<IDoctor[]>>> {
+  async getListDoctorOfDepartment(
+    ids: string,
+    params: Record<string, any>
+  ): Promise<IResponse<IResponseTable<IDoctor[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}/doctor/${ids}`)
+      const rs = await requestQuery.get(`${this.prefix}/doctor/${ids}`, {
+        params: useRemoveParams(params)
+      })
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)

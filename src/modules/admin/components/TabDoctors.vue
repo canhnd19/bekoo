@@ -107,7 +107,7 @@ const getListDoctorOfDepartment = async () => {
   try {
     query.value.loading = true
     const id = props.departmentId
-    const rs = await apiDepartment.getListDoctorOfDepartment(id)
+    const rs = await apiDepartment.getListDoctorOfDepartment(id, query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
