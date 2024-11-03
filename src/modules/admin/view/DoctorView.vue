@@ -274,7 +274,11 @@ const initChart = async () => {
   try {
     isLoading.value = true
     getDayStartAndEnd()
-    const rs = await apiReport.getDataChartDoctor({ ...params.value, doctorId: doctorId.value })
+    const paramsReq = {
+      ...params.value,
+      groupType: daysActive.value === '360_DAYS' ? 3 : 1
+    }
+    const rs = await apiReport.getDataChartDoctor({ ...paramsReq, doctorId: doctorId.value })
     mapChart(rs)
     isLoading.value = false
   } catch (error) {

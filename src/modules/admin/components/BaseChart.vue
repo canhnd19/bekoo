@@ -33,7 +33,7 @@ import {
 
 import { FILTER_DAYS } from '../constants/index'
 
-export type VALUE_DAY = '7_DAYS' | '30_DAYS'
+export type VALUE_DAY = '7_DAYS' | '30_DAYS' | '360_DAYS'
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler)
 

@@ -1,6 +1,6 @@
 <template>
   <BaseSummary :data-summary="dataSummary" :is-loading="isLoading" />
-  <p class="mt-4 text-xl">Biểu đồ thống kê bệnh nhân đặt lịch khám</p>
+  <p class="mt-4 text-2xl font-semibold">Biểu đồ thống kê bệnh nhân đặt lịch khám</p>
   <BaseChart
     :label="labelChart"
     :legend-chart="legendChart"
@@ -117,7 +117,11 @@ const initChart = async () => {
   try {
     isLoadingChart.value = true
     getDayStartAndEnd()
-    const rs = await apiReport.getDataChartReport(params.value)
+    const paramsReq = {
+      ...params.value,
+      groupType: daysActive.value === '360_DAYS' ? 3 : 1
+    }
+    const rs = await apiReport.getDataChartReport(paramsReq)
     mapChart(rs)
     isLoadingChart.value = false
   } catch (error) {
