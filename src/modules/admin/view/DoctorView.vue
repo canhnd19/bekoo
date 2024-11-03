@@ -146,6 +146,7 @@ const tabs = ref<ITab[]>([
     tabValue: 'chart'
   }
 ])
+
 const labelChart = ref<string[]>([])
 const datasets = ref<ChartDataset[]>([])
 const legendChart = ref<Array<Record<string, any>>>([

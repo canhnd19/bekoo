@@ -61,7 +61,7 @@
         </template>
         <div>
           <ul>
-            <li class="option-label" @click="router.push({ name: 'Users' })">Quản lý</li>
+            <li class="option-label" @click="router.push({ name: 'Reports' })">Quản lý</li>
             <li class="option-label" @click="handleViewMedicalRecord">Hồ sơ bệnh án</li>
             <li class="option-label" @click="router.push({ name: 'BookingHistory', params: { id: user.patient?.id } })">
               Lịch sử đặt lịch khám

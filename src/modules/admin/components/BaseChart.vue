@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<IProps>(), {
   isLoading: false
 })
 const emits = defineEmits<{
-  filter: [filterData: string]
+  filter: [filterData: VALUE_DAY]
 }>()
 const daysActive = ref<VALUE_DAY>('7_DAYS')
 const refChart = ref<HTMLCanvasElement>()

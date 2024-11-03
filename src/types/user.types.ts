@@ -93,3 +93,17 @@ export interface IHistoryBoking {
   specialize: IPackage
   status: string
 }
+export interface ISummary {
+  title: string
+  icon: string
+  color: string
+  value: number
+}
+
+export interface IReport {
+  totalDepartment: number
+  totalDoctor: number
+  totalPatient: number
+  totalSchedule: number
+  totalSpecialize: number
+}
