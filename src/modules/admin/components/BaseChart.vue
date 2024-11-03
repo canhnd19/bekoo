@@ -81,10 +81,10 @@ const renderChart = () => {
       options: {
         scales: {
           y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1
-            }
+            beginAtZero: true
+            // ticks: {
+            //   stepSize: 1
+            // }
           }
         }
       }
