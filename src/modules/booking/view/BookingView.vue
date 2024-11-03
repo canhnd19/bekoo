@@ -269,6 +269,7 @@ const handleBooking = async () => {
     const rs = await apiBooking.booking(bookingRequest.value)
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-booking', false)
+    router.push({ name: 'Home' })
     isLoadingBooking.value = false
   } catch (error) {
     isLoadingBooking.value = false
