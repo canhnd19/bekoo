@@ -41,7 +41,7 @@
           <p>{{ row.info.gender }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="số lượng bệnh nhân hôm nay" min-width="300" align="right">
+      <ElTableColumn label="số lượng bệnh nhân đã đặt khám" min-width="320" align="right">
         <template #default="{ row }">
           <p>{{ row.totalPatientsVisited }}</p>
         </template>
