@@ -8,6 +8,14 @@ const AdminRouter: RouteRecordRaw[] = [
     name: 'Admin',
     children: [
       {
+        path: 'reports',
+        component: () => import('../view/ReportView.vue'),
+        meta: {
+          auth: true
+        },
+        name: 'Reports'
+      },
+      {
         path: 'users',
         component: () => import('../view/UserView.vue'),
         meta: {

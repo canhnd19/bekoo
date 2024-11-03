@@ -25,6 +25,11 @@ const { user } = useAuthStore()
 
 const listMenu = [
   {
+    title: 'Thống kê',
+    icon: 'menu-report',
+    routerName: 'Reports'
+  },
+  {
     title: 'Người dùng',
     icon: 'menu-user',
     routerName: 'Users'
