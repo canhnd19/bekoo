@@ -1,6 +1,6 @@
 <template>
   <BaseSummary :data-summary="dataSummary" :is-loading="isLoading" />
-  <p class="mt-4 text-xl">Biểu đồ thống kê bệnh nhân</p>
+  <p class="mt-4 text-xl">Biểu đồ thống kê bệnh nhân đặt lịch khám</p>
   <BaseChart
     :label="labelChart"
     :legend-chart="legendChart"

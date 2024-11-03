@@ -142,7 +142,7 @@ const tabs = ref<ITab[]>([
   },
   {
     id: 3,
-    title: 'Biểu đồ thống kê bệnh nhân',
+    title: 'Biểu đồ thống kê bệnh nhân đặt lịch khám',
     tabValue: 'chart'
   }
 ])
