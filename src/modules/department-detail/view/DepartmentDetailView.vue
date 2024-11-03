@@ -214,8 +214,9 @@ const handleClosePopupWarning = () => {
 }
 
 const handleAgreePopupWarning = () => {
+  const id = route.params.id as string
   setOpenPopup('popup-warning-choose-doctor', false)
-  router.push({ name: 'Booking', params: { id: idDoctorBooking.value } })
+  router.push({ name: 'Booking', params: { idDepartment: id, idDoctor: idDoctorBooking.value } })
 }
 </script>
 

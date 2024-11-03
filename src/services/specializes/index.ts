@@ -1,4 +1,5 @@
 import request from '@/plugin/request'
+import requestQuery from '@/plugin/requestQuery'
 
 import type { IPackage } from '@/types/package.types'
 import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
@@ -17,7 +18,7 @@ export default class SpecializeService {
   }
   async getListPackage(params: Record<string, any>): Promise<IResponse<IResponseTable<IPackage[]>>> {
     try {
-      const rs = await request.get(`${this.prefix}`, {
+      const rs = await requestQuery.get(`${this.prefix}`, {
         params: useRemoveParams(params)
       })
       return Promise.resolve(rs.data)
@@ -27,7 +28,7 @@ export default class SpecializeService {
   }
   async getListByDeparmentId(params: Record<string, any>, id: string): Promise<IResponse<IResponseTable<IPackage[]>>> {
     try {
-      const rs = await request.get(`${this.prefix}/department/${id}`, {
+      const rs = await requestQuery.get(`${this.prefix}/department/${id}`, {
         params: useRemoveParams(params)
       })
       return Promise.resolve(rs.data)

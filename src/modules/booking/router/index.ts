@@ -8,7 +8,7 @@ const BookingRouter: RouteRecordRaw[] = [
     component: TheLayout,
     children: [
       {
-        path: ':id',
+        path: ':idDepartment/:idDoctor',
         component: () => import('../view/BookingView.vue'),
         meta: {
           auth: false

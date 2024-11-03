@@ -186,7 +186,8 @@ const handleClickHome = () => {
 const getListPackage = async () => {
   try {
     query.value.loading = true
-    const rs = await apiSpecialize.getListPackage(query.value)
+    const id = route.params.idDepartment as string
+    const rs = await apiSpecialize.getListByDeparmentId(query.value, id)
     dataPackage.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -233,7 +234,7 @@ const selectedHour = (value: string) => {
 const handleClickContinue = async () => {
   try {
     isLoadingBtn.value = true
-    const doctorId = route.params.id as string
+    const doctorId = route.params.idDoctor as string
     const date = `${day.value.toISOString().split('T')[0]} ${hour.value}`
     const conver = new Date(date).toISOString()
     const dateConvert = conver.substring(0, conver.length - 1)
@@ -247,7 +248,7 @@ const handleClickContinue = async () => {
     bookingRequest.value = {
       ...bookingRequest.value,
       patientId: patient.id,
-      doctorId: route.params.id as string,
+      doctorId: route.params.idDoctor as string,
       specializeId: packageChoose.value.id,
       checkIn: dateConvert
     }
