@@ -46,7 +46,7 @@ export default class DoctorService {
   }
   async getDoctorByName(name: string): Promise<IResponse<IResponseTable<IDoctor[]>>> {
     try {
-      const rs = await requestQuery.post(`${this.prefix}/name`, { name })
+      const rs = await requestQuery.get(`${this.prefix}/name/${name}`)
       return Promise.resolve(rs.data)
     } catch (error) {
       return Promise.reject(error)
