@@ -1,6 +1,6 @@
 <template>
   <BasePopup name="popup-add-exmination-package" width="480">
-    <template #title> Add exmination package </template>
+    <template #title> Thêm gói khám </template>
     <div class="space-y-3">
       <div class="space-y-2">
         <p class="text-label">Tên gói khám</p>

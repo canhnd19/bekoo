@@ -1,6 +1,6 @@
 <template>
   <BasePopup name="popup-add-doctor" width="1280">
-    <template #title> Add doctor </template>
+    <template #title> Thêm bác sĩ </template>
     <div class="space-y-4 px-20 pb-6">
       <div class="pt-7">
         <div class="rounded-lg border border-solid border-[#c1d5e9] bg-[#d4e9ff] p-4">

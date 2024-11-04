@@ -1,6 +1,6 @@
 <template>
   <BasePopup name="popup-confirm-delete" width="480">
-    <template #title> Confirm delete </template>
+    <template #title> Xác nhận xóa </template>
     <div>
       <p class="text-base">Bạn có chắc chắn muốn xóa {{ props.type }} {{ props.name }} không?</p>
     </div>
