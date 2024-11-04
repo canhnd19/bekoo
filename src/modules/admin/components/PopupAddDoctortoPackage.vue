@@ -68,6 +68,7 @@ const getAllDoctor = async () => {
     isLoading.value = true
     const rs = await apiDoctor.getAllDoctor(query.value)
     data.value = rs.value.contentResponse
+    query.value.totalElements = rs.value.totalElements
     isLoading.value = false
   } catch (error) {
     isLoading.value = false
