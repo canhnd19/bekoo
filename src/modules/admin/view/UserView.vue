@@ -2,7 +2,6 @@
   <div class="rounded-lg p-4">
     <div class="flex items-start justify-between">
       <BaseInput v-model="search" class="input-search" :show-icon="true" @change="handleSearch" />
-      <BaseButton size="small" class="w-20">Add</BaseButton>
     </div>
     <BaseTable
       v-model:page="query.pageIndex"
