@@ -22,9 +22,9 @@
 
         <div class="space-y-4">
           <p class="text-4xl font-bold text-[#ffb54a]">Giá: {{ useFormatCurrency(props.packageDetail.price) }}đ</p>
-          <div class="button">
+          <!-- <div class="button">
             <span>Đặt khám ngay</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="my-10 w-full border border-solid border-[#e5e7eb]"></div>
