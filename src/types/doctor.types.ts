@@ -1,3 +1,4 @@
+import type { IQuery } from './query.type'
 import type { UserReq } from './user.types'
 
 export interface DoctorReq {
@@ -30,4 +31,8 @@ export interface IDoctor {
     createdAt: string
     updatedAt: string
   }
+}
+
+export interface QueryDoctor extends IQuery {
+  name: string
 }

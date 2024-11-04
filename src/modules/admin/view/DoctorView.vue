@@ -1,7 +1,7 @@
 <template>
   <template v-if="!doctorId">
     <div class="flex items-start justify-between">
-      <BaseInput v-model="search" class="input-search" :show-icon="true" @change="handleSearch" />
+      <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
       <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
     </div>
     <BaseTable
@@ -102,8 +102,7 @@ import type { ChartDataset } from 'chart.js'
 import { forEach } from 'lodash-es'
 
 import type { ITab } from '@/types/component.types'
-import type { IDoctor } from '@/types/doctor.types'
-import type { IQuery } from '@/types/query.type'
+import type { IDoctor, QueryDoctor } from '@/types/doctor.types'
 
 import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
@@ -117,15 +116,15 @@ import TabAllDays from '../components/TabAllDays.vue'
 import TabDay from '../components/TabDay.vue'
 
 const { setOpenPopup } = useBaseStore()
-const search = ref<string>('')
 const doctorId = ref<string>('')
 const tabActive = ref<string>('day')
 const isConflictClick = ref<boolean>(false)
 const data = ref<IDoctor[]>([])
 const doctorRow = ref<IDoctor>({} as IDoctor)
 const isLoadingButton = ref<boolean>(false)
-const query = ref<IQuery>({
-  ...DEFAULT_QUERY_PAGINATION
+const query = ref<QueryDoctor>({
+  ...DEFAULT_QUERY_PAGINATION,
+  name: ''
 })
 const isLoading = ref<boolean>(false)
 const daysActive = ref<VALUE_DAY>('7_DAYS')
@@ -165,13 +164,10 @@ onMounted(() => {
   getAllDoctor()
 })
 
-const getAllDoctor = async (type: string = '') => {
+const getAllDoctor = async () => {
   try {
     query.value.loading = true
-    const rs =
-      type === 'search'
-        ? await apiDoctor.getAllDoctorByName(search.value, query.value)
-        : await apiDoctor.getAllDoctor(query.value)
+    const rs = await apiDoctor.getAllDoctor(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -235,7 +231,7 @@ const handleSearch = () => {
     pageSize: 10,
     totalElements: 0
   }
-  getAllDoctor('search')
+  getAllDoctor()
 }
 const rowClick = (data: IDoctor) => {
   if (isConflictClick.value) {

@@ -1,20 +1,29 @@
 <template>
-  <BasePopup name="popup-add-doctor-to-package" width="480">
+  <BasePopup name="popup-add-doctor-to-package" width="600">
     <template #title> Thêm bác sĩ </template>
     <div>
-      <BaseInput v-model="search" class="input-search mb-3" :show-icon="true" @change="handleSearch" />
+      <BaseInput v-model="query.name" class="input-search mb-3" :show-icon="true" @change="getAllDoctor" />
       <BaseLoading v-if="isLoading" />
       <BaseEmpty v-else-if="data.length === 0" />
       <div v-for="(item, index) in data" v-else :key="index">
         <ElCheckbox
           v-model="idChecked"
           class="check-box"
-          :label="item.info.name"
           :true-value="item.id"
           size="large"
           @change="handleChange(item)"
-        />
+        >
+          <p class="text-xl">{{ item.info.name }} - {{ item.info.email }}</p>
+        </ElCheckbox>
       </div>
+      <BasePagination
+        v-model:page-index="query.pageIndex"
+        v-model:page-size="query.pageSize"
+        :query="query"
+        class="fix-pagination mt-4"
+        @limit-change="handleLimitChange"
+        @page-change="handlePageChange"
+      />
     </div>
     <template #footer>
       <div class="flex items-center justify-end space-x-3">
@@ -28,9 +37,10 @@
 </template>
 
 <script setup lang="ts">
+import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiDoctor } from '@/services'
 
-import type { IDoctor } from '@/types/doctor.types'
+import type { IDoctor, QueryDoctor } from '@/types/doctor.types'
 
 interface IProps {
   isLoadingAdd: boolean
@@ -41,17 +51,22 @@ const emits = defineEmits<{
 }>()
 
 const data = ref<IDoctor[]>([])
-const search = ref<string>('')
 const isLoading = ref<boolean>(false)
 const idChecked = ref<string>('')
 const props = withDefaults(defineProps<IProps>(), {
   isLoadingAdd: false
 })
-
-const handleSearch = async () => {
+const query = ref<QueryDoctor>({
+  ...DEFAULT_QUERY_PAGINATION,
+  name: ''
+})
+onMounted(() => {
+  getAllDoctor()
+})
+const getAllDoctor = async () => {
   try {
     isLoading.value = true
-    const rs = await apiDoctor.getDoctorByName(search.value.trim())
+    const rs = await apiDoctor.getAllDoctor(query.value)
     data.value = rs.value.contentResponse
     isLoading.value = false
   } catch (error) {
@@ -61,6 +76,16 @@ const handleSearch = async () => {
 }
 const handleChange = (data: IDoctor) => {
   idChecked.value = data.id
+}
+const handleLimitChange = (limit: unknown) => {
+  query.value.pageSize = limit as number
+  query.value.pageIndex = 1
+  getAllDoctor()
+}
+
+const handlePageChange = (page: unknown) => {
+  query.value.pageIndex = page as number
+  getAllDoctor()
 }
 </script>
 
@@ -95,6 +120,16 @@ const handleChange = (data: IDoctor) => {
       width: 5px;
       height: 8px;
     }
+  }
+}
+:deep(.fix-pagination.base-pagination) > div:first-of-type {
+  display: none;
+}
+:deep(.fix-pagination.base-pagination) {
+  .list-paging {
+    width: 100%;
+    display: flex;
+    justify-content: end;
   }
 }
 </style>
