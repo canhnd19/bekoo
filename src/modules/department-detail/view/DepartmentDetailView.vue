@@ -34,7 +34,7 @@
               <div class="ml-3 w-full">
                 <p class="text-2xl font-medium">{{ item.name }}</p>
                 <div class="flex items-center justify-between">
-                  <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ useFormatCurrency(item.price) }}đ</p>
+                  <p class="text-xl font-bold text-[#ffb54a]">Giá: {{ useFormatCurrency(item.price) }}</p>
                   <div class="tab justify-center">
                     <!-- <div class="tab-item active">
                       <p class="text-center text-xl font-medium text-[#11a2f3]">Đặt khám ngay</p>

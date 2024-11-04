@@ -21,7 +21,7 @@
         </div>
 
         <div class="space-y-4">
-          <p class="text-4xl font-bold text-[#ffb54a]">Giá: {{ useFormatCurrency(props.packageDetail.price) }}đ</p>
+          <p class="text-4xl font-bold text-[#ffb54a]">Giá: {{ useFormatCurrency(props.packageDetail.price) }}</p>
           <!-- <div class="button">
             <span>Đặt khám ngay</span>
           </div> -->
