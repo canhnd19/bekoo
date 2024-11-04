@@ -12,6 +12,7 @@ export interface IDoctor {
   trainingBy: string
   totalPatientsVisited: number
   maximumPeoplePerDay: number
+  department: string
   info: {
     id: string
     name: string

@@ -80,7 +80,7 @@
               <div class="w-full">
                 <div>
                   <p class="mb-2 text-xl text-[#11a2f3]">
-                    <span>TS BS. </span>
+                    <span>{{ item.trainingBy }} BS. </span>
                     <strong>{{ item.info.name }} | {{ nameDepartment }} </strong>
                   </p>
                   <p>
@@ -93,7 +93,9 @@
 
                 <div class="tab justify-end">
                   <div class="tab-item">
-                    <p class="text-center text-xl font-medium text-[#11a2f3]">Xem chi tiết</p>
+                    <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleViewDetailDoctor(item)">
+                      Xem chi tiết
+                    </p>
                   </div>
                   <div class="tab-item active">
                     <p class="text-center text-xl font-medium text-[#11a2f3]" @click="handleBookingNow(item)">
@@ -121,6 +123,7 @@
   </div>
   <PopupPackageDetail :package-detail="packageDetail" />
   <PopupWarningBooking @close="handleClosePopupWarning" @agree="handleAgreePopupWarning" />
+  <PopupDoctorDetail :doctor-detail="doctorDetail" />
 </template>
 
 <script setup lang="ts">
@@ -137,6 +140,7 @@ import useFormatCurrency from '@/composables/useFormatCurrency'
 import { useAuthStore } from '@/stores/auth'
 import { useBaseStore } from '@/stores/base'
 
+import PopupDoctorDetail from '../components/PopupDoctorDetail.vue'
 import PopupPackageDetail from '../components/PopupPackageDetail.vue'
 import PopupWarningBooking from '../components/PopupWarningChooseDoctor.vue'
 
@@ -156,6 +160,7 @@ const dataPackage = ref<IPackage[]>([])
 const dataDoctors = ref<IDoctor[]>([])
 const packageDetail = ref<IPackage>({} as IPackage)
 const idDoctorBooking = ref<string>('')
+const doctorDetail = ref<IDoctor>({} as IDoctor)
 watch(
   () => tabActive.value,
   () => {
@@ -217,6 +222,12 @@ const handleAgreePopupWarning = () => {
   const id = route.params.id as string
   setOpenPopup('popup-warning-choose-doctor', false)
   router.push({ name: 'Booking', params: { idDepartment: id, idDoctor: idDoctorBooking.value } })
+}
+
+const handleViewDetailDoctor = (data: IDoctor) => {
+  console.log('🚀 ~ handleViewDetailDoctor ~ data:', data)
+  doctorDetail.value = data
+  setOpenPopup('popup-doctor-detail')
 }
 </script>
 
