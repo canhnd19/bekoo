@@ -1,0 +1,1 @@
+function r(n,o){if(!n)return"";let t=new Date(n).getTime();t=o==="FROM"?t:t+86399e3;const g=new Date().getTimezoneOffset()/-60,a=t-g*60*60*1e3,e=new Date(a);return e.getFullYear()+"-"+(e.getMonth()<9?"0"+(e.getMonth()+1):e.getMonth()+1)+"-"+(e.getDate()<10?"0"+e.getDate():e.getDate())}export{r as u};

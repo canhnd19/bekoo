@@ -248,7 +248,6 @@ const component = computed(() => {
   else if (tabActive.value === 'allDays') return TabAllDays
   else return BaseChart
 })
-
 const handleFilter = (data: VALUE_DAY) => {
   daysActive.value = data
   initChart()
