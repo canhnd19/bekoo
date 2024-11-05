@@ -34,5 +34,4 @@ const init = async () => {
   app.use(router)
   app.mount('#app')
 }
-
 init()
