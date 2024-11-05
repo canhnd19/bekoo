@@ -75,6 +75,7 @@
         :legend-chart="legendChart"
         :datasets="datasets"
         :is-loading="isLoading"
+        @filter="handleFilter"
       />
     </div>
   </template>
@@ -247,10 +248,10 @@ const component = computed(() => {
   else if (tabActive.value === 'allDays') return TabAllDays
   else return BaseChart
 })
-// const handleFilter = (data: VALUE_DAY) => {
-//   daysActive.value = data
-//   initChart()
-// }
+const handleFilter = (data: unknown) => {
+  daysActive.value = data as VALUE_DAY
+  initChart()
+}
 
 const getDayStartAndEnd = () => {
   const now = new Date()
