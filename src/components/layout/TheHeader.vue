@@ -100,9 +100,9 @@ const handleViewMedicalRecord = () => {
   }
 }
 const handleClickAdmin = () => {
-  // role === 'ADMIN'
-  //   ? router.push({ name: 'Reports' })
-  //   : router.push({ name: 'MedicalSchedule', params: { id: user.doctor?.id } })
+  role === 'ADMIN'
+    ? router.push({ name: 'Reports' })
+    : router.push({ name: 'MedicalSchedule', params: { id: user.doctor?.id } })
 }
 </script>
 <style scoped lang="scss">

@@ -5,6 +5,7 @@
     </div>
     <div v-for="(menu, index) in listMenu" :key="index" class="mt-2 w-full space-y-2">
       <div
+        v-if="menu.role.includes(role)"
         class="h-16 w-full cursor-pointer text-center hover:!text-primary"
         :class="{ active: menu.routerName === route.name }"
         @click="router.push({ name: menu.routerName, params: { id: menu.id } })"
@@ -21,34 +22,39 @@ import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const route = useRoute()
-const { user } = useAuthStore()
+const { user, role } = useAuthStore()
 
 const listMenu = [
   {
     title: 'Thống kê',
     icon: 'menu-report',
-    routerName: 'Reports'
+    routerName: 'Reports',
+    role: ['ADMIN']
   },
   {
     title: 'Người dùng',
     icon: 'menu-user',
-    routerName: 'Users'
+    routerName: 'Users',
+    role: ['ADMIN']
   },
   {
     title: 'Bác sĩ',
     icon: 'menu-user',
-    routerName: 'Doctors'
+    routerName: 'Doctors',
+    role: ['ADMIN']
   },
   {
     title: 'Chuyên khoa',
     icon: 'menu-user',
-    routerName: 'Departments'
+    routerName: 'Departments',
+    role: ['ADMIN']
   },
   {
     title: 'Lịch khám',
     icon: 'menu-user',
     routerName: 'MedicalSchedule',
-    id: user.doctor?.id
+    id: user.doctor?.id,
+    role: ['DOCTOR', 'ADMIN']
   }
 ]
 </script>
