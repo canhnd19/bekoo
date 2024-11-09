@@ -10,7 +10,7 @@
       :data="data"
       :query="query"
       class="mt-6"
-      label="doctor"
+      label="bác sĩ"
       @page-change="handlePageChange"
       @limit-change="handleLimitChange"
       @row-click="rowClick"

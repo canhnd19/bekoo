@@ -10,7 +10,7 @@
       :data="data"
       :query="query"
       class="mt-6"
-      label="department"
+      label="chuyên khoa"
       @page-change="handlePageChange"
       @limit-change="handleLimitChange"
       @row-click="rowClick"

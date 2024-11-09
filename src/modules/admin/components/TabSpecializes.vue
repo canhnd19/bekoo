@@ -10,7 +10,7 @@
     :data="data"
     :query="query"
     class="mt-6"
-    label="user"
+    label="gói khám"
     @page-change="handlePageChange"
     @limit-change="handleLimitChange"
   >

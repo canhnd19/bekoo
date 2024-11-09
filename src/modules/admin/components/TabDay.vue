@@ -5,7 +5,7 @@
     :data="data"
     :query="query"
     class="mt-6"
-    label="user"
+    label="bệnh nhân"
     @page-change="handlePageChange"
     @limit-change="handleLimitChange"
   >

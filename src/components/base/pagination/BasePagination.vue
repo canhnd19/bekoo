@@ -1,7 +1,7 @@
 <template>
   <div class="base-pagination flex justify-between">
     <div class="text-sm text-secondary">
-      Show
+      Hiển thị
       {{ useFormatNumber(props.query.totalElements == 0 ? 0 : (props.query.pageIndex - 1) * props.query.pageSize + 1) }}
       -
       {{
@@ -12,7 +12,7 @@
         )
       }}
       /
-      {{ useFormatNumber(props.query.totalElements) }} {{ query.totalElements < 2 ? label : pluralize(label) }}
+      {{ useFormatNumber(props.query.totalElements) }} {{ label }}
     </div>
     <div class="list-paging sm:w-full">
       <ElPagination
