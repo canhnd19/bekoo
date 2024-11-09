@@ -206,7 +206,7 @@ const handleClickDepartment = (data: IDepartment) => {
 <style lang="scss">
 .my-swiper.swiper {
   text-align: center;
-  padding: 0 24px 0 48px;
+  padding: 0 24px 0 40px;
   .swiper-button-prev:after,
   .swiper-button-next:after {
     font-size: 20px !important;
