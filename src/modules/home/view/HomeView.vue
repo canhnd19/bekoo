@@ -38,6 +38,34 @@
       </div>
     </div>
   </div>
+  <!-- Feedabck -->
+  <div class="container mt-28">
+    <p class="label">Cảm nhận từ khách hàng</p>
+    <Swiper
+      ref="{swiperRef}"
+      :slides-per-view="3"
+      :space-between="40"
+      :pagination="{
+        type: 'fraction'
+      }"
+      :navigation="true"
+      :modules="modules"
+      class="my-swiper my-8"
+    >
+      <SwiperSlide v-for="(item, index) in FEEDBACK" :key="index">
+        <div class="feedback-card">
+          <div class="mx-auto">
+            <BaseIcon name="icon-feedback" class="ml-2 flex justify-center text-[#ced3d9]" />
+          </div>
+          <p>{{ item.detailFeelPeople }}</p>
+          <div class="border-border-table flex items-center justify-center space-x-2 border-t border-solid pt-4">
+            <img :src="item.avatar" alt="" class="h-10 w-10 rounded-full object-cover" />
+            <p class="text-base font-semibold">{{ item.name }}</p>
+          </div>
+        </div>
+      </SwiperSlide>
+    </Swiper>
+  </div>
   <!-- Thống kê -->
   <div class="bg"></div>
   <div class="statistics">
@@ -59,13 +87,19 @@
 <script setup lang="ts">
 import router from '@/router'
 import { apiDepartment } from '@/services'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/vue'
 
 import type { IDepartment } from '@/types/department.types'
 import type { IQuery } from '@/types/query.type'
 
 import { useBaseStore } from '@/stores/base'
 
-import { CAROUSEL_HOMEPAGE, STATISTICS } from '../constants/index'
+import { CAROUSEL_HOMEPAGE, FEEDBACK, STATISTICS } from '../constants/index'
+
+const modules = [Pagination, Navigation]
 
 const data = ref<IDepartment[]>([])
 const search = ref<string>('')
@@ -145,12 +179,48 @@ const handleClickDepartment = (data: IDepartment) => {
   margin-right: 6px;
   animation: rotating 2s linear infinite;
 }
+.feedback-card {
+  background: #f0f3f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow 0.3s ease-in;
+  border-radius: 16px;
+  overflow: hidden;
+  min-width: 360px;
+  max-width: 360px;
+  padding: 24px;
+  height: 300px;
+  box-shadow: 0 4px 12px 0 #68686840;
+}
 @keyframes rotating {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+</style>
+
+<style lang="scss">
+.my-swiper.swiper {
+  text-align: center;
+  padding: 0 24px 0 48px;
+  .swiper-button-prev:after,
+  .swiper-button-next:after {
+    font-size: 20px !important;
+  }
+  .swiper-button-next,
+  .swiper-rtl .swiper-button-prev {
+    right: var(--swiper-navigation-sides-offset, -8px);
+  }
+  .swiper-button-prev,
+  .swiper-rtl .swiper-button-next {
+    left: var(--swiper-navigation-sides-offset, -8px);
+  }
+  .swiper-pagination {
+    display: none;
   }
 }
 </style>

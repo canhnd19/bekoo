@@ -257,3 +257,42 @@ export const STATISTICS = [
     label: 'Lượt truy cập trong ngày'
   }
 ]
+
+export const FEEDBACK = [
+  {
+    detailFeelPeople:
+      'Đặt lịch xét nghiệm bên này rất gọn, có ngày giờ cụ thể luôn lên là được xét nghiệm liền không rườm rà gì mấy. An tâm đặt cho gia đình, có cả xét nghiệm tận nhà, không mất thời gian.',
+    name: 'Yến Chi ',
+    avatar: '/images/feedback2.jpg'
+  },
+  {
+    detailFeelPeople:
+      'Cảm ơn Bekoo giúp mình và gia đình tiết kiệm thời gian và công sức khi đi khám. Ba mình lớn tuổi nên mắt yếu, đi khám BV Mắt ở xa lên tới Hà nội khám cực với đông nhưng từ bây giờ chỉ cần đặt khám qua Bekoo, không cần xếp hàng chờ đợi.',
+    name: 'Mộc Trà',
+    avatar: '/images/feedback1.jpg'
+  },
+  {
+    detailFeelPeople:
+      'Tôi rất hài lòng với dịch vụ đặt lịch của Bekoo. Ứng dụng dễ sử dụng, giúp tôi đặt lịch khám nhanh chóng mà không cần chờ đợi. Điều tuyệt vời là có thể chọn bác sĩ theo nhu cầu và lịch trình cá nhân. ',
+    name: 'Mai Vy',
+    avatar: '/images/feedback3.jpg'
+  },
+  {
+    detailFeelPeople:
+      'Dịch vụ Bekoo giúp tôi tiết kiệm nhiều thời gian nhờ vào tính năng đặt lịch trực tuyến. Từ khi sử dụng Bekoo, tôi không còn phải xếp hàng dài ở bệnh viện nữa. Giao diện đơn giản, dễ hiểu, thông tin rõ ràng về các bác sĩ và dịch vụ.',
+    name: 'Mạnh Hùng',
+    avatar: '/images/feedback4.jpg'
+  },
+  {
+    detailFeelPeople:
+      'Bekoo thực sự là một ứng dụng hữu ích trong việc chăm sóc sức khỏe! Tôi ấn tượng với tính năng nhắc nhở tự động, giúp tôi không bao giờ quên lịch hẹn. Hệ thống đặt lịch rất mượt, giao diện thân thiện. ',
+    name: 'Roãn Quyền',
+    avatar: '/images/feedback5.jpg'
+  },
+  {
+    detailFeelPeople:
+      'Đặt lịch khám qua Bekoo rất dễ dàng và tiện lợi. Tôi đánh giá cao tính năng thanh toán trực tuyến và cập nhật lịch sử khám bệnh. Giao diện trực quan, giúp tôi dễ dàng tìm kiếm và lựa chọn dịch vụ.',
+    name: 'An Nhung',
+    avatar: '/images/feedback6.jpg'
+  }
+]
