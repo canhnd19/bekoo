@@ -29,7 +29,7 @@ export interface IUser {
   dob: string
   gender: string
   linkAvatar: string
-  roles: [{ name: string }]
+  roles: [{ name: 'USER' | 'DOCTOR' | 'ADMIN' }]
   createdAt: string
   updatedAt: string
 }

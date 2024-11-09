@@ -61,7 +61,7 @@
         </template>
         <div>
           <ul>
-            <li class="option-label" @click="router.push({ name: 'Reports' })">Quản lý</li>
+            <li v-if="role !== 'USER'" class="option-label" @click="handleClickAdmin">Quản lý</li>
             <li class="option-label" @click="handleViewMedicalRecord">Hồ sơ bệnh án</li>
             <li class="option-label" @click="router.push({ name: 'BookingHistory', params: { id: user.patient?.id } })">
               Lịch sử đặt lịch khám
@@ -89,7 +89,7 @@ import { CONTACT_FOR_COOPERATION, INSTRUCT, MEDICAL_SERVICES, NEWS } from '../..
 
 const { logout } = useAuthStore()
 const router = useRouter()
-const { user, patient } = useAuthStore()
+const { user, patient, role } = useAuthStore()
 
 const handleViewMedicalRecord = () => {
   if (patient.id) {
@@ -98,6 +98,11 @@ const handleViewMedicalRecord = () => {
     ElMessage.warning('Vui lòng cập nhật Thông tin bệnh nhân')
     router.push({ name: 'EditUser' })
   }
+}
+const handleClickAdmin = () => {
+  // role === 'ADMIN'
+  //   ? router.push({ name: 'Reports' })
+  //   : router.push({ name: 'MedicalSchedule', params: { id: user.doctor?.id } })
 }
 </script>
 <style scoped lang="scss">

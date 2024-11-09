@@ -26,7 +26,7 @@ export interface IDoctor {
     aboutAddress: string
     dob: string
     gender: string
-    roles: []
+    roles: [{ name: 'USER' | 'DOCTOR' | 'ADMIN' }]
     linkAvatar: string
     createdAt: string
     updatedAt: string

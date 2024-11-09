@@ -20,8 +20,9 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const { emptyDrawerAndPopup } = useBaseStore()
-  const { isLoggedIn } = storeToRefs(useAuthStore())
+  const { isLoggedIn, role } = storeToRefs(useAuthStore())
   emptyDrawerAndPopup()
+  const containsAdmin = computed(() => to.path.includes('admin'))
   if (to.meta.whiteList) {
     return next()
   }
@@ -31,6 +32,11 @@ router.beforeEach((to, _from, next) => {
   if (isLoggedIn.value && to.path === '/login') {
     return next({ name: 'Home' })
   }
+  if (role.value === 'USER' && containsAdmin.value) {
+    ElMessage.error('Bạn không có quyền truy cập vào trang này')
+    return next({ name: 'Home' })
+  }
+
   next()
 })
 

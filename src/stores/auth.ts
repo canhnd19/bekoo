@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
   const access_token = Cookies.get('access_token') || ''
   const accessToken = ref(access_token)
   const isLoggedIn = computed(() => !!Cookies.get('access_token'))
+  const role = ref<'USER' | 'DOCTOR' | 'ADMIN'>('USER')
   const login = async (body: IBodyLogin) => {
     try {
       const rs = await apiAuth.login(body)
@@ -49,6 +50,10 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const rs = await apiAuth.getUserInfo()
       user.value = rs.value
+      role.value = (rs.value.patient ? rs.value.patient.info.roles[0].name : rs.value.doctor?.info.roles[0].name) as
+        | 'USER'
+        | 'DOCTOR'
+        | 'ADMIN'
       return Promise.resolve()
     } catch (error) {
       return Promise.reject(error)
@@ -67,5 +72,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { login, user, isLoggedIn, setBearerToken, getUserInfo, logout, getPatientInfo, patient }
+  return { login, user, isLoggedIn, setBearerToken, getUserInfo, logout, getPatientInfo, patient, role }
 })
