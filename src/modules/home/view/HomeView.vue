@@ -180,7 +180,7 @@ const handleClickDepartment = (data: IDepartment) => {
   animation: rotating 2s linear infinite;
 }
 .feedback-card {
-  @apply flex-col justify-between overflow-hidden rounded-2xl bg-[#f0f3f8] p-6;
+  @apply flex flex-col justify-between overflow-hidden rounded-2xl bg-[#f0f3f8] p-6;
   transition: box-shadow 0.3s ease-in;
   min-width: 360px;
   max-width: 360px;
