@@ -180,19 +180,14 @@ const handleClickDepartment = (data: IDepartment) => {
   animation: rotating 2s linear infinite;
 }
 .feedback-card {
-  background: #f0f3f8;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  @apply flex-col justify-between overflow-hidden rounded-2xl bg-[#f0f3f8] p-6;
   transition: box-shadow 0.3s ease-in;
-  border-radius: 16px;
-  overflow: hidden;
   min-width: 360px;
   max-width: 360px;
-  padding: 24px;
   height: 300px;
   box-shadow: 0 4px 12px 0 #68686840;
 }
+
 @keyframes rotating {
   0% {
     transform: rotate(0deg);
