@@ -27,10 +27,10 @@ export const DEFAULT_QUERY_PAGINATION = {
 export const GENDER = [
   {
     label: 'Nam',
-    value: 'Female'
+    value: 'Nam'
   },
   {
     label: 'Nữ',
-    value: 'Male'
+    value: 'Nữ'
   }
 ]
