@@ -13,7 +13,7 @@ const DepartmentDetailRouter: RouteRecordRaw[] = [
         meta: {
           auth: false
         },
-        name: 'Department Detail'
+        name: 'DepartmentDetail'
       }
     ]
   }

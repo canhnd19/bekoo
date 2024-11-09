@@ -132,7 +132,7 @@ const handleShowMore = () => {
 }
 const handleClickDepartment = (data: IDepartment) => {
   sessionStorage.setItem('department-name', data.name)
-  router.push({ name: 'Department Detail', params: { id: data.id } })
+  router.push({ name: 'DepartmentDetail', params: { id: data.id } })
 }
 </script>
 
