@@ -92,7 +92,7 @@ const pageSize = defineModel('pageSize', {
           }
           .el-input__wrapper {
             border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border-table);
             background: linear-gradient(107deg, rgba(255, 255, 255, 0.09) 3.44%, rgba(255, 255, 255, 0.04) 64.82%);
             backdrop-filter: blur(15px);
             box-shadow: none;
@@ -117,12 +117,12 @@ const pageSize = defineModel('pageSize', {
       align-items: center;
       justify-content: center;
       border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-table);
       background: linear-gradient(107deg, rgba(255, 255, 255, 0.09) 3.44%, rgba(255, 255, 255, 0.04) 64.82%);
       backdrop-filter: blur(15px);
       box-shadow: none;
       &:hover {
-        border-color: var(--active);
+        border-color: var(--primary);
         i {
           color: var(--primary);
         }
@@ -138,18 +138,17 @@ const pageSize = defineModel('pageSize', {
         height: 32px;
         width: 32px;
         border-radius: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        border: 1px solid var(--border-table);
         background: linear-gradient(107deg, rgba(255, 255, 255, 0.09) 3.44%, rgba(255, 255, 255, 0.04) 64.82%);
         backdrop-filter: blur(15px);
         color: var(--primary);
         &:hover {
-          border-color: var(--active);
-          color: var(--active);
+          border-color: var(--primary);
         }
       }
       .is-active {
-        border-color: var(--active);
-        color: var(--active);
+        background-color: var(--primary);
+        color: #fff;
       }
     }
   }
