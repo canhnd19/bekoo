@@ -32,7 +32,7 @@ router.beforeEach((to, _from, next) => {
   if (isLoggedIn.value && to.path === '/login') {
     return next({ name: 'Home' })
   }
-  if (role.value === 'USER' && containsAdmin.value) {
+  if ((role.value === 'USER' || role.value === 'DOCTOR') && containsAdmin.value) {
     ElMessage.error('Bạn không có quyền truy cập vào trang này')
     return next({ name: 'Home' })
   }
