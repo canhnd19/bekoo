@@ -55,32 +55,32 @@ const dataSummary = computed((): ISummary[] => {
   return [
     {
       title: 'Tổng số bác sĩ',
-      icon: 'menu-user',
+      icon: 'total-doctor',
       color: '#0151FC',
       value: valueSummary.value.totalDoctor
     },
     {
       title: 'Tổng số bệnh nhân',
       icon: 'menu-user',
-      color: '#0151FC',
+      color: '#FD2E58',
       value: valueSummary.value.totalPatient
     },
     {
       title: 'Tổng số chuyên khoa',
-      icon: 'menu-user',
-      color: '#0151FC',
+      icon: 'total-department',
+      color: '#00A811',
       value: valueSummary.value.totalDepartment
     },
     {
       title: 'Tổng số gói khám',
-      icon: 'menu-user',
-      color: '#0151FC',
+      icon: 'total-package',
+      color: '#FF9E0C',
       value: valueSummary.value.totalSpecialize
     },
     {
       title: 'Tổng số lượt đặt khám',
-      icon: 'menu-user',
-      color: '#0151FC',
+      icon: 'total-booking',
+      color: '#FF4A4A',
       value: valueSummary.value.totalSchedule
     }
   ]

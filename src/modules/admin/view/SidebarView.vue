@@ -39,19 +39,19 @@ const listMenu = [
   },
   {
     title: 'Bác sĩ',
-    icon: 'menu-user',
+    icon: 'total-doctor',
     routerName: 'Doctors',
     role: ['ADMIN']
   },
   {
     title: 'Chuyên khoa',
-    icon: 'menu-user',
+    icon: 'total-department',
     routerName: 'Departments',
     role: ['ADMIN']
   },
   {
     title: 'Lịch khám',
-    icon: 'menu-user',
+    icon: 'clock',
     routerName: 'MedicalSchedule',
     id: user.doctor?.id,
     role: ['DOCTOR', 'ADMIN']
