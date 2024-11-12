@@ -114,6 +114,9 @@ const query = ref<IQuery>({
 })
 
 const getListDepartment = async () => {
+  if (data.value.length > 0) {
+    return
+  }
   try {
     query.value.loading = true
     const rs = await apiDepartment.getAllDepartment()
