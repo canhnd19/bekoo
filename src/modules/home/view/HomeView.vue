@@ -32,9 +32,9 @@
         <div v-if="query.loading" class="is-loading">
           <BaseIcon name="loading" class="text-black" />
         </div>
-        <p v-if="showMore">Thu gọn</p>
+        <p v-if="showMore && data.length > 0">Thu gọn</p>
         <p v-else>Xem tất cả</p>
-        <BaseIcon :name="showMore ? 'direction-up' : 'direction-down'" class="ml-2" />
+        <BaseIcon :name="showMore && data.length > 0 ? 'direction-up' : 'direction-down'" class="ml-2" />
       </div>
     </div>
   </div>
