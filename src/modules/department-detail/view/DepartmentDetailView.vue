@@ -114,7 +114,6 @@
           v-model:page-index="query.pageIndex"
           v-model:page-size="query.pageSize"
           :query="query"
-          label="package"
           @limit-change="handleLimitChange"
           @page-change="handlePageChange"
         />

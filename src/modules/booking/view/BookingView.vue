@@ -48,7 +48,7 @@
               v-model:page-index="query.pageIndex"
               v-model:page-size="query.pageSize"
               :query="query"
-              label="package"
+              label="gói khám"
               @limit-change="handleLimitChange"
               @page-change="handlePageChange"
             />
