@@ -52,7 +52,6 @@ declare global {
   const onUnmounted: (typeof import('vue'))['onUnmounted']
   const onUpdated: (typeof import('vue'))['onUpdated']
   const onWatcherCleanup: (typeof import('vue'))['onWatcherCleanup']
-  const pluralize: (typeof import('./src/utils/pluralize'))['default']
   const printIndex: (typeof import('./src/utils/printIndex'))['default']
   const provide: (typeof import('vue'))['provide']
   const reactive: (typeof import('vue'))['reactive']
@@ -153,7 +152,6 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<(typeof import('vue'))['onUnmounted']>
     readonly onUpdated: UnwrapRef<(typeof import('vue'))['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<(typeof import('vue'))['onWatcherCleanup']>
-    readonly pluralize: UnwrapRef<(typeof import('./src/utils/pluralize'))['default']>
     readonly printIndex: UnwrapRef<(typeof import('./src/utils/printIndex'))['default']>
     readonly provide: UnwrapRef<(typeof import('vue'))['provide']>
     readonly reactive: UnwrapRef<(typeof import('vue'))['reactive']>

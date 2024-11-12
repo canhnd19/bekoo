@@ -91,7 +91,6 @@
     "formatNumber": true,
     "formatParams": true,
     "formatTx": true,
-    "pluralize": true,
     "printIndex": true,
     "renderClassStatus": true,
     "showError": true,
