@@ -1,5 +1,5 @@
 <template>
-  <div class="base-icon" :style="{ width: size + 'px' }" @click="($event) => emit('click', $event)">
+  <div class="base-icon" :style="{ width: size + 'px' }" @click="($event: MouseEvent) => emit('click', $event)">
     <component :is="icon"></component>
   </div>
 </template>
