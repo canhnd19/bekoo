@@ -16,7 +16,7 @@
       </template>
     </div>
   </div>
-  <!-- Chuyên khoa -->
+  <!-- TODO: Chuyên khoa -->
   <div class="container mt-28">
     <p class="label">CHUYÊN KHOA</p>
     <div class="my-8 grid grid-cols-8 gap-x-12 gap-y-8">
@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  <!-- Feedabck -->
+  <!-- TODO: Feedabck -->
   <div class="container mt-28">
     <p class="label">Cảm nhận từ khách hàng</p>
     <Swiper
@@ -66,7 +66,7 @@
       </SwiperSlide>
     </Swiper>
   </div>
-  <!-- Thống kê -->
+  <!-- TODO: Thống kê -->
   <div class="bg"></div>
   <div class="statistics">
     <div class="container">
