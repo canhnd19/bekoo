@@ -4,7 +4,7 @@
       <SidebarView />
       <ElContainer direction="vertical">
         <ElHeader height="70px" class="header flex items-center justify-between bg-[#f6f8fc]">
-          <span class="text-3xl font-semibold">{{ route.name }}</span>
+          <span class="text-3xl font-semibold">{{ nameHeader }}</span>
         </ElHeader>
         <ElScrollbar :always="true" class="sm:!h-full sm:!overflow-visible">
           <ElMain>
@@ -20,6 +20,23 @@
 import SidebarView from './SidebarView.vue'
 
 const route = useRoute()
+
+const nameHeader = computed(() => {
+  switch (route.name) {
+    case 'Reports':
+      return 'Thống kê'
+    case 'Users':
+      return 'Người dùng'
+    case 'Doctors':
+      return 'Bác sĩ'
+    case 'Departments':
+      return 'Chuyên khoa'
+    case 'MedicalSchedule':
+      return 'Lịch khám'
+    default:
+      break
+  }
+})
 </script>
 
 <style scoped lang="scss">
