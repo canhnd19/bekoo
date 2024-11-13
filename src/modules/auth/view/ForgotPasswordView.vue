@@ -57,6 +57,7 @@ const confirm = async () => {
   try {
     loading.value = true
     await apiAuth.forgotPass({ email: fogotPass.email })
+    sessionStorage.setItem('email', fogotPass.email)
     router.push({ name: 'PinCode' })
     loading.value = false
   } catch (error) {

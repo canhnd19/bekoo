@@ -34,10 +34,7 @@
 <script setup lang="ts">
 import { apiAuth } from '@/services'
 
-import { useAuthStore } from '@/stores/auth'
-
 const router = useRouter()
-const { user } = useAuthStore()
 
 const loading = ref<boolean>(false)
 const newPass = reactive({
@@ -51,11 +48,13 @@ const disabled = computed(() => {
 const confirm = async () => {
   try {
     loading.value = true
+    const email = sessionStorage.getItem('email') as string
     const rs = await apiAuth.newPass({
-      email: user.patient ? user.patient.info.email : user.doctor!.info.email,
+      email,
       newPassword: newPass.password,
       confirmPassword: newPass.confirmPassword
     })
+    sessionStorage.clear()
     ElMessage.success(rs.message)
     router.push({ name: 'Home' })
     loading.value = false

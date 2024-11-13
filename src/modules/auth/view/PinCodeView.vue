@@ -42,8 +42,10 @@ const num4 = ref<string>('')
 const num5 = ref<string>('')
 const num6 = ref<string>('')
 const loading = ref<boolean>(false)
+const email = ref<string>('')
 onMounted(() => {
   startCountdown() // Start the countdown when the component is created
+  email.value = sessionStorage.getItem('email') as string
 })
 
 const startCountdown = () => {
@@ -74,11 +76,12 @@ const combineNumbers = (num1: string, num2: string, num3: string, num4: string, 
 
 const conFirm = async () => {
   try {
+    console.log('object')
     loading.value = true
     const OTP = combineNumbers(num1.value, num2.value, num3.value, num4.value, num5.value, num6.value)
     await apiAuth.pinCode({
       code: OTP as string,
-      email: user.patient ? user.patient.info.email : user.doctor!.info.email
+      email: email.value as string
     })
     router.push({ name: 'SetNewPassword' })
     loading.value = false
