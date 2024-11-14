@@ -48,7 +48,6 @@
     :is-loading-button="isLoadingButton"
     @delete="deleteDepartment"
   />
-  <PopupEditDepartment :data="departmentRow" :is-loading-button="isLoadingButton" />
 </template>
 
 <script setup lang="ts">
@@ -70,12 +69,12 @@ const { setOpenPopup } = useBaseStore()
 const tabs = ref<ITab[]>([
   {
     id: 1,
-    title: 'Doctors',
+    title: 'Bác sĩ',
     tabValue: 'doctors'
   },
   {
     id: 2,
-    title: 'Specialize',
+    title: 'Gói khám',
     tabValue: 'specialize'
   }
 ])
