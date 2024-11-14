@@ -169,7 +169,7 @@
         >
       </div>
 
-      <template v-if="user.patient?.id">
+      <template v-if="user.patient?.info.id">
         <div class="pt-6 text-2xl font-bold">Thông tin bệnh nhân</div>
         <div class="style-flex">
           <div class="space-y-2">
