@@ -294,7 +294,7 @@ const mapChart = (data: any) => {
   datasets.value.push({
     label: 'Số lượng bệnh nhân',
     data: _data,
-    tension: 0,
+    tension: 0.2,
     borderColor: '#027BFE'
   })
 }
