@@ -65,7 +65,7 @@ interface IProp extends ITable<T> {
 
 const props = withDefaults(defineProps<IProp>(), {
   loading: false,
-  emptyText: 'There are no data',
+  emptyText: 'Không có dữ liệu',
   data: () => [],
   label: '',
   showPagination: true,
