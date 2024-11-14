@@ -62,7 +62,7 @@ const confirm = async () => {
   try {
     loading.value = true
     const rs = await apiAuth.changePass({
-      id: user.patient ? user.patient.id : user.doctor!.id,
+      id: user.patient?.info ? user.patient.info.id : user.doctor!.info.id,
       oldPassword: changePassword.oldPassword,
       newPassword: changePassword.newPassword,
       confirmPassword: changePassword.confirmNewPassword
