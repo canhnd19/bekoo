@@ -16,17 +16,17 @@
       @row-click="rowClick"
     >
       <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-      <ElTableColumn label="tên" min-width="162">
+      <ElTableColumn label="tên" width="240">
         <template #default="{ row }">
           <p>{{ row.info.name }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="học vấn" min-width="112">
+      <ElTableColumn label="học vấn" width="116">
         <template #default="{ row }">
           <p>{{ row.trainingBy }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="email" min-width="200">
+      <ElTableColumn label="email" width="300">
         <template #default="{ row }">
           <p>{{ row.info.email }}</p>
         </template>
