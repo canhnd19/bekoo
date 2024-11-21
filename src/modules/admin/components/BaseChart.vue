@@ -3,7 +3,7 @@
     <BaseSelect v-model="daysActive" placeholder="" class="select" :clearable="false" @change="handleFilter">
       <ElOption v-for="(item, index) in FILTER_DAYS" :key="index" :label="item.label" :value="item.value" />
     </BaseSelect>
-    <BaseLoading v-if="isLoading"></BaseLoading>
+    <BaseLoading v-if="isLoading" />
     <template v-else-if="datasets.length">
       <canvas id="chart" ref="refChart" height="340" width="966"></canvas>
     </template>

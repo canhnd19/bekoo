@@ -157,6 +157,7 @@ import PopupConfirmBooking from '../components/PopupConfirmBooking.vue'
 
 const { setOpenPopup } = useBaseStore()
 const { patient } = useAuthStore()
+
 const route = useRoute()
 onMounted(() => {
   getListPackage()
@@ -264,6 +265,11 @@ const handleCencalBooking = () => {
 }
 
 const handleBooking = async () => {
+  if (!patient.id) {
+    router.push({ name: 'EditUser' })
+    ElMessage.warning('Vui lòng cập nhật Thông tin bệnh nhân')
+    return
+  }
   try {
     isLoadingBooking.value = true
     const rs = await apiBooking.booking(bookingRequest.value)
