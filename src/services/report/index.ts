@@ -24,6 +24,15 @@ export default class ReportService {
     }
   }
 
+  async getDataChartAge(): Promise<{ code: number; message: string; value: { range: string; value: number }[] }> {
+    try {
+      const rs = await request.get(`${this.prefix}/by-age`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   async getDataReport(): Promise<IResponse<IReport>> {
     try {
       const rs = await request.get(`${this.prefix}/total`)

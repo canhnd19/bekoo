@@ -6,12 +6,6 @@
     <BaseLoading v-if="isLoading"></BaseLoading>
     <template v-else-if="datasets.length">
       <canvas id="chart" ref="refChart" height="340" width="966"></canvas>
-      <div class="mt-3 flex justify-center gap-4">
-        <div v-for="(item, index) in legendChart" :key="index" class="flex items-center space-x-2 text-xs">
-          <span class="block h-2 w-[21px]" :style="{ backgroundColor: item.color }"></span>
-          <span class="text-[#667085]">{{ item.name }}</span>
-        </div>
-      </div>
     </template>
     <BaseEmpty v-else :show="true" />
   </div>

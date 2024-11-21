@@ -8,6 +8,8 @@
     :is-loading="isLoadingChart"
     @filter="handleFilter"
   />
+  <p class="my-10 text-2xl font-semibold">Biểu đồ thống kê độ tuổi bệnh nhân</p>
+  <BaseChartPie :datasets="ageData" :is-loading="isLoadingChartByAge" />
 </template>
 
 <script setup lang="ts">
@@ -15,21 +17,25 @@ import { apiReport } from '@/services'
 import { useDateFormat } from '@vueuse/core'
 import type { ChartDataset } from 'chart.js'
 import { forEach } from 'lodash-es'
+import { onMounted, ref } from 'vue'
 
 import type { IReport, ISummary } from '@/types/user.types'
 
 import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
 
 import BaseChart, { type VALUE_DAY } from '../components/BaseChart.vue'
+import BaseChartPie from '../components/BaseChartPie.vue'
 import BaseSummary from '../components/BaseSummary.vue'
 
 onMounted(() => {
   initChart()
   getDataReport()
+  chartByAge()
 })
 const daysActive = ref<VALUE_DAY>('7_DAYS')
 const isLoading = ref<boolean>(false)
 const isLoadingChart = ref<boolean>(false)
+const isLoadingChartByAge = ref<boolean>(false)
 const valueSummary = ref<IReport>({
   totalDepartment: 0,
   totalDoctor: 0,
@@ -37,14 +43,16 @@ const valueSummary = ref<IReport>({
   totalSchedule: 0,
   totalSpecialize: 0
 })
+const ageData = ref<{ range: string; value: number }[]>([])
 const labelChart = ref<string[]>([])
 const datasets = ref<ChartDataset[]>([])
 const legendChart = ref<Array<Record<string, any>>>([
   {
-    name: 'Số bệnh nhân',
+    name: 'Số lượng bệnh nhân',
     color: '#0A94FF'
   }
 ])
+
 const params = ref<Record<string, any>>({
   groupType: 1,
   fromDate: '',
@@ -127,6 +135,18 @@ const initChart = async () => {
   } catch (error) {
     isLoadingChart.value = false
     console.log(error)
+  }
+}
+
+const chartByAge = async () => {
+  try {
+    isLoadingChartByAge.value = true
+    const rs = await apiReport.getDataChartAge()
+    ageData.value = rs.value
+    isLoadingChartByAge.value = false
+  } catch (error) {
+    console.log(error)
+    isLoadingChartByAge.value = false
   }
 }
 
