@@ -16,12 +16,12 @@
       @row-click="rowClick"
     >
       <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-      <ElTableColumn label="NAME">
+      <ElTableColumn label="tên">
         <template #default="{ row }">
           <p>{{ row.name }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="ACTION" align="right">
+      <ElTableColumn label="hành động" align="right">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
             <BaseIcon name="edit" @click="handleEditDepartment(row)" />

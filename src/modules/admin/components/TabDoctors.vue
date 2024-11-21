@@ -13,7 +13,7 @@
     @limit-change="handleLimitChange"
   >
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-    <ElTableColumn label="NAME">
+    <ElTableColumn label="tên">
       <template #default="{ row }">
         <p>{{ row.info.name }}</p>
       </template>
@@ -23,17 +23,17 @@
         <p>{{ row.info.email }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="PHONE NUMBER" width="200">
+    <ElTableColumn label="số điện thoại" width="200">
       <template #default="{ row }">
         <p>{{ row.info.phoneNumber }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="GENDER" width="90">
+    <ElTableColumn label="giới tính" width="90">
       <template #default="{ row }">
         <p>{{ row.info.gender }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="ACTION" width="120" align="right">
+    <ElTableColumn label="hành động" width="120" align="right">
       <template #default="{ row }">
         <div class="flex items-center justify-end space-x-3">
           <!-- <BaseIcon name="edit" @click="handleEditUser" /> -->

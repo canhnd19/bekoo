@@ -15,17 +15,17 @@
     @limit-change="handleLimitChange"
   >
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-    <ElTableColumn label="NAME">
+    <ElTableColumn label="tên">
       <template #default="{ row }">
         <p>{{ row.name }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="price">
+    <ElTableColumn label="giá">
       <template #default="{ row }">
         <p>{{ useFormatCurrency(row.price) }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="ACTION">
+    <ElTableColumn label="hành động">
       <template #default="{ row }">
         <div class="flex items-center space-x-3">
           <BaseIcon name="delete" @click="handleDelete(row)" />
