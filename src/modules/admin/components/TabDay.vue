@@ -121,7 +121,7 @@ const handleSuccess = async (data: IResBooking) => {
     isLoadingButton.value = true
     const id = data.patient.id
     await apiBooking.deleteBooking(id)
-    ElMessage.success('khám bệnh nhân thành công')
+    ElMessage.success('Khám bệnh nhân thành công')
     setOpenPopup('popup-confirm-examined', false)
     isLoadingButton.value = false
     getMedicalScheduleDay()

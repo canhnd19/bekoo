@@ -14,5 +14,6 @@ export type POPUP_NAME =
   | 'popup-patient-detail'
   | 'popup-doctor-detail'
   | 'popup-confirm-examined'
+  | 'popup-confirm-delete-booking'
 
 export type DRAWER_NAME = 'drawer-root'

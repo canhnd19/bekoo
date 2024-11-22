@@ -46,9 +46,17 @@
             <p>{{ useFormatCurrency(row.specialize.price) }}</p>
           </template>
         </ElTableColumn>
+        <ElTableColumn label="hành động" align="right">
+          <template #default="{ row }">
+            <div class="mr-3 flex items-center justify-end">
+              <BaseIcon name="delete" @click="handleDelete(row)" />
+            </div>
+          </template>
+        </ElTableColumn>
       </BaseTable>
     </div>
   </div>
+  <PopupConfirmDeleteBooking :is-loading-button="isLoadingButton" @yes="deleteBooking" />
 </template>
 
 <script setup lang="ts">
@@ -62,8 +70,12 @@ import type { IHistoryBoking } from '@/types/user.types'
 import useDateFormat from '@/composables/useDateFormat'
 import useFormatCurrency from '@/composables/useFormatCurrency'
 
+import { useBaseStore } from '@/stores/base'
+
+import PopupConfirmDeleteBooking from '../components/PopupConfirmDeleteBooking.vue'
 import { FILTER } from '../constants/index'
 
+const { setOpenPopup } = useBaseStore()
 const route = useRoute()
 onMounted(() => {
   getDataBookingHistory()
@@ -73,6 +85,9 @@ const statusId = ref<number>(1)
 const query = ref<IQuery>({
   ...DEFAULT_QUERY_PAGINATION
 })
+const isLoadingButton = ref<boolean>(false)
+const dataRow = ref<IHistoryBoking>({} as IHistoryBoking)
+
 const getDataBookingHistory = async () => {
   try {
     query.value.loading = true
@@ -102,6 +117,23 @@ const handleFilter = (data: number) => {
 }
 const handleClickHome = () => {
   router.push({ name: 'Home' })
+}
+const handleDelete = (data: IHistoryBoking) => {
+  dataRow.value = data
+  setOpenPopup('popup-confirm-delete-booking')
+}
+const deleteBooking = async () => {
+  try {
+    isLoadingButton.value = true
+    await apiBooking.deleteBooking(dataRow.value.id)
+    ElMessage.success('Hủy đặt khám thành công')
+    setOpenPopup('popup-confirm-delete-booking', false)
+    isLoadingButton.value = false
+    getDataBookingHistory()
+  } catch (error) {
+    console.log(error)
+    isLoadingButton.value = false
+  }
 }
 </script>
 
