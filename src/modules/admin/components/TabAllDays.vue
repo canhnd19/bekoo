@@ -89,7 +89,7 @@ const getMedicalScheduleAllDay = async () => {
   try {
     query.value.loading = true
     const doctorId = props.doctorId
-    const rs = await apiBooking.getMedicalScheduleAllDay(query.value, doctorId)
+    const rs = await apiBooking.getMedicalScheduleAllDay(query.value, doctorId, 1)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false

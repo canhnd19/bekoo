@@ -33,10 +33,11 @@ export default class BookingService {
 
   async getMedicalScheduleAllDay(
     params: Record<string, any>,
-    id: string
+    id: string,
+    statusId: number
   ): Promise<IResponse<IResponseTable<IResBooking[]>>> {
     try {
-      const rs = await request.get(`${this.prefix}/doctor/${id}`, {
+      const rs = await request.get(`${this.prefix}/doctor/${id}/${statusId}`, {
         params: useRemoveParams(params)
       })
       return Promise.resolve(rs.data)
