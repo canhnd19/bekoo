@@ -1,6 +1,10 @@
 export const FILTER = [
   {
     label: 'Tất cả',
+    value: 0
+  },
+  {
+    label: 'Đã xác nhận',
     value: 1
   },
   {

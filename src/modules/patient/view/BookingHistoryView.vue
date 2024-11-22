@@ -8,7 +8,7 @@
   </div>
   <div class="bg-[#e8f2f7]">
     <div class="container py-6">
-      <BaseSelect v-model="statusId" placeholder="Chọn giới tính" class="select" @change="handleFilter">
+      <BaseSelect v-model="statusId" placeholder="Chọn" class="select" @change="handleFilter">
         <ElOption v-for="(item, index) in FILTER" :key="index" :value="item.value" :label="item.label"> </ElOption>
       </BaseSelect>
       <BaseTable
@@ -86,7 +86,7 @@ onMounted(() => {
   getDataBookingHistory()
 })
 const data = ref<IHistoryBoking[]>([])
-const statusId = ref<number>(1)
+const statusId = ref<number>(0)
 const query = ref<IQuery>({
   ...DEFAULT_QUERY_PAGINATION
 })
