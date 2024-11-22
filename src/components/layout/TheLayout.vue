@@ -10,7 +10,9 @@
       <div class="flex h-dvh flex-col justify-between">
         <div>
           <TheHeader />
-          <RouterView />
+          <KeepAlive>
+            <RouterView />
+          </KeepAlive>
         </div>
         <TheFooter />
       </div>
