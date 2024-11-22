@@ -3,7 +3,7 @@
     <div class="mx-auto">
       <img src="/images/header_logo.png" class="mx-auto my-7" />
       <p class="mb-[18px] text-center">Vui lòng đăng nhập để tiếp tục</p>
-      <ElForm ref="formRef" :model="loginForm" label-width="auto" class="demo-ruleForm">
+      <ElForm ref="formRef" :model="loginForm" label-width="auto" class="demo-ruleForm" @submit.prevent="handleLogin">
         <ElFormItem
           prop="email"
           :rules="[
@@ -25,6 +25,7 @@
             autocomplete="off"
             style="width: 430px; height: 50px"
             placeholder="Vui lòng nhập email"
+            @keyup.enter="handleLogin"
           />
         </ElFormItem>
         <ElFormItem prop="password" :rules="{ required: true, message: 'Vui lòng nhập mật khẩu!' }">
@@ -36,6 +37,7 @@
             type="password"
             placeholder="Mật khẩu"
             show-password
+            @keyup.enter="handleLogin"
           />
         </ElFormItem>
       </ElForm>
