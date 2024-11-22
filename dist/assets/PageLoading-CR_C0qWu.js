@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as t,a as c}from"./index-BazZycSi.js";const o={},r={class:"flex min-h-screen items-center justify-center"};function _(a,e){return n(),t("div",r,e[0]||(e[0]=[c("div",{class:"loader"},null,-1)]))}const l=s(o,[["render",_],["__scopeId","data-v-572fe773"]]);export{l as _};
