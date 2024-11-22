@@ -41,9 +41,14 @@
             <p>{{ row.specialize.name }}</p>
           </template>
         </ElTableColumn>
-        <ElTableColumn label="giá" align="right">
+        <ElTableColumn label="giá">
           <template #default="{ row }">
             <p>{{ useFormatCurrency(row.specialize.price) }}</p>
+          </template>
+        </ElTableColumn>
+        <ElTableColumn label="trạng thái">
+          <template #default="{ row }">
+            <p>{{ row.status }}</p>
           </template>
         </ElTableColumn>
         <ElTableColumn label="hành động" align="right">
