@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <div class="footer">© 2024 - Bản quyền thuộc Công Ty Cổ Phần Ứng Dụng PKH</div>
+    <div class="footer">© 2024 - Bản quyền thuộc Công Ty ...</div>
   </div>
 </template>
 
