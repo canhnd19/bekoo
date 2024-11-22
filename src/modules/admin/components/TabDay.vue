@@ -10,7 +10,7 @@
     @limit-change="handleLimitChange"
   >
     <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-    <ElTableColumn label="tên bệnh nhân">
+    <ElTableColumn label="tên bệnh nhân" width="200">
       <template #default="{ row }">
         <p>{{ row.patient.info.name }}</p>
       </template>
@@ -30,25 +30,27 @@
         <p>{{ useFormatCurrency(row.specialize.price) }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="thời gian khám">
+    <ElTableColumn label="thời gian khám" width="200">
       <template #default="{ row }">
         <p>{{ useDateFormat(row.checkIn, 'DD/MM/YYYY HH:mm:ss') }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="thời gian khám">
+    <ElTableColumn label="trạng thía">
       <template #default="{ row }">
         <p>{{ row.status }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn align="right">
+    <ElTableColumn align="right" label="hành động">
       <template #default="{ row }">
-        <div class="mr-3 flex items-center justify-end">
-          <BaseIcon name="eye" @click="viewPatientDetail(row)" />
+        <div class="mr-3 flex items-center justify-end space-x-3">
+          <BaseIcon name="tick" @click="action(row, 'SUCCESS')" />
+          <BaseIcon name="eye" @click="action(row, 'VIEW')" />
         </div>
       </template>
     </ElTableColumn>
   </BaseTable>
   <PopupPatientDetail :data="dataRow" />
+  <PopupConfirmExamined :data="dataRow" :is-loading-button="isLoadingButton" @success="handleSuccess" />
 </template>
 
 <script setup lang="ts">
@@ -63,6 +65,7 @@ import useFormatCurrency from '@/composables/useFormatCurrency'
 
 import { useBaseStore } from '@/stores/base'
 
+import PopupConfirmExamined from './PopupConfirmExamined.vue'
 import PopupPatientDetail from './PopupPatientDetail.vue'
 
 const { setOpenPopup } = useBaseStore()
@@ -82,6 +85,7 @@ const dataRow = ref<IResBooking>({} as IResBooking)
 const props = withDefaults(defineProps<IProps>(), {
   doctorId: ''
 })
+const isLoadingButton = ref<boolean>(false)
 
 const getMedicalScheduleDay = async () => {
   try {
@@ -107,9 +111,24 @@ const handlePageChange = (page: unknown) => {
   getMedicalScheduleDay()
 }
 
-const viewPatientDetail = (data: IResBooking) => {
+const action = (data: IResBooking, type: 'SUCCESS' | 'VIEW') => {
   dataRow.value = data
-  setOpenPopup('popup-patient-detail')
+  type === 'SUCCESS' ? setOpenPopup('popup-confirm-examined') : setOpenPopup('popup-patient-detail')
+}
+
+const handleSuccess = async (data: IResBooking) => {
+  try {
+    isLoadingButton.value = true
+    const id = data.patient.id
+    await apiBooking.deleteBooking(id)
+    ElMessage.success('khám bệnh nhân thành công')
+    setOpenPopup('popup-confirm-examined', false)
+    isLoadingButton.value = false
+    getMedicalScheduleDay()
+  } catch (error) {
+    console.log(error)
+    isLoadingButton.value = false
+  }
 }
 </script>
 

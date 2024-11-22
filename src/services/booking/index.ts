@@ -59,4 +59,13 @@ export default class BookingService {
       return Promise.reject(error)
     }
   }
+
+  async deleteBooking(id: string): Promise<any> {
+    try {
+      const rs = await request.delete(`${this.prefix}/${id}`)
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }
