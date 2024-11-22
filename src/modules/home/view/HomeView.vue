@@ -188,7 +188,6 @@ const handleClickDepartment = (data: IDepartment) => {
   min-width: 360px;
   max-width: 360px;
   height: 300px;
-  box-shadow: 0 4px 12px 0 #68686840;
 }
 
 @keyframes rotating {
