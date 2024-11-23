@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  <!-- TODO: Feedabck -->
+  <!-- TODO: Feedback -->
   <div class="container mt-28">
     <p class="label">Cảm nhận từ khách hàng</p>
     <Swiper

@@ -103,6 +103,13 @@
               </ul>
             </div>
             <p class="text-lg text-[#d98634]">Tất cả thời gian theo múi giờ Việt Nam GMT +7</p>
+            <div class="mb-4 mt-8">
+              <p class="mb-3 text-xl font-semibold">Chọn phương thức thanh toán</p>
+              <ElRadioGroup v-model="bookingRequest.paymentMethod" class="payment">
+                <ElRadio value="1" size="large" class="text-base">Thanh toán khi tới khám</ElRadio>
+                <ElRadio value="2" size="large" class="text-base">Thanh toán bằng thẻ tín dụng</ElRadio>
+              </ElRadioGroup>
+            </div>
             <div class="mt-8">
               <p class="mb-3 text-xl">Ghi chú</p>
               <ElInput
@@ -218,7 +225,8 @@ const handleClickChoosePackage = () => {
     doctorId: '',
     specializeId: '',
     checkIn: '',
-    note: ''
+    note: '',
+    paymentMethod: 0
   }
 }
 const choosePackage = (data: IPackage) => {
@@ -275,6 +283,7 @@ const handleBooking = async () => {
     const rs = await apiBooking.booking(bookingRequest.value)
     ElMessage.success(rs.message)
     setOpenPopup('popup-confirm-booking', false)
+    if (rs.value) window.open(rs.value, '_blank', 'noopener,noreferrer')
     router.push({ name: 'Home' })
     isLoadingBooking.value = false
   } catch (error) {
@@ -381,6 +390,19 @@ const disabled = computed(() => {
   .el-textarea__inner {
     font-size: 16px;
     border-radius: 8px;
+  }
+}
+.payment {
+  :deep(.el-radio) {
+    .el-radio__input {
+      .el-radio__inner {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    .el-radio__label {
+      font-size: 18px;
+    }
   }
 }
 @keyframes styles_animation__RBREz {

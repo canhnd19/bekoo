@@ -1,14 +1,14 @@
 import request from '@/plugin/request'
 
 import type { IBookingRequest, IResBooking } from '@/types/booking.types'
-import type { IResponse, IResponseTable, IResposeMessage } from '@/types/response.types'
+import type { IResponse, IResponseTable } from '@/types/response.types'
 import type { IHistoryBoking } from '@/types/user.types'
 
 import useRemoveParams from '@/composables/useRemoveParams'
 
 export default class BookingService {
   prefix = 'schedule'
-  async booking(body: IBookingRequest): Promise<IResposeMessage> {
+  async booking(body: IBookingRequest): Promise<IResponse<string>> {
     try {
       const rs = await request.post(`${this.prefix}`, body)
       return Promise.resolve(rs.data)
