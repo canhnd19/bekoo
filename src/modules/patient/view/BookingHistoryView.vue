@@ -21,7 +21,7 @@
         @limit-change="handleLimitChange"
       >
         <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
-        <ElTableColumn label="thời gian">
+        <ElTableColumn label="thời gian" width="180">
           <template #default="{ row }">
             <p>{{ useDateFormat(row.checkIn, 'DD/MM/YYYY HH:mm:ss') }}</p>
           </template>
@@ -49,6 +49,11 @@
         <ElTableColumn label="trạng thái">
           <template #default="{ row }">
             <p>{{ row.status }}</p>
+          </template>
+        </ElTableColumn>
+        <ElTableColumn label="thanh toán">
+          <template #default="{ row }">
+            <p>{{ row.paymentStatus }}</p>
           </template>
         </ElTableColumn>
         <ElTableColumn label="hành động" align="right">

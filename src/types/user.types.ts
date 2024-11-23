@@ -92,6 +92,7 @@ export interface IHistoryBoking {
   id: string
   specialize: IPackage
   status: string
+  paymentStatus: string
 }
 export interface ISummary {
   title: string
