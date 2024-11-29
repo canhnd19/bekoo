@@ -19,22 +19,22 @@
           <p>{{ row.name }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="EMAIL">
+      <ElTableColumn label="EMAIL" width="400">
         <template #default="{ row }">
           <p>{{ row.email }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="số điện thoại" width="200">
+      <ElTableColumn label="số điện thoại">
         <template #default="{ row }">
           <p>{{ row.phoneNumber }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="giới tính" width="90">
+      <ElTableColumn label="giới tính">
         <template #default="{ row }">
           <p>{{ row.gender }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="hành động" width="120" align="right">
+      <ElTableColumn label="hành động" align="right">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
             <BaseIcon name="delete" @click="handleDeleteUser(row)" />
