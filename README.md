@@ -1,3 +1,13 @@
+
+# Bekoo
+[![GitHub License](https://img.shields.io/github/license/RoanDevBackend/Bekoo)](./LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors-anon/RoanDevBackend/Bekoo)](https://github.com/RoanDevBackend/Bekoo/graphs/contributors)
+
+![Alt text](public/images/banner.png)
+
+## Introduction
+ **Bekoo**: Your health, simplified. Book your doctor's appointment anytime, anywhere. With Bekoo, managing your health is easier than ever. Simply select your preferred doctor, choose a convenient time slot, and confirm your appointment with just a few taps
+
 # vue-vite-typescript
 
 🚀 Vue 3, TypeScript, Tailwind CSS, Vite, Pinia ⚡️ Made with developer experience first: ESLint, Prettier, VSCode, PostCSS
@@ -72,6 +82,19 @@ npm run commit
 
 ## Project Setup
 
+
+First, clone the project to your computer:
+
+```bash
+git clone https://github.com/canhnd19/bekoo.git
+```
+
+Second, Start all services with one line of code:
+
+```bash
+cd bekoo-web 
+```
+### 🔨 Installation
 ```sh
 npm install
 ```
@@ -119,3 +142,18 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+
+## 🙌 CONTRIBUTING
+
+If you want to contribute to the project, please read [CONTRIBUTING.md](.github/CONTRIBUTING.md) for more details.
+
+All contributions are valued and appreciated - don't hesitate to submit a pull request.
+
+## Contact
+-   Ngọ Đức Cảnh: ngoduccanh19@gmail.com
+## 📝 License
+
+This project is licensed under the terms of the [GPL V3](LICENSE) license.
+
+
+
