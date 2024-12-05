@@ -1,7 +1,6 @@
 
 # Bekoo
 [![GitHub License](https://img.shields.io/github/license/RoanDevBackend/Bekoo)](./LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors-anon/RoanDevBackend/Bekoo)](https://github.com/RoanDevBackend/Bekoo/graphs/contributors)
 
 ![Alt text](public/images/banner.png)
 
