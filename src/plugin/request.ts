@@ -17,10 +17,16 @@ request.defaults.headers.put['Content-Type'] = 'application/json'
 const token = Cookies.get('access_token')
 request.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : ''
 
-request.interceptors.request.use((request) => request)
+request.interceptors.request.use((request: any) => {
+  request.metadata = { startTime: new Date() }
+  return request
+})
 
 request.interceptors.response.use(
-  (response) => {
+  (response: any) => {
+    const endTime: any = new Date()
+    const duration = endTime - response.config.metadata.startTime
+    console.log(`API call to ${response.config.url} took ${duration} ms`)
     return response
   },
   (error) => {
