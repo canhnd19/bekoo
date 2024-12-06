@@ -1,1 +1,0 @@
-import{o,c as t,a as r}from"./index-rCjsCynY.js";const n={xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 16 16"};function s(l,e){return o(),t("svg",n,e[0]||(e[0]=[r("path",{stroke:"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"1.5",d:"M13.334 4 6 11.333 2.667 8"},null,-1)]))}const c={render:s};export{c as default,s as render};
