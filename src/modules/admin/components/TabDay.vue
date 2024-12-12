@@ -35,7 +35,7 @@
         <p>{{ useDateFormat(row.checkIn, 'DD/MM/YYYY HH:mm:ss') }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="trạng thía">
+    <ElTableColumn label="trạng thái">
       <template #default="{ row }">
         <p>{{ row.status }}</p>
       </template>
