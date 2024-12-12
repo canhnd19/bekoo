@@ -20,11 +20,6 @@
         <p>{{ row.specialize.name }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="mô tả">
-      <template #default="{ row }">
-        <p>{{ row.specialize.description }}</p>
-      </template>
-    </ElTableColumn>
     <ElTableColumn label="giá khám">
       <template #default="{ row }">
         <p>{{ useFormatCurrency(row.specialize.price) }}</p>
