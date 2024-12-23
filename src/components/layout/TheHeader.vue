@@ -62,10 +62,15 @@
         <div>
           <ul>
             <li v-if="role !== 'USER'" class="option-label" @click="handleClickAdmin">Quản lý</li>
-            <li class="option-label" @click="handleViewMedicalRecord">Hồ sơ bệnh án</li>
-            <li class="option-label" @click="router.push({ name: 'BookingHistory', params: { id: user.patient?.id } })">
-              Lịch sử đặt lịch khám
-            </li>
+            <template v-if="role === 'USER' || role === 'ADMIN'">
+              <li class="option-label" @click="handleViewMedicalRecord">Hồ sơ bệnh án</li>
+              <li
+                class="option-label"
+                @click="router.push({ name: 'BookingHistory', params: { id: user.patient?.id } })"
+              >
+                Lịch sử đặt lịch khám
+              </li>
+            </template>
             <li class="option-label" @click="router.push({ name: 'EditUser' })">Sửa thông tin cá nhân</li>
             <li class="option-label" @click="router.push({ name: 'ChangePassword' })">Thay đổi mật khẩu</li>
             <li class="option-label" @click="logout">Đăng xuất</li>
