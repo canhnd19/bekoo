@@ -21,9 +21,9 @@
         :page-sizes="pageSizes"
         :total="props.query.totalElements"
         :pager-count="
-          () => {
+          (() => {
             return 5
-          }
+          })()
         "
         popper-class="select-pagination sm:flex sm:justify-end"
         background
