@@ -88,6 +88,7 @@
   />
   <PopupEditDoctor
     :is-loading-button="isLoadingButton"
+    :doctor="doctorRow"
     @cancel="setOpenPopup('popup-edit-doctor', false)"
     @edit="editDcotor"
   />
@@ -182,17 +183,40 @@ const handleActionDoctor = (data: IDoctor, type: string) => {
   type === 'EDIT' ? setOpenPopup('popup-edit-doctor') : setOpenPopup('popup-confirm-delete')
 }
 
-const editDcotor = async (value: string) => {
+const editDcotor = async (value: { maxPaitentADay: number; trainingBy: string }) => {
+  console.log('🚀 ~ handleActionDoctor ~  doctorRow.value:', doctorRow.value)
   try {
     isLoadingButton.value = true
-    const body = {
-      id: doctorRow.value.id,
-      value
+    if (value.maxPaitentADay && !value.trainingBy) {
+      const body = {
+        id: doctorRow.value.id,
+        value: value.maxPaitentADay
+      }
+      const rs = await apiDoctor.setPatientADay(body)
+      ElMessage.success(rs.message)
     }
-    const rs = await apiDoctor.setPatientADay(body)
-    ElMessage.success(rs.message)
-    isLoadingButton.value = false
+    if (value.trainingBy && !value.maxPaitentADay) {
+      const body = {
+        id: doctorRow.value.id,
+        trainingBy: value.trainingBy
+      }
+      const rs = await apiDoctor.editDoctor(body)
+      ElMessage.success(rs.message)
+    }
+    if (value.maxPaitentADay && value.trainingBy) {
+      const bodyMaxPaitentADay = {
+        id: doctorRow.value.id,
+        value: value.maxPaitentADay
+      }
+      const bodyTrainingBy = {
+        id: doctorRow.value.id,
+        trainingBy: value.trainingBy
+      }
+      const rs = await Promise.all([apiDoctor.setPatientADay(bodyMaxPaitentADay), apiDoctor.editDoctor(bodyTrainingBy)])
+      ElMessage.success(rs[1].message)
+    }
     setOpenPopup('popup-edit-doctor', false)
+    isLoadingButton.value = false
     getAllDoctor()
   } catch (error) {
     isLoadingButton.value = false

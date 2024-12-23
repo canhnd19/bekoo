@@ -34,3 +34,22 @@ export const GENDER = [
     value: 'Nữ'
   }
 ]
+
+export const EDUCATION = [
+  {
+    label: 'Tiến sĩ',
+    value: 'TS'
+  },
+  {
+    label: 'Thạc sĩ',
+    value: 'ThS'
+  },
+  {
+    label: 'Phó giáo sư',
+    value: 'PGS'
+  },
+  {
+    label: 'Giáo sư',
+    value: 'GS'
+  }
+]

@@ -241,15 +241,10 @@
 
         <div class="style-flex">
           <div class="space-y-2">
-            <p class="text-label">Mô tả học vấn</p>
-            <ElInput
-              v-model="doctorEdit.trainingBy"
-              class="input"
-              style="width: 500px"
-              :autosize="{ minRows: 2 }"
-              type="textarea"
-              placeholder="Vui lòng nhập mô tả"
-            />
+            <p class="text-label">Trình độ học vấn</p>
+            <BaseSelect v-model="doctorEdit.trainingBy" placeholder="" class="select" :clearable="false">
+              <ElOption v-for="(item, index) in EDUCATION" :key="index" :label="item.label" :value="item.value" />
+            </BaseSelect>
           </div>
           <div class="space-y-2">
             <p class="text-label">Mô tả</p>
@@ -272,6 +267,7 @@
 </template>
 
 <script setup lang="ts">
+import { EDUCATION } from '@/constants'
 import { apiAuth, apiDoctor, apiParams, apiPatient, apiUpload } from '@/services'
 
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
