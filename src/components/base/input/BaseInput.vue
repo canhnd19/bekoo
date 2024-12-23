@@ -38,7 +38,7 @@ interface IProps {
 const _props = withDefaults(defineProps<IProps>(), {
   type: 'text',
   maxlength: '',
-  placeholder: 'Search',
+  placeholder: 'Tìm kiếm',
   disabled: false,
   readonly: false,
   clearable: false,

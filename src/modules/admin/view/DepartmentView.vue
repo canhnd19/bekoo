@@ -2,7 +2,7 @@
   <template v-if="!departmentIdActive">
     <div class="flex items-start justify-between">
       <BaseInput v-model="search" class="input-search" :show-icon="true" @change="handleSearch" />
-      <BaseButton size="small" class="w-20" @click="handleAddDepartment">Add</BaseButton>
+      <BaseButton size="small" class="w-48" @click="handleAddDepartment">Thêm chuyên khoa</BaseButton>
     </div>
     <BaseTable
       v-model:page="query.pageIndex"

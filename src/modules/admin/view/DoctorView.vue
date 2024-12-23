@@ -2,7 +2,7 @@
   <template v-if="!doctorId">
     <div class="flex items-start justify-between">
       <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
-      <BaseButton size="small" class="w-20" @click="setOpenPopup('popup-add-doctor')">Add</BaseButton>
+      <BaseButton size="small" class="w-44" @click="setOpenPopup('popup-add-doctor')">Thêm bác sĩ</BaseButton>
     </div>
     <BaseTable
       v-model:page="query.pageIndex"
