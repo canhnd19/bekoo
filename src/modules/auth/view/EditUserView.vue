@@ -240,18 +240,17 @@
         <div class="pt-6 text-2xl font-bold">Thông tin nghề nghiệp</div>
 
         <div class="style-flex">
-          <div class="space-y-2">
+          <!-- <div class="space-y-2">
             <p class="text-label">Trình độ học vấn</p>
             <BaseSelect v-model="doctorEdit.trainingBy" placeholder="" class="select" :clearable="false">
               <ElOption v-for="(item, index) in EDUCATION" :key="index" :label="item.label" :value="item.value" />
             </BaseSelect>
-          </div>
-          <div class="space-y-2">
+          </div> -->
+          <div class="w-full space-y-2">
             <p class="text-label">Mô tả</p>
             <ElInput
               v-model="doctorEdit.description"
               class="input"
-              style="width: 500px"
               :autosize="{ minRows: 2 }"
               type="textarea"
               placeholder="Vui lòng nhập mô tả"
@@ -267,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { EDUCATION } from '@/constants'
+// import { EDUCATION } from '@/constants'
 import { apiAuth, apiDoctor, apiParams, apiPatient, apiUpload } from '@/services'
 
 import type { IDistrict, IProvince, IWard } from '@/types/param.types'
@@ -454,6 +453,7 @@ const handleEditDoctor = async () => {
 }
 :deep(.input.el-input) {
   .el-input__wrapper {
+    width: 100%;
     border-radius: 8px;
     .el-input__inner {
       font-size: 16px;
