@@ -1,6 +1,6 @@
 <template>
-  <div class="grid h-full w-full grid-cols-[1fr_1fr] bg-[#f1eff2]">
-    <div class="mx-auto">
+  <div class="grid h-full w-full grid-cols-[1fr_1fr] bg-[#f1eff2] sm:block">
+    <div class="mx-auto sm:mx-6 sm:overflow-hidden sm:p-6">
       <img src="/images/header_logo.png" class="mx-auto my-7" />
       <p class="mb-[18px] text-center">Vui lòng đăng nhập để tiếp tục</p>
       <ElForm ref="formRef" :model="loginForm" label-width="auto" class="demo-ruleForm" @submit.prevent="handleLogin">
@@ -49,9 +49,9 @@
         <RouterLink :to="{ name: 'SignUp' }" class="cursor-pointer text-primary">Đăng ký ngay</RouterLink>
       </p>
     </div>
-    <div class="banner-login">
+    <divsm class="banner-login sm:hidden">
       <div class="style_shape__1HA08"></div>
-    </div>
+    </divsm>
   </div>
 </template>
 
