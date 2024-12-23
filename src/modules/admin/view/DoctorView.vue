@@ -51,7 +51,7 @@
           <p>{{ row.maximumPeoplePerDay }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="ACTION" width="120" align="right">
+      <ElTableColumn label="hành động" width="120" align="right">
         <template #default="{ row }">
           <div class="flex items-center justify-end space-x-3">
             <BaseIcon name="edit" @click="handleActionDoctor(row, 'EDIT')" />
