@@ -1,71 +1,100 @@
 <template>
   <div class="mt-6">
-    <div class="layout-footer">
-      <div>
+    <template v-if="isDesktop">
+      <div class="layout-footer">
+        <div>
+          <img src="/images/header_logo.png" class="w-40" />
+          <p>
+            <span class="style-text-primary">Địa chỉ: </span>
+            <span>Đang cập nhập...</span>
+          </p>
+          <p>
+            <span class="style-text-primary"> Website: </span>
+            <span>Đang cập nhập...</span>
+          </p>
+          <p>
+            <span class="style-text-primary">Email: </span>
+            <span>Đang cập nhập...</span>
+          </p>
+          <p>
+            <span class="style-text-primary">Điện thoại: </span>
+            <span>Đang cập nhập...</span>
+          </p>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <p class="font-bold">Dịch vụ y tế</p>
+            <p class="style-text-secondary">Đặt khám theo bác sĩ</p>
+            <p class="style-text-secondary">Tư vấn khám bệnh qua video</p>
+            <p class="style-text-secondary">Đặt lịch xét nghiệm</p>
+            <p class="style-text-secondary">Gói khám sức khỏe</p>
+            <p class="style-text-secondary">Đặt lịch tiêm chủng</p>
+            <p class="style-text-secondary">Y tế tại nhà</p>
+            <p class="style-text-secondary">Thanh toán Viện phí</p>
+          </div>
+          <div>
+            <p class="font-bold">Hướng dẫn</p>
+            <p class="style-text-secondary">Đặt lịch khám</p>
+            <p class="style-text-secondary">Tư vấn khám bệnh qua video</p>
+            <p class="style-text-secondary">Quy trình hoàn phí</p>
+            <p class="style-text-secondary">Câu hỏi thường gặp</p>
+            <p class="style-text-secondary">Quy trình đi khám</p>
+          </div>
+          <div>
+            <p class="font-bold">Liên hệ hợp tác</p>
+            <p class="style-text-secondary">Tham gia Medpro</p>
+            <p class="style-text-secondary">Khám sức khỏe doanh nghiệp</p>
+            <p class="style-text-secondary">Quảng cáo</p>
+            <p class="style-text-secondary">Tuyển Dụng</p>
+          </div>
+          <div>
+            <p class="font-bold">Tin tức</p>
+            <p class="style-text-secondary">Tin dịch vụ</p>
+            <p class="style-text-secondary">Tin Y Tế</p>
+            <p class="style-text-secondary">Y Học thường thức</p>
+          </div>
+          <div>
+            <p class="font-bold">Về Medpro</p>
+            <p class="style-text-secondary">Giới thiệu</p>
+            <p class="style-text-secondary">Điều khoản dịch vụ</p>
+            <p class="style-text-secondary">Chính sách bảo mật</p>
+            <p class="style-text-secondary">Quy định sử dụng</p>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <div class="flex items-center justify-between px-6 pb-6">
         <img src="/images/header_logo.png" class="w-40" />
-        <p>
-          <span class="style-text-primary">Địa chỉ: </span>
-          <span>Đang cập nhập...</span>
-        </p>
-        <p>
-          <span class="style-text-primary"> Website: </span>
-          <span>Đang cập nhập...</span>
-        </p>
-        <p>
-          <span class="style-text-primary">Email: </span>
-          <span>Đang cập nhập...</span>
-        </p>
-        <p>
-          <span class="style-text-primary">Điện thoại: </span>
-          <span>Đang cập nhập...</span>
-        </p>
-      </div>
-      <div class="grid grid-cols-3 gap-4">
         <div>
-          <p class="font-bold">Dịch vụ y tế</p>
-          <p class="style-text-secondary">Đặt khám theo bác sĩ</p>
-          <p class="style-text-secondary">Tư vấn khám bệnh qua video</p>
-          <p class="style-text-secondary">Đặt lịch xét nghiệm</p>
-          <p class="style-text-secondary">Gói khám sức khỏe</p>
-          <p class="style-text-secondary">Đặt lịch tiêm chủng</p>
-          <p class="style-text-secondary">Y tế tại nhà</p>
-          <p class="style-text-secondary">Thanh toán Viện phí</p>
-        </div>
-        <div>
-          <p class="font-bold">Hướng dẫn</p>
-          <p class="style-text-secondary">Đặt lịch khám</p>
-          <p class="style-text-secondary">Tư vấn khám bệnh qua video</p>
-          <p class="style-text-secondary">Quy trình hoàn phí</p>
-          <p class="style-text-secondary">Câu hỏi thường gặp</p>
-          <p class="style-text-secondary">Quy trình đi khám</p>
-        </div>
-        <div>
-          <p class="font-bold">Liên hệ hợp tác</p>
-          <p class="style-text-secondary">Tham gia Medpro</p>
-          <p class="style-text-secondary">Khám sức khỏe doanh nghiệp</p>
-          <p class="style-text-secondary">Quảng cáo</p>
-          <p class="style-text-secondary">Tuyển Dụng</p>
-        </div>
-        <div>
-          <p class="font-bold">Tin tức</p>
-          <p class="style-text-secondary">Tin dịch vụ</p>
-          <p class="style-text-secondary">Tin Y Tế</p>
-          <p class="style-text-secondary">Y Học thường thức</p>
-        </div>
-        <div>
-          <p class="font-bold">Về Medpro</p>
-          <p class="style-text-secondary">Giới thiệu</p>
-          <p class="style-text-secondary">Điều khoản dịch vụ</p>
-          <p class="style-text-secondary">Chính sách bảo mật</p>
-          <p class="style-text-secondary">Quy định sử dụng</p>
+          <p>
+            <span class="style-text-primary">Địa chỉ: </span>
+            <span>Đang cập nhập...</span>
+          </p>
+          <p>
+            <span class="style-text-primary"> Website: </span>
+            <span>Đang cập nhập...</span>
+          </p>
+          <p>
+            <span class="style-text-primary">Email: </span>
+            <span>Đang cập nhập...</span>
+          </p>
+          <p>
+            <span class="style-text-primary">Điện thoại: </span>
+            <span>Đang cập nhập...</span>
+          </p>
         </div>
       </div>
-    </div>
+    </template>
     <div class="footer">© 2024 - Bản quyền thuộc Công Ty ...</div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useBaseStore } from '@/stores/base'
+
+const { isDesktop } = storeToRefs(useBaseStore())
+</script>
 
 <style scoped lang="scss">
 .layout-footer {

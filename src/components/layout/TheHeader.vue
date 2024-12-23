@@ -1,5 +1,5 @@
 <template>
-  <div class="box-shadow">
+  <div v-if="isDesktop" class="box-shadow">
     <div class="layout-header">
       <RouterLink :to="{ name: 'Home' }">
         <img src="/images/header_logo.png" class="w-36" />
@@ -85,17 +85,45 @@
       </RouterLink>
     </div>
   </div>
+  <div v-else>
+    <header class="flex items-center justify-between px-6">
+      <RouterLink :to="{ name: 'Home' }">
+        <img src="/images/header_logo.png" class="w-36" />
+      </RouterLink>
+      <MenuMb @click="setOpenDrawer('drawer-menu-mb')" />
+    </header>
+    <BaseDrawer name="drawer-menu-mb" :with-header="false" :modal="false" :append-to-body="false" :show-footer="false">
+      <div class="flex items-center justify-between">
+        <RouterLink :to="{ name: 'Home' }">
+          <img src="/images/header_logo.png" class="w-36" />
+        </RouterLink>
+        <MenuX class="ml-auto text-black" @click="setOpenDrawer('drawer-menu-mb', false)" />
+      </div>
+
+      <BaseButton v-if="!isLoggedIn" class="mt-10" @click="router.push({ name: 'Login' })">Đăng nhập</BaseButton>
+      <div v-else>
+        <BaseButton v-if="!isLoggedIn" class="mt-10" @click="logout">Đăng xuất</BaseButton>
+      </div>
+    </BaseDrawer>
+  </div>
 </template>
 
 <script setup lang="ts">
+import MenuMb from '@/icons/menu-mb.svg?skipsvgo'
+import MenuX from '@/icons/x.svg?skipsvgo'
+
 import { useAuthStore } from '@/stores/auth'
+import { useBaseStore } from '@/stores/base'
 
 import { CONTACT_FOR_COOPERATION, INSTRUCT, MEDICAL_SERVICES, NEWS } from '../../constants/index'
 
+const { setOpenDrawer } = useBaseStore()
+
+const { isDesktop } = storeToRefs(useBaseStore())
 const { logout } = useAuthStore()
 const router = useRouter()
 const { user, patient, role } = useAuthStore()
-
+const { isLoggedIn } = storeToRefs(useAuthStore())
 const handleViewMedicalRecord = () => {
   if (patient.id) {
     router.push({ name: 'MedicalRecord', params: { id: patient.id } })

@@ -16,4 +16,4 @@ export type POPUP_NAME =
   | 'popup-confirm-examined'
   | 'popup-confirm-delete-booking'
 
-export type DRAWER_NAME = 'drawer-root'
+export type DRAWER_NAME = 'drawer-root' | 'drawer-menu-mb'

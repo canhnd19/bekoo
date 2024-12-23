@@ -17,13 +17,24 @@
       </div>
     </div>
     <img src="/images/homepage_banner.png" alt="" />
-    <div class="absolute top-20 w-full">
-      <p class="mb-2 text-center text-2xl text-[#11a2f3]">Nền tảng công nghệ</p>
-      <p class="text-center text-4xl font-bold">Kết nối người dân với Cơ sở - Dịch vụ Y tế</p>
-      <BaseInput v-model="search" placeholder="Tìm kiếm gói khám" class="input-search" :show-icon="true" />
-      <p class="mt-5 text-center text-xl">Đặt khám nhanh - Lấy số thứ tự trực tuyến - Tư vấn sức khỏe từ xa</p>
-    </div>
-    <div class="carousel">
+    <template v-if="isDesktop">
+      <div class="absolute top-20 w-full">
+        <p class="mb-2 text-center text-2xl text-[#11a2f3]">Nền tảng công nghệ</p>
+        <p class="text-center text-4xl font-bold">Kết nối người dân với Cơ sở - Dịch vụ Y tế</p>
+        <BaseInput v-model="search" placeholder="Tìm kiếm gói khám" class="input-search" :show-icon="true" />
+        <p class="mt-5 text-center text-xl">Đặt khám nhanh - Lấy số thứ tự trực tuyến - Tư vấn sức khỏe từ xa</p>
+      </div>
+
+      <div class="carousel">
+        <template v-for="(item, index) in CAROUSEL_HOMEPAGE" :key="index">
+          <div class="carousel-item">
+            <img :src="item.icon" alt="" class="mx-auto w-14" />
+            <p class="mt-2 text-center">{{ item.label }}</p>
+          </div>
+        </template>
+      </div>
+    </template>
+    <div v-else class="grid grid-cols-2 gap-8">
       <template v-for="(item, index) in CAROUSEL_HOMEPAGE" :key="index">
         <div class="carousel-item">
           <img :src="item.icon" alt="" class="mx-auto w-14" />
@@ -35,7 +46,7 @@
   <!-- TODO: Chuyên khoa -->
   <div class="container mt-28">
     <p class="label">CHUYÊN KHOA</p>
-    <div class="my-8 grid grid-cols-8 gap-x-12 gap-y-8">
+    <div class="my-8 grid grid-cols-8 gap-x-12 gap-y-8 sm:grid-cols-2">
       <template v-for="(item, index) in showMore && data.length > 0 ? data : department" :key="index">
         <div class="cursor-pointer" @click="handleClickDepartment(item)">
           <img :src="item.urlImage" alt="" class="mx-auto h-20 w-20" />
@@ -59,7 +70,7 @@
     <p class="label">Cảm nhận từ khách hàng</p>
     <Swiper
       ref="{swiperRef}"
-      :slides-per-view="3"
+      :slides-per-view="isDesktop ? 3 : 1"
       :space-between="40"
       :pagination="{
         type: 'fraction'
@@ -115,6 +126,8 @@ import { useBaseStore } from '@/stores/base'
 
 import { CAROUSEL_HOMEPAGE, FEEDBACK, STATISTICS } from '../constants/index'
 
+const { isDesktop } = storeToRefs(useBaseStore())
+
 const modules = [Pagination, Navigation]
 
 const data = ref<IDepartment[]>([])
@@ -165,7 +178,7 @@ const handleClickDepartment = (data: IDepartment) => {
   }
 }
 .carousel {
-  @apply absolute -bottom-16 flex w-full items-center justify-center space-x-6;
+  @apply absolute -bottom-16 flex w-full items-center justify-center space-x-6 sm:grid sm:grid-cols-4 sm:gap-8;
   .carousel-item {
     box-shadow: 4px 8px 30px 0 #b1c4da59;
     @apply h-[150px] w-[150px] cursor-pointer rounded-2xl border border-solid bg-white p-4;
@@ -191,7 +204,7 @@ const handleClickDepartment = (data: IDepartment) => {
   background: rgb(232, 244, 253);
   @apply pb-16;
   .statistics-item {
-    @apply mt-6 flex items-center justify-around rounded-3xl bg-white p-6;
+    @apply mt-6 flex items-center justify-around rounded-3xl bg-white p-6 sm:grid sm:grid-cols-2;
   }
 }
 .is-loading {

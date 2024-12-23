@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BaseButton: typeof import('./src/components/base/button/BaseButton.vue')['default']
+    BaseDrawer: typeof import('./src/components/base/drawer/BaseDrawer.vue')['default']
     BaseDropdown: typeof import('./src/components/base/dropdown/BaseDropdown.vue')['default']
     BaseDropdownItem: typeof import('./src/components/base/dropdown/BaseDropdownItem.vue')['default']
     BaseEmpty: typeof import('./src/components/base/empty/BaseEmpty.vue')['default']
@@ -25,6 +26,7 @@ declare module 'vue' {
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
