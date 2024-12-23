@@ -1,5 +1,21 @@
 <template>
   <div class="relative">
+    <div class="marquee bg-[#ffb340] py-4">
+      <div class="marquee-content font-semibold text-white">
+        <p>🎇 Tết đã về! Giảm Giá Đến 200.000đ - Vui lòng đặt lịch khám để được ưu đãi này!</p>
+        <p>🎉 Khám sức khỏe định kỳ với giá ưu đãi!</p>
+        <p>🎁 Ưu đãi đặc biệt cho khách hàng mới!</p>
+        <p>🏥 Đặt lịch khám trực tuyến nhanh chóng và tiện lợi!</p>
+        <p>🎇 Tết đã về! Giảm Giá Đến 200.000đ - Vui lòng đặt lịch khám để được ưu đãi này!</p>
+        <p>🎉 Khám sức khỏe định kỳ với giá ưu đãi!</p>
+        <p>🎁 Ưu đãi đặc biệt cho khách hàng mới!</p>
+        <p>🏥 Đặt lịch khám trực tuyến nhanh chóng và tiện lợi!</p>
+        <p>🎇 Tết đã về! Giảm Giá Đến 200.000đ - Vui lòng đặt lịch khám để được ưu đãi này!</p>
+        <p>🎉 Khám sức khỏe định kỳ với giá ưu đãi!</p>
+        <p>🎁 Ưu đãi đặc biệt cho khách hàng mới!</p>
+        <p>🏥 Đặt lịch khám trực tuyến nhanh chóng và tiện lợi!</p>
+      </div>
+    </div>
     <img src="/images/homepage_banner.png" alt="" />
     <div class="absolute top-20 w-full">
       <p class="mb-2 text-center text-2xl text-[#11a2f3]">Nền tảng công nghệ</p>
@@ -196,6 +212,33 @@ const handleClickDepartment = (data: IDepartment) => {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.marquee-content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 80s linear infinite; /* Thay đổi thời gian thành 30 giây */
+}
+
+.marquee-content p {
+  display: inline-block;
+  margin-right: 80px; /* Khoảng cách giữa các dòng chữ */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
   }
 }
 </style>
