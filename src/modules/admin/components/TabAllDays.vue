@@ -15,7 +15,7 @@
         <p>{{ row.patient.info.name }}</p>
       </template>
     </ElTableColumn>
-    <ElTableColumn label="gói khám">
+    <ElTableColumn label="gói khám" width="268">
       <template #default="{ row }">
         <p>{{ row.specialize.name }}</p>
       </template>
