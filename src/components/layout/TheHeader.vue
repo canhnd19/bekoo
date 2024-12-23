@@ -101,9 +101,7 @@
       </div>
 
       <BaseButton v-if="!isLoggedIn" class="mt-10" @click="router.push({ name: 'Login' })">Đăng nhập</BaseButton>
-      <div v-else>
-        <BaseButton v-if="!isLoggedIn" class="mt-10" @click="logout">Đăng xuất</BaseButton>
-      </div>
+      <BaseButton class="mt-10" @click="logout">Đăng xuất</BaseButton>
     </BaseDrawer>
   </div>
 </template>
