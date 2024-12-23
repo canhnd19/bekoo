@@ -184,7 +184,6 @@ const handleActionDoctor = (data: IDoctor, type: string) => {
 }
 
 const editDcotor = async (value: { maxPaitentADay: number; trainingBy: string }) => {
-  console.log('🚀 ~ handleActionDoctor ~  doctorRow.value:', doctorRow.value)
   try {
     isLoadingButton.value = true
     if (value.maxPaitentADay && !value.trainingBy) {
