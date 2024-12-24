@@ -380,7 +380,9 @@ const disabled = computed(() => {
 const handleEdit = async () => {
   try {
     loadingBtn.value = true
-    file.value ? await uploadFile() : null
+    if (file.value && Object.keys(file.value).length !== 0) {
+      await uploadFile()
+    }
     const dataEdit = {
       ...userEdit.value,
       id: user.patient?.info ? user.patient.info.id : user.doctor!.info.id,
