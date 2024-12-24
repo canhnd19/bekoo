@@ -20,7 +20,13 @@
         @page-change="handlePageChange"
         @limit-change="handleLimitChange"
       >
-        <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
+        <ElTableColumn
+          type="index"
+          :index="(index: number) => printIndex(index, query)"
+          width="75"
+          label="#"
+          align="center"
+        />
         <ElTableColumn label="thời gian" width="180">
           <template #default="{ row }">
             <p>{{ useDateFormat(row.checkIn, 'DD/MM/YYYY HH:mm:ss') }}</p>

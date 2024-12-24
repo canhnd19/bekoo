@@ -15,7 +15,13 @@
       @limit-change="handleLimitChange"
       @row-click="rowClick"
     >
-      <ElTableColumn type="index" :index="(index: number) => printIndex(index, query)" label="#" align="center" />
+      <ElTableColumn
+        type="index"
+        :index="(index: number) => printIndex(index, query)"
+        width="75"
+        label="#"
+        align="center"
+      />
       <ElTableColumn label="tên" width="240">
         <template #default="{ row }">
           <p>{{ row.info.name }}</p>
