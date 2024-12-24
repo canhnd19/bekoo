@@ -74,6 +74,11 @@ const renderChart = () => {
       },
       options: {
         scales: {
+          x: {
+            grid: {
+              display: false
+            }
+          },
           y: {
             beginAtZero: true,
             ticks: {
