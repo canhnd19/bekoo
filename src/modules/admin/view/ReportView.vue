@@ -28,9 +28,7 @@ import BaseChartPie from '../components/BaseChartPie.vue'
 import BaseSummary from '../components/BaseSummary.vue'
 
 onMounted(() => {
-  initChart()
-  getDataReport()
-  chartByAge()
+  Promise.all([initChart(), getDataReport(), chartByAge()])
 })
 const daysActive = ref<VALUE_DAY>('7_DAYS')
 const isLoading = ref<boolean>(false)
