@@ -7,7 +7,7 @@ export interface IBookingRequest {
   specializeId: string
   checkIn: string
   note: string
-  paymentMethod: number
+  paymentMethod: string
 }
 
 export interface IResBooking {

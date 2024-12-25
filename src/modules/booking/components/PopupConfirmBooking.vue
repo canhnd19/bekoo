@@ -25,7 +25,7 @@
       <p class="text-xl">
         <span> Phương thức thanh toán: </span>
         <strong>
-          {{ props.data.paymentMethod === 1 ? 'Thanh toán khi tới khám' : 'Thanh toán bằng thẻ tín dụng' }}</strong
+          {{ props.data.paymentMethod === '1' ? 'Thanh toán khi tới khám' : 'Thanh toán bằng thẻ tín dụng' }}</strong
         >
       </p>
     </div>

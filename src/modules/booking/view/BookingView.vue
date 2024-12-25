@@ -226,7 +226,7 @@ const handleClickChoosePackage = () => {
     specializeId: '',
     checkIn: '',
     note: '',
-    paymentMethod: 0
+    paymentMethod: ''
   }
 }
 const choosePackage = (data: IPackage) => {
@@ -243,6 +243,7 @@ const selectedHour = (value: string) => {
 const handleClickContinue = async () => {
   try {
     isLoadingBtn.value = true
+    console.log(bookingRequest.value)
     const doctorId = route.params.idDoctor as string
     const date = `${day.value.toISOString().split('T')[0]} ${hour.value}`
     const conver = new Date(date).toISOString()
