@@ -30,12 +30,12 @@
           <p>{{ row.email }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="số điện thoại">
+      <ElTableColumn label="số điện thoại" width="160">
         <template #default="{ row }">
           <p>{{ row.phoneNumber }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="giới tính">
+      <ElTableColumn label="giới tính" align="center">
         <template #default="{ row }">
           <p>{{ row.gender }}</p>
         </template>

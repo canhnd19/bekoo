@@ -27,7 +27,7 @@
           <p>{{ row.info.name }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="học vấn" width="116">
+      <ElTableColumn label="học vấn" width="116" align="center">
         <template #default="{ row }">
           <p>{{ row.trainingBy }}</p>
         </template>
@@ -42,7 +42,7 @@
           <p>{{ row.info.phoneNumber }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="giới tính" min-width="112">
+      <ElTableColumn label="giới tính" min-width="112" align="center">
         <template #default="{ row }">
           <p>{{ row.info.gender }}</p>
         </template>
