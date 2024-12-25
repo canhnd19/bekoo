@@ -69,4 +69,19 @@ export default class BookingService {
       return Promise.reject(error)
     }
   }
+  async getDoctorAppointmentTime(params: { date: string; doctorId: string }): Promise<
+    IResponse<{
+      afternoon: { range: string; timeCheckIn: string; available: boolean }[]
+      morning: { range: string; timeCheckIn: string; available: boolean }[]
+    }>
+  > {
+    try {
+      const rs = await request.get(`${this.prefix}/doctor/time`, {
+        params: useRemoveParams(params)
+      })
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 }

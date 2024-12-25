@@ -61,47 +61,44 @@
             <p class="text-center text-2xl font-semibold">Vui lòng chọn thời gian khám</p>
           </div>
           <div class="m-[26px]">
-            <ElCalendar ref="calendar" v-model="day" class="calender">
+            <ElCalendar ref="calendar" v-model="day" class="calender" @input="getDoctorAppointmentTime">
               <template #header="{ date }">
                 <BaseIcon name="arrow-left" class="cursor-pointer" @click="selectDate('prev-month')" />
                 <p class="w-full text-center">{{ date }}</p>
                 <BaseIcon name="arrow-right2" class="cursor-pointer" @click="selectDate('next-month')" />
               </template>
             </ElCalendar>
-            <div class="mb-4">
-              <p class="mb-3 text-xl font-semibold">Buổi sáng</p>
-              <ul class="flex justify-around">
-                <li class="hour" :class="{ active: hour === '07:00:00' }" @click="selectedHour('07:00:00')">
-                  07:00 - 08:00
-                </li>
-                <li class="hour" :class="{ active: hour === '08:00:00' }" @click="selectedHour('08:00:00')">
-                  08:00 - 09:00
-                </li>
-                <li class="hour" :class="{ active: hour === '09:00:00' }" @click="selectedHour('09:00:00')">
-                  09:00 - 10:00
-                </li>
-                <li class="hour" :class="{ active: hour === '10:00:00' }" @click="selectedHour('10:00:00')">
-                  10:00 - 11:00
-                </li>
-              </ul>
-            </div>
-            <div class="mb-8">
-              <p class="mb-3 text-xl font-semibold">Buổi chiều</p>
-              <ul class="flex justify-around">
-                <li class="hour" :class="{ active: hour === '13:00:00' }" @click="selectedHour('13:00:00')">
-                  13:00 - 14:00
-                </li>
-                <li class="hour" :class="{ active: hour === '14:00:00' }" @click="selectedHour('14:00:00')">
-                  14:00 - 15:00
-                </li>
-                <li class="hour" :class="{ active: hour === '15:00:00' }" @click="selectedHour('15:00:00')">
-                  15:00 - 16:00
-                </li>
-                <li class="hour" :class="{ active: hour === '16:00:00' }" @click="selectedHour('16:00:00')">
-                  16:00 - 17:00
-                </li>
-              </ul>
-            </div>
+            <template v-if="timeMorning.length || timeAfternoon.length">
+              <div class="mb-4">
+                <p class="mb-3 text-xl font-semibold">Buổi sáng</p>
+
+                <div class="flex justify-around">
+                  <ul v-for="(item, index) in timeMorning" :key="index">
+                    <li
+                      class="hour"
+                      :class="{ active: hour === item.timeCheckIn }"
+                      @click="selectedHour(item.timeCheckIn)"
+                    >
+                      {{ item.range }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mb-8">
+                <p class="mb-3 text-xl font-semibold">Buổi chiều</p>
+                <div class="flex justify-around">
+                  <ul v-for="(item, index) in timeAfternoon" :key="index">
+                    <li
+                      class="hour"
+                      :class="{ active: hour === item.timeCheckIn }"
+                      @click="selectedHour(item.timeCheckIn)"
+                    >
+                      {{ item.range }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </template>
             <p class="text-lg text-[#d98634]">Tất cả thời gian theo múi giờ Việt Nam GMT +7</p>
             <div class="mb-4 mt-8">
               <p class="mb-3 text-xl font-semibold">Chọn phương thức thanh toán</p>
@@ -155,6 +152,7 @@ import type { IBookingRequest } from '@/types/booking.types'
 import type { IPackage } from '@/types/package.types'
 import type { IQuery } from '@/types/query.type'
 
+import useDateFormat from '@/composables/useDateFormat'
 import useFormatCurrency from '@/composables/useFormatCurrency'
 
 import { useAuthStore } from '@/stores/auth'
@@ -167,8 +165,11 @@ const { patient } = useAuthStore()
 
 const route = useRoute()
 onMounted(() => {
-  getListPackage()
+  Promise.all([getListPackage()])
 })
+
+const timeMorning = ref<{ range: string; timeCheckIn: string; available: boolean }[]>([])
+const timeAfternoon = ref<{ range: string; timeCheckIn: string; available: boolean }[]>([])
 const nameDepartment = sessionStorage.getItem('department-name') as string
 const calendar = ref<CalendarInstance>()
 const day = ref(new Date())
@@ -243,24 +244,21 @@ const selectedHour = (value: string) => {
 const handleClickContinue = async () => {
   try {
     isLoadingBtn.value = true
-    console.log(bookingRequest.value)
     const doctorId = route.params.idDoctor as string
-    const date = `${day.value.toISOString().split('T')[0]} ${hour.value}`
-    const conver = new Date(date).toISOString()
-    const dateConvert = conver.substring(0, conver.length - 1)
+
     const rs = await apiDoctor.getDoctorById(doctorId)
     bookingInfo.value = {
       doctorName: rs.value.info.name,
       packageName: packageChoose.value.name,
       price: packageChoose.value.price,
-      time: date
+      time: useDateFormat(hour.value, 'DD/MM/YYYY HH:mm:ss')
     }
     bookingRequest.value = {
       ...bookingRequest.value,
       patientId: patient.id,
       doctorId: route.params.idDoctor as string,
       specializeId: packageChoose.value.id,
-      checkIn: dateConvert
+      checkIn: hour.value
     }
     isLoadingBtn.value = false
     setOpenPopup('popup-confirm-booking')
@@ -296,6 +294,20 @@ const handleBooking = async () => {
 const disabled = computed(() => {
   return !hour.value
 })
+
+const getDoctorAppointmentTime = async () => {
+  try {
+    const doctorId = route.params.idDoctor as string
+    const rs = await apiBooking.getDoctorAppointmentTime({
+      date: day.value.toISOString().split('T')[0],
+      doctorId
+    })
+    timeMorning.value = rs.value.morning
+    timeAfternoon.value = rs.value.afternoon
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <style scoped lang="scss">
