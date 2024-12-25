@@ -61,13 +61,7 @@
             <p class="text-center text-2xl font-semibold">Vui lòng chọn thời gian khám</p>
           </div>
           <div class="m-[26px]">
-            <ElCalendar
-              ref="calendar"
-              v-model="day"
-              :disabled-date="disabledDate"
-              class="calender"
-              @input="getDoctorAppointmentTime"
-            >
+            <ElCalendar ref="calendar" v-model="day" class="calender" @input="getDoctorAppointmentTime">
               <template #header="{ date }">
                 <BaseIcon name="arrow-left" class="cursor-pointer" @click="selectDate('prev-month')" />
                 <p class="w-full text-center">{{ date }}</p>
@@ -311,10 +305,6 @@ const getDoctorAppointmentTime = async () => {
     console.log(error)
   }
 }
-const disabledDate = (time: any) => {
-  const day = time.getDay()
-  return day === 0 || day === 6 // Disable thứ 7 (6) và chủ nhật (0)
-}
 </script>
 
 <style scoped lang="scss">
@@ -380,6 +370,7 @@ const disabledDate = (time: any) => {
   color: #fff !important;
 }
 .hour-disabled {
+  color: #a8abb2;
   text-align: center;
   margin-right: 16px;
   border: 1px solid var(--border-table);
