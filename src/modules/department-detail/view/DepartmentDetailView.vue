@@ -85,9 +85,11 @@
                   </p>
                   <p>
                     <strong>Chuyên trị: </strong>
+                    <span>Đang cập nhập...</span>
                   </p>
                   <p>
                     <strong>Lịch khám: </strong>
+                    <span>Đang cập nhập...</span>
                   </p>
                 </div>
 
@@ -224,8 +226,8 @@ const handleAgreePopupWarning = () => {
 }
 
 const handleViewDetailDoctor = (data: IDoctor) => {
-  console.log('🚀 ~ handleViewDetailDoctor ~ data:', data)
   doctorDetail.value = data
+  console.log('🚀 ~ handleViewDetailDoctor ~ doctorDetail.value:', doctorDetail.value)
   setOpenPopup('popup-doctor-detail')
 }
 </script>
