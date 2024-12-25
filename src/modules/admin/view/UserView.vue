@@ -20,12 +20,12 @@
         label="#"
         align="center"
       />
-      <ElTableColumn label="tên">
+      <ElTableColumn label="tên" width="320">
         <template #default="{ row }">
           <p>{{ row.name }}</p>
         </template>
       </ElTableColumn>
-      <ElTableColumn label="EMAIL" width="400">
+      <ElTableColumn label="EMAIL" width="320">
         <template #default="{ row }">
           <p>{{ row.email }}</p>
         </template>
