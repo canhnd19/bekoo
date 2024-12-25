@@ -61,7 +61,13 @@
             <p class="text-center text-2xl font-semibold">Vui lòng chọn thời gian khám</p>
           </div>
           <div class="m-[26px]">
-            <ElCalendar ref="calendar" v-model="day" class="calender" @input="getDoctorAppointmentTime">
+            <ElCalendar
+              ref="calendar"
+              v-model="day"
+              :disabled-date="disabledDate"
+              class="calender"
+              @input="getDoctorAppointmentTime"
+            >
               <template #header="{ date }">
                 <BaseIcon name="arrow-left" class="cursor-pointer" @click="selectDate('prev-month')" />
                 <p class="w-full text-center">{{ date }}</p>
@@ -71,12 +77,10 @@
             <template v-if="timeMorning.length || timeAfternoon.length">
               <div class="mb-4">
                 <p class="mb-3 text-xl font-semibold">Buổi sáng</p>
-
                 <div class="flex justify-around">
                   <ul v-for="(item, index) in timeMorning" :key="index">
                     <li
-                      class="hour"
-                      :class="{ active: hour === item.timeCheckIn }"
+                      :class="[{ active: hour === item.timeCheckIn }, item.available ? 'hour' : 'hour-disabled']"
                       @click="selectedHour(item.timeCheckIn)"
                     >
                       {{ item.range }}
@@ -89,8 +93,7 @@
                 <div class="flex justify-around">
                   <ul v-for="(item, index) in timeAfternoon" :key="index">
                     <li
-                      class="hour"
-                      :class="{ active: hour === item.timeCheckIn }"
+                      :class="[{ active: hour === item.timeCheckIn }, item.available ? 'hour' : 'hour-disabled']"
                       @click="selectedHour(item.timeCheckIn)"
                     >
                       {{ item.range }}
@@ -308,6 +311,10 @@ const getDoctorAppointmentTime = async () => {
     console.log(error)
   }
 }
+const disabledDate = (time: any) => {
+  const day = time.getDay()
+  return day === 0 || day === 6 // Disable thứ 7 (6) và chủ nhật (0)
+}
 </script>
 
 <style scoped lang="scss">
@@ -355,14 +362,9 @@ const getDoctorAppointmentTime = async () => {
 .hour {
   text-align: center;
   margin-right: 16px;
-  line-height: 1;
-  font-weight: 600;
-  font-size: 0.9rem;
   border: 1px solid #00e0ff;
   font-size: 20px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   width: 151px;
   height: auto;
   padding: 12px 2px;
@@ -376,6 +378,19 @@ const getDoctorAppointmentTime = async () => {
 .hour.active {
   background: linear-gradient(83.63deg, #00b5f1 33.34%, #00e0ff 113.91%);
   color: #fff !important;
+}
+.hour-disabled {
+  text-align: center;
+  margin-right: 16px;
+  border: 1px solid var(--border-table);
+  font-size: 20px;
+  font-weight: 500;
+  width: 151px;
+  height: auto;
+  padding: 12px 2px;
+  border-radius: 8px;
+  cursor: default;
+  pointer-events: none;
 }
 :deep(.calender.el-calendar) {
   .el-calendar__header {
