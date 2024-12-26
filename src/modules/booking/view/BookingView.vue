@@ -61,12 +61,17 @@
             <p class="text-center text-2xl font-semibold">Vui lòng chọn thời gian khám</p>
           </div>
           <div class="m-[26px]">
-            <ElCalendar ref="calendar" v-model="day" class="calender" @input="getDoctorAppointmentTime">
+            <ElCalendar ref="calendar" v-model="day" class="calender" @update:model-value="getDoctorAppointmentTime">
               <template #header="{ date }">
                 <BaseIcon name="arrow-left" class="cursor-pointer" @click="selectDate('prev-month')" />
                 <p class="w-full text-center">{{ date }}</p>
                 <BaseIcon name="arrow-right2" class="cursor-pointer" @click="selectDate('next-month')" />
               </template>
+              <!-- <template #date-cell="{ data }">
+                <p :class="data.isSelected ? 'is-selected' : ''" @click="test">
+                  {{ data.day.split('-').slice(1).join('-') }}
+                </p>
+              </template> -->
             </ElCalendar>
             <template v-if="timeMorning.length || timeAfternoon.length">
               <div class="mb-4">
@@ -216,7 +221,6 @@ const handlePageChange = (page: unknown) => {
 
 const handleClickChoosePackage = () => {
   isChooseDay.value = false
-  day.value = new Date()
   hour.value = ''
   bookingRequest.value = {
     patientId: '',
@@ -295,8 +299,10 @@ const disabled = computed(() => {
 const getDoctorAppointmentTime = async () => {
   try {
     const doctorId = route.params.idDoctor as string
+    const date = new Date(day.value)
+    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` // Định dạng lại ngày
     const rs = await apiBooking.getDoctorAppointmentTime({
-      date: day.value.toISOString().split('T')[0],
+      date: formattedDate,
       doctorId
     })
     timeMorning.value = rs.value.morning
@@ -424,6 +430,7 @@ const getDoctorAppointmentTime = async () => {
     }
   }
 }
+
 @keyframes styles_animation__RBREz {
   100% {
     transform: rotate(360deg);
