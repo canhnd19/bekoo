@@ -296,6 +296,7 @@ const getDoctorAppointmentTime = async () => {
     const doctorId = route.params.idDoctor as string
     const date = new Date(day.value)
     const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` // Định dạng lại ngày
+    ElMessage.success(`Bạn chọn ngày đặt khám là ${formattedDate}`)
     const rs = await apiBooking.getDoctorAppointmentTime({
       date: formattedDate,
       doctorId
