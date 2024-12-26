@@ -1,7 +1,7 @@
 <template>
   <div class="rounded-lg p-4">
     <div class="flex items-start justify-between">
-      <BaseInput v-model="search" class="input-search" :show-icon="true" @change="handleSearch" />
+      <BaseInput v-model="query.name" class="input-search" :show-icon="true" @change="handleSearch" />
     </div>
     <BaseTable
       v-model:page="query.pageIndex"
@@ -61,8 +61,7 @@
 import { DEFAULT_QUERY_PAGINATION } from '@/constants'
 import { apiUser } from '@/services'
 
-import type { IQuery } from '@/types/query.type'
-import type { IUserTable } from '@/types/user.types'
+import type { IUserTable, QueryUser } from '@/types/user.types'
 
 import { useBaseStore } from '@/stores/base'
 
@@ -70,11 +69,11 @@ import PopupConfirmDelete from '../components/PopupConfirmDelete.vue'
 
 const { setOpenPopup } = useBaseStore()
 
-const query = ref<IQuery>({
-  ...DEFAULT_QUERY_PAGINATION
+const query = ref<QueryUser>({
+  ...DEFAULT_QUERY_PAGINATION,
+  name: ''
 })
 
-const search = ref<string>('')
 const data = ref<IUserTable[]>([])
 const userRow = ref<IUserTable>({} as IUserTable)
 const isLoadingButton = ref<boolean>(false)
@@ -83,13 +82,10 @@ onMounted(() => {
   getAllUser()
 })
 
-const getAllUser = async (type: string = '') => {
+const getAllUser = async () => {
   try {
     query.value.loading = true
-    const rs =
-      type === 'search'
-        ? await apiUser.getAllUserByName(search.value, query.value)
-        : await apiUser.getAllUser(query.value)
+    const rs = await apiUser.getAllUser(query.value)
     data.value = rs.value.contentResponse
     query.value.totalElements = rs.value.totalElements
     query.value.loading = false
@@ -134,7 +130,7 @@ const handleSearch = () => {
     pageSize: 10,
     totalElements: 0
   }
-  getAllUser('search')
+  getAllUser()
 }
 </script>
 

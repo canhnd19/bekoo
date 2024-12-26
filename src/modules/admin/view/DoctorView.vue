@@ -284,10 +284,10 @@ const handleFilter = (data: unknown) => {
 
 const getDayStartAndEnd = () => {
   const now = new Date()
-  const endDate = useConvertUTCTime(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) as any, 'TO')
+  const endDate = useConvertUTCTime(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0), 'TO')
   const dayDiff = daysActive.value.split('_')[0]
   const startDate = useConvertUTCTime(
-    new Date(now.getFullYear(), now.getMonth(), now.getDate() - Number(dayDiff), 0, 0, 0, 0) as any,
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() - Number(dayDiff), 0, 0, 0, 0),
     'FROM'
   )
   params.value.fromDate = startDate

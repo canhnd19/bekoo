@@ -1,5 +1,6 @@
 import type { IDoctor } from './doctor.types'
 import type { IPackage } from './package.types'
+import type { IQuery } from './query.type'
 
 export interface UserReq {
   name: string
@@ -107,4 +108,7 @@ export interface IReport {
   totalPatient: number
   totalSchedule: number
   totalSpecialize: number
+}
+export interface QueryUser extends IQuery {
+  name: string
 }
