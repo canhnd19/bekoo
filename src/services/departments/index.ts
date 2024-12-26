@@ -44,12 +44,9 @@ export default class DepartmentService {
       return Promise.reject(error)
     }
   }
-  async getAllDepartmentByName(
-    name: string,
-    params: Record<string, any>
-  ): Promise<IResponse<IResponseTable<IDepartment[]>>> {
+  async getAllDepartmentByName(params: Record<string, any>): Promise<IResponse<IResponseTable<IDepartment[]>>> {
     try {
-      const rs = await requestQuery.get(`${this.prefix}/name/${name}`, {
+      const rs = await requestQuery.get(`${this.prefix}/name`, {
         params: useRemoveParams(params)
       })
       return Promise.resolve(rs.data)

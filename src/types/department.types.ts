@@ -1,3 +1,5 @@
+import type { IQuery } from './query.type'
+
 export interface DepartmentRequest {
   name: string
   description: string
@@ -5,4 +7,8 @@ export interface DepartmentRequest {
 }
 export interface IDepartment extends DepartmentRequest {
   id: string
+}
+
+export interface QueryDepartment extends IQuery {
+  name: string
 }
