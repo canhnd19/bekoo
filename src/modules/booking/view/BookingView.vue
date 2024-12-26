@@ -67,11 +67,6 @@
                 <p class="w-full text-center">{{ date }}</p>
                 <BaseIcon name="arrow-right2" class="cursor-pointer" @click="selectDate('next-month')" />
               </template>
-              <!-- <template #date-cell="{ data }">
-                <p :class="data.isSelected ? 'is-selected' : ''" @click="test">
-                  {{ data.day.split('-').slice(1).join('-') }}
-                </p>
-              </template> -->
             </ElCalendar>
             <template v-if="timeMorning.length || timeAfternoon.length">
               <div class="mb-4">
