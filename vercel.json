@@ -1,3 +1,23 @@
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
-}
+[
+  {
+    "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  },
+  {
+    "source": "/static/(.*)",
+    "headers": [
+      {
+        "key": "cache-control",
+        "value": "max-age=315360000, s-maxage=315360000"
+      }
+    ]
+  },
+  {
+    "source": "/assets/(.*)",
+    "headers": [
+      {
+        "key": "cache-control",
+        "value": "public, max-age=315360000, s-maxage=315360000"
+      }
+    ]
+  }
+]

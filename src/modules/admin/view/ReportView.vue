@@ -82,13 +82,13 @@ const dataSummary = computed((): ISummary[] => {
       icon: 'total-package',
       color: '#FF9E0C',
       value: valueSummary.value.totalSpecialize
-    },
-    {
-      title: 'Tổng số lượt đặt khám',
-      icon: 'total-booking',
-      color: '#FF4A4A',
-      value: valueSummary.value.totalSchedule
     }
+    // {
+    //   title: 'Tổng số lượt đặt khám',
+    //   icon: 'total-booking',
+    //   color: '#FF4A4A',
+    //   value: valueSummary.value.totalSchedule
+    // }
   ]
 })
 const getDataReport = async () => {
