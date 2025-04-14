@@ -109,6 +109,7 @@
       </div>
     </div>
   </div>
+  <MedicalChatBot />
 </template>
 
 <script setup lang="ts">
@@ -121,6 +122,8 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 
 import type { IDepartment } from '@/types/department.types'
 import type { IQuery } from '@/types/query.type'
+
+import MedicalChatBot from '@/components/chat/MedicalChatBot.vue'
 
 import { useBaseStore } from '@/stores/base'
 
