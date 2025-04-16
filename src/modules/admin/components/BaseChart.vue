@@ -1,8 +1,5 @@
 <template>
   <div class="w-full">
-    <BaseSelect v-model="daysActive" placeholder="" class="select" :clearable="false" @change="handleFilter">
-      <ElOption v-for="(item, index) in FILTER_DAYS" :key="index" :label="item.label" :value="item.value" />
-    </BaseSelect>
     <BaseLoading v-if="isLoading" />
     <template v-else-if="datasets.length">
       <canvas id="chart" ref="refChart" height="340" width="966"></canvas>
@@ -25,8 +22,6 @@ import {
   Tooltip
 } from 'chart.js'
 
-import { FILTER_DAYS } from '../constants/index'
-
 export type VALUE_DAY = '7_DAYS' | '30_DAYS' | '360_DAYS'
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler)
@@ -43,15 +38,10 @@ const props = withDefaults(defineProps<IProps>(), {
   legendChart: () => [],
   isLoading: false
 })
-const emits = defineEmits<{
-  filter: [filterData: VALUE_DAY]
-}>()
-const daysActive = ref<VALUE_DAY>('7_DAYS')
+
 const refChart = ref<HTMLCanvasElement>()
 const chart = ref<Chart>()
-const handleFilter = () => {
-  emits('filter', daysActive.value)
-}
+
 watch(
   () => props.label,
   () => {
@@ -91,19 +81,3 @@ const renderChart = () => {
   })
 }
 </script>
-
-<style scoped lang="scss">
-.select {
-  :deep(.el-select) {
-    margin: 16px 0;
-    width: 150px;
-    .el-select__wrapper {
-      height: 40px;
-      border-radius: 8px;
-      .el-select__placeholder {
-        font-size: 16px;
-      }
-    }
-  }
-}
-</style>

@@ -15,6 +15,15 @@ export default class ReportService {
       return Promise.reject(error)
     }
   }
+
+  async getDataChartRevenueStatistics(params: Record<string, any>): Promise<any> {
+    try {
+      const rs = await request.get(`${this.prefix}/price`, { params: useRemoveParams(params) })
+      return Promise.resolve(rs.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
   async getDataChartReport(params: Record<string, any>): Promise<any> {
     try {
       const rs = await request.get(`${this.prefix}`, { params: useRemoveParams(params) })
