@@ -1,197 +1,164 @@
-import { type Socket, io } from 'socket.io-client'
+import type {
+  ChatMessage,
+  WebSocketEventCallback,
+  WebSocketEventType,
+  WebSocketListeners,
+  WebSocketMessage
+} from '@/types/socket.types'
 
-// Define types for our socket service
-type EventHandler = (...args: any[]) => void
-
-class SocketService {
-  private socket: Socket | null = null
+class WebSocketService {
   private url: string
-  private options: any
-  private reconnectAttempts = 0
-  private maxReconnectAttempts = 5
-  private eventHandlers: Map<string, EventHandler[]> = new Map()
-  private connectionPromise: Promise<void> | null = null
+  private socket: WebSocket | null
+  private isConnected: boolean
+  private reconnectAttempts: number
+  private maxReconnectAttempts: number
+  private reconnectInterval: number
+  private listeners: WebSocketListeners
+  private pendingMessages: WebSocketMessage[]
 
-  constructor(url: string, options: any = {}) {
+  constructor(url: string) {
     this.url = url
-    this.options = {
-      reconnection: true,
-      reconnectionAttempts: this.maxReconnectAttempts,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      timeout: 20000,
-      transports: ['polling', 'websocket'],
-      autoConnect: false,
-      // withCredentials: true,
-      // extraHeaders: {},
-      ...options
-    }
+    this.socket = null
+    this.isConnected = false
+    this.reconnectAttempts = 0
+    this.maxReconnectAttempts = 5
+    this.reconnectInterval = 3000
+    this.listeners = {}
+    this.pendingMessages = []
 
-    // Only initialize in browser environment
-    if (typeof window !== 'undefined') {
-      this.initialize()
-    }
+    this.connect()
   }
 
-  private initialize() {
-    this.socket = io(this.url, this.options)
+  public connect(): void {
+    try {
+      this.socket = new WebSocket(this.url)
 
-    this.socket.on('connect', () => {
-      console.log('Connected to Socket.IO server')
-      this.reconnectAttempts = 0
+      this.socket.onopen = (event: Event): void => {
+        console.log('WebSocket connection established')
+        this.isConnected = true
+        this.reconnectAttempts = 0
 
-      // Re-register all event handlers after reconnection
-      this.eventHandlers.forEach((handlers, event) => {
-        handlers.forEach((handler) => {
-          this.socket?.on(event, handler)
-        })
-      })
-    })
+        // Gửi các tin nhắn đang chờ
+        if (this.pendingMessages.length > 0) {
+          this.pendingMessages.forEach((msg: WebSocketMessage) => this.send(msg))
+          this.pendingMessages = []
+        }
 
-    this.socket.on('disconnect', (reason) => {
-      console.log(`Disconnected from Socket.IO server: ${reason}`)
-    })
-
-    this.socket.on('connect_error', (error) => {
-      console.error('Connection error:', error)
-      this.reconnectAttempts++
-
-      if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-        console.error('Max reconnect attempts reached. Please refresh the page.')
-        this.socket?.disconnect()
-      }
-    })
-  }
-
-  public connect(): Promise<void> {
-    if (!this.socket) {
-      if (typeof window !== 'undefined') {
-        this.initialize()
-      } else {
-        return Promise.reject('Cannot connect on server side')
-      }
-    }
-
-    if (this.socket!.connected) {
-      return Promise.resolve()
-    }
-
-    if (this.connectionPromise) {
-      return this.connectionPromise
-    }
-
-    this.connectionPromise = new Promise<void>((resolve, reject) => {
-      if (!this.socket) {
-        reject('Socket not initialized')
-        return
+        // Thông báo cho các listener
+        this.notifyListeners('connect', event)
       }
 
-      const onConnect = () => {
-        this.connectionPromise = null
-        resolve()
-      }
+      this.socket.onmessage = (event: MessageEvent): void => {
+        try {
+          const data = JSON.parse(event.data)
+          console.log('Message from server:', data)
 
-      const onConnectError = (error: Error) => {
-        console.error('Socket connection error:', error)
-        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-          this.connectionPromise = null
-          reject(error)
+          // Thông báo cho các listener
+          this.notifyListeners('message', data)
+        } catch (error) {
+          console.error('Error processing message:', error)
+          this.notifyListeners('message', event.data)
         }
       }
 
-      this.socket.once('connect', onConnect)
-      this.socket.once('connect_error', onConnectError)
+      this.socket.onclose = (event: CloseEvent): void => {
+        this.isConnected = false
+        console.log(`WebSocket connection closed: ${event.code} ${event.reason}`)
 
-      this.socket.connect()
-    })
+        // Thông báo cho các listener
+        this.notifyListeners('close', event)
 
-    return this.connectionPromise
-  }
-
-  public disconnect(): void {
-    if (this.socket) {
-      this.socket.disconnect()
-    }
-  }
-
-  public on(event: string, handler: EventHandler): () => void {
-    if (!this.socket) {
-      if (typeof window !== 'undefined') {
-        this.initialize()
-      } else {
-        console.error('Cannot register event handler on server side')
-        return () => {}
-      }
-    }
-
-    // Store the handler for potential reconnection
-    if (!this.eventHandlers.has(event)) {
-      this.eventHandlers.set(event, [])
-    }
-    this.eventHandlers.get(event)?.push(handler)
-
-    this.socket?.on(event, handler)
-
-    // Return a function to remove the event listener
-    return () => {
-      this.off(event, handler)
-    }
-  }
-
-  public off(event: string, handler?: EventHandler): void {
-    if (!this.socket) return
-
-    if (handler) {
-      this.socket.off(event, handler)
-
-      // Remove from stored handlers
-      const handlers = this.eventHandlers.get(event)
-      if (handlers) {
-        const index = handlers.indexOf(handler)
-        if (index !== -1) {
-          handlers.splice(index, 1)
-        }
-        if (handlers.length === 0) {
-          this.eventHandlers.delete(event)
+        //reconnect
+        if (this.reconnectAttempts < this.maxReconnectAttempts) {
+          this.reconnectAttempts++
+          console.log(`Trying to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`)
+          setTimeout(() => this.connect(), this.reconnectInterval)
+        } else {
+          console.error('Max reconnect attempts reached. Please refresh the page.')
         }
       }
-    } else {
-      this.socket.off(event)
-      this.eventHandlers.delete(event)
+
+      this.socket.onerror = (error: Event): void => {
+        console.error('WebSocket Error:', error)
+        this.notifyListeners('error', error)
+      }
+    } catch (error) {
+      console.error('Unable to create WebSocket connection:', error)
     }
   }
 
-  public emit(event: string, ...args: any[]): void {
-    if (!this.socket) {
-      console.error('Socket not initialized')
+  public send(message: WebSocketMessage): void {
+    if (!this.isConnected) {
+      // Thêm tin nhắn vào hàng đợi để gửi sau
+      this.pendingMessages.push(message)
+      console.warn('WebSocket not connected yet. Message will be sent after connection.')
       return
     }
 
-    this.socket.emit(event, ...args)
+    try {
+      if (this.socket) {
+        this.socket.send(JSON.stringify(message))
+      }
+    } catch (error) {
+      console.error('Error sending WebSocket message:', error)
+    }
   }
 
-  public async emitWithAck(event: string, ...args: any[]): Promise<any> {
-    if (!this.socket) {
-      throw new Error('Socket not initialized')
+  public addListener(event: WebSocketEventType, callback: WebSocketEventCallback): () => void {
+    if (!this.listeners[event]) {
+      this.listeners[event] = []
     }
 
-    await this.connect()
+    this.listeners[event].push(callback)
 
-    return new Promise((resolve, reject) => {
-      this.socket?.timeout(10000).emit(event, ...args, (err: Error | null, response: any) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(response)
+    return (): void => {
+      if (this.listeners[event]) {
+        const index = this.listeners[event].indexOf(callback)
+        if (index !== -1) {
+          this.listeners[event].splice(index, 1)
         }
-      })
-    })
+      }
+    }
   }
 
-  public isConnected(): boolean {
-    return !!this.socket?.connected
+  private notifyListeners(event: string, data: any): void {
+    if (this.listeners[event]) {
+      this.listeners[event].forEach((callback: WebSocketEventCallback) => callback(data))
+    }
+  }
+
+  public disconnect(): void {
+    if (this.socket && this.isConnected) {
+      this.socket.close(1000, 'Disconnect from client')
+    }
+
+    this.isConnected = false
+    this.listeners = {}
+    this.pendingMessages = []
+    this.reconnectAttempts = 0
+  }
+
+  public getConnectionStatus(): boolean {
+    return this.isConnected
   }
 }
 
-const socket = new SocketService(import.meta.env.VITE_SOCKET_URL, {})
+const socket = new WebSocketService(import.meta.env.VITE_SOCKET_URL)
+
+socket.addListener('connect', () => {
+  console.log('Connected to Socket.IO server')
+})
+
+socket.addListener('message', (data: any) => {
+  console.log('Received new message:', data)
+})
+
+const chatMessage: ChatMessage = {
+  type: 'CHAT',
+  content: 'Xin chào từ client!',
+  timestamp: new Date().getTime()
+}
+
+socket.send(chatMessage)
+
 export default socket
