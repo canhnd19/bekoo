@@ -241,7 +241,7 @@ watch(messages, () => {
 .message-wrapper {
   display: flex;
   margin-bottom: 8px;
-  width: 70%;
+  width: 100%;
 }
 
 .bot-message {

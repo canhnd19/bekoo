@@ -23,6 +23,8 @@ declare global {
   const getActivePinia: (typeof import('pinia'))['getActivePinia']
   const getCurrentInstance: (typeof import('vue'))['getCurrentInstance']
   const getCurrentScope: (typeof import('vue'))['getCurrentScope']
+  const getSocketService: (typeof import('./src/utils/socket'))['getSocketService']
+  const getWebSocketService: (typeof import('./src/utils/socket'))['getWebSocketService']
   const h: (typeof import('vue'))['h']
   const inject: (typeof import('vue'))['inject']
   const isProxy: (typeof import('vue'))['isProxy']
@@ -64,6 +66,7 @@ declare global {
   const shallowReadonly: (typeof import('vue'))['shallowReadonly']
   const shallowRef: (typeof import('vue'))['shallowRef']
   const showError: (typeof import('./src/utils/showError'))['default']
+  const socket: (typeof import('./src/utils/socket'))['default']
   const storeToRefs: (typeof import('pinia'))['storeToRefs']
   const toRaw: (typeof import('vue'))['toRaw']
   const toRef: (typeof import('vue'))['toRef']
@@ -81,7 +84,9 @@ declare global {
   const useRoute: (typeof import('vue-router'))['useRoute']
   const useRouter: (typeof import('vue-router'))['useRouter']
   const useSlots: (typeof import('vue'))['useSlots']
+  const useSocket: (typeof import('./src/utils/socket'))['useSocket']
   const useTemplateRef: (typeof import('vue'))['useTemplateRef']
+  const useWebSocket: (typeof import('./src/utils/socket'))['useWebSocket']
   const watch: (typeof import('vue'))['watch']
   const watchEffect: (typeof import('vue'))['watchEffect']
   const watchPostEffect: (typeof import('vue'))['watchPostEffect']
@@ -164,6 +169,7 @@ declare module 'vue' {
     readonly shallowReadonly: UnwrapRef<(typeof import('vue'))['shallowReadonly']>
     readonly shallowRef: UnwrapRef<(typeof import('vue'))['shallowRef']>
     readonly showError: UnwrapRef<(typeof import('./src/utils/showError'))['default']>
+    readonly socket: UnwrapRef<(typeof import('./src/utils/socket'))['default']>
     readonly storeToRefs: UnwrapRef<(typeof import('pinia'))['storeToRefs']>
     readonly toRaw: UnwrapRef<(typeof import('vue'))['toRaw']>
     readonly toRef: UnwrapRef<(typeof import('vue'))['toRef']>

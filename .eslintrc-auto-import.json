@@ -98,6 +98,11 @@
     "useId": true,
     "useModel": true,
     "useTemplateRef": true,
-    "useFormatDate": true
+    "useFormatDate": true,
+    "socket": true,
+    "getSocketService": true,
+    "useSocket": true,
+    "getWebSocketService": true,
+    "useWebSocket": true
   }
 }

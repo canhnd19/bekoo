@@ -23,14 +23,15 @@
   "dependencies": {
     "@vueuse/core": "^11.0.3",
     "axios": "^1.7.5",
+    "chart.js": "4.4.0",
     "element-plus": "^2.3.14",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
+    "socket.io-client": "^4.8.1",
+    "swiper": "^11.1.14",
     "vue": "^3.4.29",
-    "vue-router": "^4.3.3",
-    "chart.js": "4.4.0",
-    "swiper": "^11.1.14"
+    "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
