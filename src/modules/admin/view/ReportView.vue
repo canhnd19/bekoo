@@ -31,6 +31,7 @@ import { onMounted, ref } from 'vue'
 import type { IReport, ISummary } from '@/types/user.types'
 
 import { useConvertUTCTime } from '@/composables/useConvertUTCTime'
+import useFormatNumber from '@/composables/useFormatNumber'
 
 import BaseChart, { type VALUE_DAY } from '../components/BaseChart.vue'
 import BaseChartPie from '../components/BaseChartPie.vue'
@@ -198,7 +199,7 @@ const mapChart = (data: any) => {
   datasets.value = []
   const _data: number[] = []
   forEach(data.value, (value) => {
-    labelChart.value.push(useDateFormat(value.time, 'MMM DD').value)
+    labelChart.value.push(useDateFormat(value.time, 'MMMM DD').value)
     _data.push(value.value)
   })
   datasets.value.push({
@@ -214,8 +215,8 @@ const mapChartRevenue = (data: any) => {
   datasetsRevenue.value = []
   const _data: number[] = []
   forEach(data.value, (value) => {
-    labelChartRevenue.value.push(useDateFormat(value.time, 'MMM DD').value)
-    _data.push(value.value)
+    labelChartRevenue.value.push(useDateFormat(value.time, 'MMMM DD').value)
+    _data.push(+useFormatNumber(value.value))
   })
   datasetsRevenue.value.push({
     label: 'Doanh thu',
