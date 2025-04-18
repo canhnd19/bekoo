@@ -103,6 +103,8 @@
     "getSocketService": true,
     "useSocket": true,
     "getWebSocketService": true,
-    "useWebSocket": true
+    "useWebSocket": true,
+    "safeJsonParse": true,
+    "sanitizeJsonString": true
   }
 }

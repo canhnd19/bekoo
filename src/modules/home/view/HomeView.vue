@@ -142,16 +142,13 @@ const data = ref<IDepartment[]>([])
 const search = ref<string>('')
 const showMore = ref<boolean>(false)
 
-// TODO:
-onMounted(async () => {
+onMounted(() => {
   try {
-    await socket.connect()
+    socket.connect()
   } catch (error) {
     console.error('Failed to connect to Socket.IO server', error)
   }
 })
-
-// TODO:
 
 const { department } = useBaseStore()
 const query = ref<IQuery>({

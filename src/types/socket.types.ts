@@ -20,7 +20,13 @@ export interface WebSocketListeners {
 }
 
 export interface ChatMessage {
-  type: string
+  type: number
+  senderId: string
   content: string
   timestamp: number
+}
+
+export interface MessageResoponse {
+  botResponse: string
+  time: string
 }

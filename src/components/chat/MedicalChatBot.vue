@@ -39,8 +39,6 @@
             </div>
           </div>
 
-          <div v-if="userTyping" class="user-typing">{{ userName }} đã tham gia hội thoại</div>
-
           <div v-if="showActionButton" class="action-button-container">
             <button class="action-button" @click="scheduleAppointment">Đặt lịch khám mới</button>
           </div>
@@ -62,6 +60,8 @@
 import { ClickOutside as vClickOutside } from 'element-plus'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
+import type { ChatMessage, MessageResoponse } from '@/types/socket.types'
+
 // Types
 interface Message {
   text: string
@@ -74,21 +74,18 @@ const popoverRef = ref()
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.()
 }
-// Props with default values
-const userName = ref('Nguyễn Hậu')
 
 // Reactive state
 const messages = ref<Message[]>([])
 const newMessage = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
-const userTyping = ref(false)
 const showActionButton = ref(false)
 
 // Initial messages
 onMounted(() => {
   // Add initial bot message after a short delay
   setTimeout(() => {
-    addMessage('Bạn cần đăng ký khám tại bệnh viện nào ạ?', 'bot')
+    addMessage('Bạn cần đăng ký đặt lịch khám vào hôm nào ạ?', 'bot')
     showActionButton.value = true
   }, 1000)
 })
@@ -111,42 +108,39 @@ const addMessage = (text: string, sender: 'user' | 'bot') => {
 
 const sendMessage = () => {
   if (newMessage.value.trim() === '') return
-
-  // Add user message
+  handleSendMessage(newMessage.value)
   addMessage(newMessage.value, 'user')
 
   // Clear input
-  const userInput = newMessage.value
-  newMessage.value = ''
-
-  // Show typing indicator
-  userTyping.value = true
+  // const userInput = newMessage.value
+  // newMessage.value = ''
 
   // Simulate bot response after a delay
-  setTimeout(() => {
-    userTyping.value = false
+  // setTimeout(() => {
+  //   userTyping.value = false
 
-    // Bot response based on user input
-    if (userInput.toLowerCase().includes('khám')) {
-      addMessage(
-        'Medpro đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
-        'bot'
-      )
-    } else if (userInput.toLowerCase().includes('cảm ơn')) {
-      addMessage('Cảm ơn anh/chị quan tâm đến dịch vụ Medpro.', 'bot')
-    } else {
-      addMessage('Em có thể hỗ trợ thông tin gì cho anh/chị ạ?', 'bot')
-    }
-  }, 1500)
+  //   // Bot response based on user input
+  //   if (userInput.toLowerCase().includes('khám')) {
+  //     addMessage(
+  //       'Medpro đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
+  //       'bot'
+  //     )
+  //   } else if (userInput.toLowerCase().includes('cảm ơn')) {
+  //     addMessage('Cảm ơn anh/chị quan tâm đến dịch vụ Medpro.', 'bot')
+  //   } else {
+  //     addMessage('Em có thể hỗ trợ thông tin gì cho anh/chị ạ?', 'bot')
+  //   }
+  // }, 1500)
 }
 
 const scheduleAppointment = () => {
+  showActionButton.value = false
   addMessage('Tôi muốn đặt lịch khám', 'user')
 
   // Simulate bot response
   setTimeout(() => {
     addMessage(
-      'Medpro đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
+      'Bekoo đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
       'bot'
     )
   }, 1000)
@@ -160,6 +154,25 @@ watch(messages, () => {
     }
   })
 })
+
+const handleSendMessage = (messgae: string) => {
+  const chatMessage: ChatMessage = {
+    type: 1,
+    senderId: 'bb3e3baa-d5ce-4698-9e8d-82f27e9fa558',
+    content: messgae,
+    timestamp: new Date().getTime()
+  }
+  socket.send(chatMessage)
+}
+
+socket.addListener('message', (data: MessageResoponse) => {
+  console.log('Received data from BE:', data.botResponse)
+
+  console.log(' typeof data', typeof data)
+  addMessage(data.botResponse, 'bot')
+})
+
+//  TODO:
 </script>
 
 <style scoped>

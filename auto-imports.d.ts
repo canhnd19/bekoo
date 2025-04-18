@@ -60,6 +60,8 @@ declare global {
   const readonly: (typeof import('vue'))['readonly']
   const ref: (typeof import('vue'))['ref']
   const resolveComponent: (typeof import('vue'))['resolveComponent']
+  const safeJsonParse: (typeof import('./src/utils/jsonSanitizer'))['safeJsonParse']
+  const sanitizeJsonString: (typeof import('./src/utils/jsonSanitizer'))['sanitizeJsonString']
   const setActivePinia: (typeof import('pinia'))['setActivePinia']
   const setMapStoreSuffix: (typeof import('pinia'))['setMapStoreSuffix']
   const shallowReactive: (typeof import('vue'))['shallowReactive']
@@ -163,6 +165,8 @@ declare module 'vue' {
     readonly readonly: UnwrapRef<(typeof import('vue'))['readonly']>
     readonly ref: UnwrapRef<(typeof import('vue'))['ref']>
     readonly resolveComponent: UnwrapRef<(typeof import('vue'))['resolveComponent']>
+    readonly safeJsonParse: UnwrapRef<(typeof import('./src/utils/jsonSanitizer'))['safeJsonParse']>
+    readonly sanitizeJsonString: UnwrapRef<(typeof import('./src/utils/jsonSanitizer'))['sanitizeJsonString']>
     readonly setActivePinia: UnwrapRef<(typeof import('pinia'))['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<(typeof import('pinia'))['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<(typeof import('vue'))['shallowReactive']>
