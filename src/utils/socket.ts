@@ -1,10 +1,11 @@
 import type {
-  ChatMessage,
   WebSocketEventCallback,
   WebSocketEventType,
   WebSocketListeners,
   WebSocketMessage
 } from '@/types/socket.types'
+
+import { safeJsonParse } from '@/utils/jsonSanitizer'
 
 class WebSocketService {
   private url: string
@@ -38,26 +39,34 @@ class WebSocketService {
         this.isConnected = true
         this.reconnectAttempts = 0
 
-        // Gửi các tin nhắn đang chờ
+        // Send pending messages
         if (this.pendingMessages.length > 0) {
           this.pendingMessages.forEach((msg: WebSocketMessage) => this.send(msg))
           this.pendingMessages = []
         }
 
-        // Thông báo cho các listener
+        // Notify listeners
         this.notifyListeners('connect', event)
       }
 
       this.socket.onmessage = (event: MessageEvent): void => {
         try {
-          const data = JSON.parse(event.data)
+          // Use the safe JSON parser with sanitization
+          const data = safeJsonParse(event.data)
           console.log('Message from server:', data)
 
-          // Thông báo cho các listener
+          // Notify listeners
           this.notifyListeners('message', data)
         } catch (error) {
           console.error('Error processing message:', error)
-          this.notifyListeners('message', event.data)
+
+          // Even if parsing fails, notify listeners with the raw data
+          // This allows custom handling of malformed messages
+          this.notifyListeners('error', {
+            type: 'parse_error',
+            error,
+            rawData: event.data
+          })
         }
       }
 
@@ -65,10 +74,10 @@ class WebSocketService {
         this.isConnected = false
         console.log(`WebSocket connection closed: ${event.code} ${event.reason}`)
 
-        // Thông báo cho các listener
+        // Notify listeners
         this.notifyListeners('close', event)
 
-        //reconnect
+        // Reconnect logic
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
           this.reconnectAttempts++
           console.log(`Trying to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`)
@@ -89,7 +98,7 @@ class WebSocketService {
 
   public send(message: WebSocketMessage): void {
     if (!this.isConnected) {
-      // Thêm tin nhắn vào hàng đợi để gửi sau
+      // Queue message to send later
       this.pendingMessages.push(message)
       console.warn('WebSocket not connected yet. Message will be sent after connection.')
       return
@@ -146,19 +155,7 @@ class WebSocketService {
 const socket = new WebSocketService(import.meta.env.VITE_SOCKET_URL)
 
 socket.addListener('connect', () => {
-  console.log('Connected to Socket.IO server')
+  console.log('Connected to WebSocket server')
 })
-
-socket.addListener('message', (data: any) => {
-  console.log('Received new message:', data)
-})
-
-const chatMessage: ChatMessage = {
-  type: 'CHAT',
-  content: 'Xin chào từ client!',
-  timestamp: new Date().getTime()
-}
-
-socket.send(chatMessage)
 
 export default socket
