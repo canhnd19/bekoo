@@ -38,6 +38,14 @@ const AdminRouter: RouteRecordRaw[] = [
           auth: true
         },
         name: 'Departments'
+      },
+      {
+        path: 'message',
+        component: () => import('../view/MesageView.vue'),
+        meta: {
+          auth: true
+        },
+        name: 'Message'
       }
     ]
   },

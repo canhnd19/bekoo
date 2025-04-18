@@ -55,6 +55,12 @@ const listMenu = [
     routerName: 'MedicalSchedule',
     id: user.doctor?.id,
     role: ['DOCTOR', 'ADMIN']
+  },
+  {
+    title: 'Tin nhắn',
+    icon: 'chat-bot',
+    routerName: 'Message',
+    role: ['ADMIN']
   }
 ]
 </script>

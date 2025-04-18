@@ -33,6 +33,8 @@ const nameHeader = computed(() => {
       return 'Chuyên khoa'
     case 'MedicalSchedule':
       return 'Lịch khám'
+    case 'Message':
+      return 'Tin nhắn'
     default:
       break
   }

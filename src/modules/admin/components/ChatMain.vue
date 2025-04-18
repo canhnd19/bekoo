@@ -1,0 +1,282 @@
+<template>
+  <div class="chat-main">
+    <div class="chat-header">
+      <div class="chat-user-info">
+        <div class="avatar">
+          <img :src="chat.avatar" alt="Avatar" class="rounded-full" />
+        </div>
+        <div>
+          <h3>{{ chat.name }}</h3>
+          <p class="status">{{ chat.status }}</p>
+        </div>
+      </div>
+      <div class="info-icon">
+        <BaseIcon name="warning" />
+      </div>
+    </div>
+
+    <div ref="messagesContainer" class="messages-container">
+      <div
+        v-for="message in chat.messages"
+        :key="message.id"
+        class="message"
+        :class="{ 'user-message': message.sender === 'user', 'contact-message': message.sender === 'contact' }"
+      >
+        <div class="message-content">
+          <div class="message-bubble">
+            {{ message.text }}
+          </div>
+          <div class="message-time">{{ message.time }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-input-container">
+      <div class="message-actions">
+        <button class="action-btn">
+          <BaseIcon name="voice" />
+        </button>
+        <button class="action-btn">
+          <BaseIcon name="image" />
+        </button>
+        <button class="action-btn">
+          <BaseIcon name="face" />
+        </button>
+      </div>
+
+      <BaseInput
+        v-model="messageSend"
+        placeholder="Type message..."
+        class="input-message mb-4"
+        @keydown.enter.prevent="emit('send')"
+      />
+      <div class="w-12">
+        <div class="send-btn" @click="emit('send')">
+          <BaseIcon name="send-message" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { nextTick, onMounted, ref, watch } from 'vue'
+
+const props = defineProps<{
+  chat: {
+    id: string
+    name: string
+    avatar: string
+    status: string
+    messages: Array<{
+      id: string
+      sender: 'user' | 'contact'
+      text: string
+      time: string
+      avatar: string
+    }>
+  }
+}>()
+
+const emit = defineEmits<{
+  send: []
+}>()
+const messagesContainer = ref<HTMLElement | null>(null)
+
+const messageSend = defineModel('messageSend', {
+  default: '',
+  type: String
+})
+
+const scrollToBottom = async () => {
+  await nextTick()
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+  }
+}
+
+onMounted(() => {
+  scrollToBottom()
+})
+
+watch(
+  () => props.chat.messages.length,
+  () => {
+    scrollToBottom()
+  }
+)
+</script>
+
+<style scoped lang="scss">
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #dbdbdb;
+}
+
+*::-webkit-scrollbar {
+  width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #dbdbdb;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-user-info {
+  display: flex;
+  align-items: center;
+}
+
+.chat-user-info .avatar {
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+
+.chat-user-info h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.status {
+  font-size: 12px;
+  color: #4caf50;
+}
+
+.info-icon {
+  color: #888;
+  cursor: pointer;
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.user-message {
+  flex-direction: row-reverse;
+}
+
+.user-message .message-content {
+  align-items: flex-end;
+  margin-right: 10px;
+}
+
+.contact-message .message-content {
+  margin-left: 10px;
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.user-message .message-bubble {
+  background-color: #007bff;
+  color: white;
+  border-top-right-radius: 4px;
+}
+
+.contact-message .message-bubble {
+  background-color: #e9ecef;
+  color: #333;
+  border-top-left-radius: 4px;
+}
+
+.message-time {
+  font-size: 11px;
+  color: #888;
+  margin-top: 5px;
+  text-align: right;
+}
+
+.message-input-container {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.message-actions {
+  display: flex;
+  margin-right: 10px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.message-input-container input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.send-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.input-message {
+  width: 100%;
+  margin-bottom: 0;
+  text-align: left;
+  :deep(.el-input) {
+    height: 40px;
+    .el-input__wrapper {
+      border-radius: 100px;
+      .el-input__inner {
+        height: 100%;
+      }
+    }
+  }
+}
+</style>
