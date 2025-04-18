@@ -113,7 +113,7 @@ const sendMessage = () => {
 
   // Clear input
   // const userInput = newMessage.value
-  // newMessage.value = ''
+  newMessage.value = ''
 
   // Simulate bot response after a delay
   // setTimeout(() => {
@@ -144,6 +144,7 @@ const scheduleAppointment = () => {
       'bot'
     )
   }, 1000)
+  handleSendMessage('Tôi muốn đặt lịch khám')
 }
 
 // Watch for new messages to scroll to bottom
