@@ -172,11 +172,27 @@ socket.addListener('message', (data: MessageResoponse) => {
   console.log(' typeof data', typeof data)
   addMessage(data.botResponse, 'bot')
 })
-
-//  TODO:
 </script>
 
 <style scoped>
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #dbdbdb;
+}
+
+*::-webkit-scrollbar {
+  width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #dbdbdb;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -356,3 +372,21 @@ socket.addListener('message', (data: MessageResoponse) => {
   background-color: var(--primary);
 }
 </style>
+
+<!-- chức năng chat
+- gợi ý bác sĩ hoặc chuyên khoa phù hợp
+- hướng dẫn đặt lịch
+- thông báo lịch đã đặt (nhắc nhở đi khám)
+- hướng dẫn sử dụng web
+- Trả lời các câu hỏi thường gặp (FAQ)
+  + Giờ làm việc
+  + Địa chỉ, bản đồ phòng khám
+  + Các dịch vụ khám bệnh
+  + Hướng dẫn thanh toán
+  + Chính sách hủy/hoãn lịch
+- thông báo từ phòng khám
+- Gợi ý bác sĩ, thời gian, chuyên khoa... dựa trên:
+  + Triệu chứng mà người dùng mô tả 
+  + Lịch sử khám bệnh trước đó (nếu có)
+  + Lịch trống của phòng khám
+  + Tần suất đặt lịch -->
