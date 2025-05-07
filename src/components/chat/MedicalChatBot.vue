@@ -132,7 +132,6 @@ const sendMessage = () => {
   //   }
   // }, 1500)
 }
-
 const scheduleAppointment = () => {
   showActionButton.value = false
   addMessage('Tôi muốn đặt lịch khám', 'user')
@@ -159,7 +158,8 @@ watch(messages, () => {
 const handleSendMessage = (messgae: string) => {
   const chatMessage: ChatMessage = {
     type: 1,
-    senderId: 'bb3e3baa-d5ce-4698-9e8d-82f27e9fa558',
+    senderId: '', // 0
+    adminStatus: 'ON',
     content: messgae,
     timestamp: new Date().getTime()
   }
@@ -374,6 +374,7 @@ socket.addListener('message', (data: MessageResoponse) => {
 </style>
 
 <!-- chức năng chat
+
 - gợi ý bác sĩ hoặc chuyên khoa phù hợp
 - hướng dẫn đặt lịch
 - thông báo lịch đã đặt (nhắc nhở đi khám)
@@ -389,4 +390,6 @@ socket.addListener('message', (data: MessageResoponse) => {
   + Triệu chứng mà người dùng mô tả 
   + Lịch sử khám bệnh trước đó (nếu có)
   + Lịch trống của phòng khám
-  + Tần suất đặt lịch -->
+  + Tần suất đặt lịch
+
+  -->
