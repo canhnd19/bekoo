@@ -62,6 +62,9 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 
 import type { ChatMessage, MessageResoponse } from '@/types/socket.types'
 
+import { useAuthStore } from '@/stores/auth'
+
+const { user } = storeToRefs(useAuthStore())
 // Types
 interface Message {
   text: string
@@ -158,7 +161,7 @@ watch(messages, () => {
 const handleSendMessage = (messgae: string) => {
   const chatMessage: ChatMessage = {
     type: 1,
-    senderId: '', // 0
+    senderId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
     adminStatus: 'ON',
     content: messgae,
     timestamp: new Date().getTime()
@@ -168,7 +171,6 @@ const handleSendMessage = (messgae: string) => {
 
 socket.addListener('message', (data: MessageResoponse) => {
   console.log('Received data from BE:', data.botResponse)
-
   console.log(' typeof data', typeof data)
   addMessage(data.botResponse, 'bot')
 })
