@@ -11,6 +11,8 @@
 </template>
 
 <script setup lang="ts">
+import { apiChat } from '@/services'
+
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
 
@@ -43,7 +45,10 @@ interface Contact {
 // State
 const searchQuery = ref('')
 const newMessage = ref('')
-
+const isLoading = ref(false)
+const query = ref({
+  'search-word': ''
+})
 const currentChat = ref<Chat>({
   id: '1',
   name: 'Emily Brontë',
@@ -206,6 +211,20 @@ const sendMessage = () => {
     newMessage.value = ''
   }
 }
+
+const getListUserChat = async () => {
+  isLoading.value = true
+  try {
+    const rs = await apiChat.getListUserChat(query.value)
+    console.log('🚀 ~ getListUserChat ~ rs:', rs)
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+getListUserChat()
 </script>
 
 <style>

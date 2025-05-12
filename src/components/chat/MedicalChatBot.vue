@@ -62,6 +62,9 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 
 import type { ChatMessage, MessageResoponse } from '@/types/socket.types'
 
+import { useAuthStore } from '@/stores/auth'
+
+const { user } = storeToRefs(useAuthStore())
 // Types
 interface Message {
   text: string
@@ -132,7 +135,6 @@ const sendMessage = () => {
   //   }
   // }, 1500)
 }
-
 const scheduleAppointment = () => {
   showActionButton.value = false
   addMessage('Tôi muốn đặt lịch khám', 'user')
@@ -159,7 +161,8 @@ watch(messages, () => {
 const handleSendMessage = (messgae: string) => {
   const chatMessage: ChatMessage = {
     type: 1,
-    senderId: 'bb3e3baa-d5ce-4698-9e8d-82f27e9fa558',
+    senderId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
+    adminStatus: 'ON',
     content: messgae,
     timestamp: new Date().getTime()
   }
@@ -168,15 +171,30 @@ const handleSendMessage = (messgae: string) => {
 
 socket.addListener('message', (data: MessageResoponse) => {
   console.log('Received data from BE:', data.botResponse)
-
   console.log(' typeof data', typeof data)
   addMessage(data.botResponse, 'bot')
 })
-
-//  TODO:
 </script>
 
 <style scoped>
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #dbdbdb;
+}
+
+*::-webkit-scrollbar {
+  width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #dbdbdb;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -356,3 +374,24 @@ socket.addListener('message', (data: MessageResoponse) => {
   background-color: var(--primary);
 }
 </style>
+
+<!-- chức năng chat
+
+- gợi ý bác sĩ hoặc chuyên khoa phù hợp
+- hướng dẫn đặt lịch
+- thông báo lịch đã đặt (nhắc nhở đi khám)
+- hướng dẫn sử dụng web
+- Trả lời các câu hỏi thường gặp (FAQ)
+  + Giờ làm việc
+  + Địa chỉ, bản đồ phòng khám
+  + Các dịch vụ khám bệnh
+  + Hướng dẫn thanh toán
+  + Chính sách hủy/hoãn lịch
+- thông báo từ phòng khám
+- Gợi ý bác sĩ, thời gian, chuyên khoa... dựa trên:
+  + Triệu chứng mà người dùng mô tả 
+  + Lịch sử khám bệnh trước đó (nếu có)
+  + Lịch trống của phòng khám
+  + Tần suất đặt lịch
+
+  -->

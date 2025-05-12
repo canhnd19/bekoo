@@ -1,5 +1,6 @@
 import AuthService from './auth'
 import BookingService from './booking'
+import ChatService from './chat'
 import DepartmentService from './departments'
 import DoctorService from './doctors'
 import ParamService from './param'
@@ -19,3 +20,4 @@ export const apiUpload: UploadService = new UploadService()
 export const apiBooking: BookingService = new BookingService()
 export const apiPatient: PatientService = new PatientService()
 export const apiReport: ReportService = new ReportService()
+export const apiChat: ChatService = new ChatService()

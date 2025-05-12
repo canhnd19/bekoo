@@ -24,9 +24,11 @@ export interface ChatMessage {
   senderId: string
   content: string
   timestamp: number
+  adminStatus?: 'ON' | 'OFF'
 }
 
 export interface MessageResoponse {
   botResponse: string
   time: string
+  userId: string
 }
