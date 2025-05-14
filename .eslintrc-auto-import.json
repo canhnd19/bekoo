@@ -107,6 +107,8 @@
     "safeJsonParse": true,
     "sanitizeJsonString": true,
     "formatFacebookStyle": true,
-    "formatRelativeTime": true
+    "formatRelativeTime": true,
+    "convertToISOString": true,
+    "convertTimestampToISO": true
   }
 }

@@ -17,6 +17,7 @@
           :key="message.groupId"
           class="favorite-item"
           :class="{ active: message.userResponse.name === 'Quản trị hệ thống' }"
+          @click="emit('click-user', message.userResponse)"
         >
           <div class="avatar">
             <img :src="message.userResponse.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" />
@@ -24,7 +25,7 @@
           <div class="favorite-info">
             <div class="favorite-name-row">
               <h4>{{ message.userResponse.name }}</h4>
-              <span class="time">{{ formatRelativeTime(message.time) }}</span>
+              <span class="time">{{ formatRelativeTime(message.time) }} </span>
             </div>
             <p class="last-message">{{ message.lastestMessage }}</p>
           </div>
@@ -39,6 +40,7 @@
 
 <script setup lang="ts">
 import type { IMessage } from '@/types/message.types'
+import type { IUser } from '@/types/user.types'
 
 defineProps<{
   listMessage: IMessage[]
@@ -50,8 +52,9 @@ defineProps<{
   searchQuery: string
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'update:searchQuery', value: string): void
+  (e: 'click-user', value: IUser): void
 }>()
 
 const search = ref('')
