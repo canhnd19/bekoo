@@ -64,7 +64,7 @@ import type { ChatMessage, MessageResoponse } from '@/types/socket.types'
 
 import { useAuthStore } from '@/stores/auth'
 
-const { user } = storeToRefs(useAuthStore())
+const { user, isLoggedIn } = storeToRefs(useAuthStore())
 // Types
 interface Message {
   text: string
@@ -165,7 +165,11 @@ const handleSendMessage = (messgae: string) => {
   )
   const chatMessage: ChatMessage = {
     type: 1,
-    senderId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
+    senderId: isLoggedIn.value
+      ? user.value.patient?.info
+        ? user.value.patient.info.id
+        : user.value.doctor!.info.id
+      : '',
     adminStatus: 'ON',
     content: messgae,
     timestamp: new Date().getTime()
