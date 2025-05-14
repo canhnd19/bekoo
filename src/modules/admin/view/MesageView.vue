@@ -115,7 +115,7 @@ const getListUserChat = async () => {
 getListUserChat()
 </script>
 
-<style>
+<style lang="scss" scoped>
 .app-container {
   display: flex;
   height: 100%;

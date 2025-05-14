@@ -25,6 +25,7 @@
         </div>
 
         <!-- Chat Messages -->
+
         <div ref="messagesContainer" class="chat-messages">
           <div
             v-for="(message, index) in messages"
@@ -34,8 +35,12 @@
             <div v-if="message.sender === 'bot'" class="bot-avatar">
               <img src="/favicon.png" alt="User avatar" class="rounded-full bg-white p-1" />
             </div>
-            <div class="message">
-              {{ message.text }}
+
+            <div class="max-w-[70%]">
+              <div class="message">
+                {{ message.text }}
+              </div>
+              <div class="message-time">{{ formatRelativeTime(convertTimestampToISO(message.timestamp)) }}</div>
             </div>
           </div>
 
@@ -69,7 +74,7 @@ const { user, isLoggedIn } = storeToRefs(useAuthStore())
 interface Message {
   text: string
   sender: 'user' | 'bot'
-  timestamp: Date
+  timestamp: number
 }
 
 const buttonRef = ref()
@@ -98,7 +103,7 @@ const addMessage = (text: string, sender: 'user' | 'bot') => {
   messages.value.push({
     text,
     sender,
-    timestamp: new Date()
+    timestamp: new Date().getTime()
   })
 
   // Scroll to bottom after message is added
@@ -179,7 +184,7 @@ const handleSendMessage = (messgae: string) => {
 }
 
 socket.addListener('message', (data: MessageResoponse) => {
-  console.log('Received data from BE:', data.botResponse)
+  console.log('Received data from BE:', data)
   addMessage(data.botResponse, 'bot')
 })
 </script>
@@ -306,7 +311,7 @@ socket.addListener('message', (data: MessageResoponse) => {
 .message {
   padding: 10px 14px;
   border-radius: 18px;
-  max-width: 70%;
+
   word-break: break-word;
 }
 
@@ -380,6 +385,13 @@ socket.addListener('message', (data: MessageResoponse) => {
 
 .btn-primary:hover {
   background-color: var(--primary);
+}
+
+.message-time {
+  font-size: 11px;
+  color: #888;
+  margin-top: 5px;
+  text-align: right;
 }
 </style>
 
