@@ -16,8 +16,8 @@
           v-for="message in listMessage"
           :key="message.groupId"
           class="favorite-item"
-          :class="{ active: message.userResponse.name === 'Quản trị hệ thống' }"
-          @click="emit('click-user', message.userResponse)"
+          :class="{ active: message.userResponse.id === userIdActive }"
+          @click="handleClickUser(message.userResponse)"
         >
           <div class="avatar">
             <img :src="message.userResponse.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" />
@@ -42,7 +42,7 @@
 import type { IMessage } from '@/types/message.types'
 import type { IUser } from '@/types/user.types'
 
-defineProps<{
+const props = defineProps<{
   listMessage: IMessage[]
   topFavorites: Array<{
     id: string
@@ -58,6 +58,21 @@ const emit = defineEmits<{
 }>()
 
 const search = ref('')
+const userIdActive = ref('')
+
+watch(
+  () => props.listMessage,
+  (newListMessage) => {
+    if (newListMessage.length > 0) {
+      userIdActive.value = newListMessage[0].userResponse.id
+    }
+  }
+)
+
+const handleClickUser = (user: IUser) => {
+  userIdActive.value = user.id
+  emit('click-user', user)
+}
 </script>
 
 <style scoped lang="scss">
