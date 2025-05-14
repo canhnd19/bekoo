@@ -28,16 +28,36 @@ const isLoading = ref(false)
 const query = ref({
   'search-word': ''
 })
-const listMessage = ref<IMessage[]>([])
 
+const listMessage = ref<IMessage[]>([])
 const currentChat = ref<IMessageHistory[]>([])
 const userInfo = ref({
   id: '',
   name: '',
-  linkAvatar: ''
+  linkAvatar: '/images/avatar-user-default.png'
 })
+
+// const chatHistory = {
+//   id: '1',
+//   name: 'Emily Brontë',
+//   avatar: '/images/avatar-user-default.png',
+//   messages: [
+//     {
+//       id: '1' (Hiện tại chưa có nhưng nếu sau này muốn làm reply thì có thể thêm vào),
+//       sender: 0 || 1,
+//       content: "Hi, I need help with my project. I'm having trouble with the layout design.",
+//       time: 1691234567890,
+//     },
+//     {
+//       id: '2',
+//       sender: 0 || 1,
+//       text: "Of course! What's the issue?",
+//       time: 1691234567890,
+//     },
+//   ]
+// }
+
 const handleClickUser = (user: IUser) => {
-  console.log('🚀 ~ handleClickUser ~ user:', user)
   userInfo.value = user
   const chatMessage: ChatMessage = {
     type: 1,
@@ -46,14 +66,11 @@ const handleClickUser = (user: IUser) => {
     content: 'GET MESSAGE',
     timestamp: new Date().getTime()
   }
-  console.log('🚀 ~ handleSendMessage ~ chatMessage:', chatMessage)
   socket.send(chatMessage)
 }
 
 socket.addListener('message', (data: IMessageHistory[]) => {
   currentChat.value = data
-  console.log('🚀 ~ socket.addListener ~  currentChat.value:', currentChat.value)
-  console.log('🚀 ~ socket.addListener ~ data:', data)
 })
 
 const topFavorites = computed(() => {
@@ -71,7 +88,6 @@ const sendMessage = () => {
       type: 0
     })
     newMessage.value = ''
-    console.log('🚀 ~ sendMessage ~ currentChat.value.push:', currentChat.value)
   }
 }
 
@@ -80,6 +96,15 @@ const getListUserChat = async () => {
   try {
     const { value } = await apiChat.getListUserChat(query.value)
     listMessage.value = value
+    userInfo.value = value[0].userResponse
+    const chatMessage: ChatMessage = {
+      type: 1,
+      senderId: value[0].userResponse.id,
+      adminStatus: 'ON',
+      content: 'GET MESSAGE',
+      timestamp: new Date().getTime()
+    }
+    socket.send(chatMessage)
   } catch (error) {
     console.error(error)
   } finally {

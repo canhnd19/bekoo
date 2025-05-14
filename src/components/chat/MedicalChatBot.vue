@@ -180,7 +180,6 @@ const handleSendMessage = (messgae: string) => {
 
 socket.addListener('message', (data: MessageResoponse) => {
   console.log('Received data from BE:', data.botResponse)
-  console.log(' typeof data', typeof data)
   addMessage(data.botResponse, 'bot')
 })
 </script>
