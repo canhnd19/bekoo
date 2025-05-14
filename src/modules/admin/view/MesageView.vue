@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <ChatSidebar
+      :is-loading="isLoading"
       :list-message="listMessage"
       :top-favorites="topFavorites"
       :search-query="searchQuery"
       @update:search-query="searchQuery = $event"
     />
-
     <ChatMain v-model:message-send="newMessage" :chat="currentChat" @send="sendMessage" />
   </div>
 </template>

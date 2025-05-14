@@ -1,36 +1,39 @@
 <template>
   <div class="sidebar">
-    <div class="sidebar-header">
-      <BaseInput v-model:model-value="search" class="input-search mb-4" :show-icon="true" />
-      <div class="avatar-row">
-        <div v-for="favorite in topFavorites" :key="favorite.id" class="avatar">
-          <img :src="favorite.avatar" alt="Avatar" />
-        </div>
-      </div>
-    </div>
-
-    <div class="favorites-list">
-      <div
-        v-for="message in listMessage"
-        :key="message.groupId"
-        class="favorite-item"
-        :class="{ active: message.userResponse.name === 'Quản trị hệ thống' }"
-      >
-        <div class="avatar">
-          <img :src="message.userResponse.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" />
-        </div>
-        <div class="favorite-info">
-          <div class="favorite-name-row">
-            <h4>{{ message.userResponse.name }}</h4>
-            <span class="time">{{ formatRelativeTime(message.time) }}</span>
+    <BaseLoading v-if="isLoading" />
+    <template v-else>
+      <div class="sidebar-header">
+        <BaseInput v-model:model-value="search" class="input-search mb-4" :show-icon="true" />
+        <div class="avatar-row">
+          <div v-for="favorite in topFavorites" :key="favorite.id" class="avatar">
+            <img :src="favorite.avatar" alt="Avatar" />
           </div>
-          <p class="last-message">{{ message.lastestMessage }}</p>
         </div>
-        <!-- <div v-if="favorite.unread > 0" class="unread-badge">
-          {{ favorite.unread }}
-        </div> -->
       </div>
-    </div>
+
+      <div class="favorites-list">
+        <div
+          v-for="message in listMessage"
+          :key="message.groupId"
+          class="favorite-item"
+          :class="{ active: message.userResponse.name === 'Quản trị hệ thống' }"
+        >
+          <div class="avatar">
+            <img :src="message.userResponse.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" />
+          </div>
+          <div class="favorite-info">
+            <div class="favorite-name-row">
+              <h4>{{ message.userResponse.name }}</h4>
+              <span class="time">{{ formatRelativeTime(message.time) }}</span>
+            </div>
+            <p class="last-message">{{ message.lastestMessage }}</p>
+          </div>
+          <!-- <div v-if="favorite.unread > 0" class="unread-badge">
+            {{ favorite.unread }}
+          </div> -->
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -43,6 +46,7 @@ defineProps<{
     id: string
     avatar: string
   }>
+  isLoading: boolean
   searchQuery: string
 }>()
 
@@ -96,7 +100,6 @@ const search = ref('')
 .avatar-row {
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
   overflow-x: auto;
   padding-bottom: 5px;
 }
