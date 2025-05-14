@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
     <ChatSidebar
-      :favorites="favorites"
+      :is-loading="isLoading"
+      :list-message="listMessage"
       :top-favorites="topFavorites"
       :search-query="searchQuery"
       @update:search-query="searchQuery = $event"
@@ -13,10 +14,11 @@
 <script setup lang="ts">
 import { apiChat } from '@/services'
 
+import type { IMessage } from '@/types/message.types'
+
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
 
-// Types
 interface Message {
   id: string
   sender: 'user' | 'contact'
@@ -33,22 +35,14 @@ interface Chat {
   messages: Message[]
 }
 
-interface Contact {
-  id: string
-  name: string
-  avatar: string
-  lastMessage: string
-  unread: number
-  time: string
-}
-
-// State
 const searchQuery = ref('')
 const newMessage = ref('')
 const isLoading = ref(false)
 const query = ref({
   'search-word': ''
 })
+const listMessage = ref<IMessage[]>([])
+
 const currentChat = ref<Chat>({
   id: '1',
   name: 'Emily Brontë',
@@ -114,91 +108,13 @@ const currentChat = ref<Chat>({
   ]
 })
 
-const favorites = ref<Contact[]>([
-  {
-    id: '1',
-    name: 'Jane Austen',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 0,
-    time: '8min'
-  },
-  {
-    id: '2',
-    name: 'J.K. Rowling',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 6,
-    time: ''
-  },
-  {
-    id: '3',
-    name: 'Emily Brontë',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 0,
-    time: '8min'
-  },
-  {
-    id: '4',
-    name: 'George Orwell',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 4,
-    time: ''
-  },
-  {
-    id: '5',
-    name: 'Fyodor Dostoevsky',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 0,
-    time: '8min'
-  },
-  {
-    id: '6',
-    name: 'Harper Lee',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 0,
-    time: '8min'
-  },
-  {
-    id: '7',
-    name: 'Charlotte Brontë',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 1,
-    time: ''
-  },
-  {
-    id: '8',
-    name: 'Herman Melville',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 0,
-    time: '8min'
-  },
-  {
-    id: '9',
-    name: 'Fyodor Dostoevsky',
-    avatar: '/images/avatar-user-default.png',
-    lastMessage: 'hello, panel can you help me with...',
-    unread: 2,
-    time: ''
-  }
-])
+const topFavorites = computed(() => {
+  return listMessage.value.map((item) => ({
+    id: item.userResponse.id,
+    avatar: item.userResponse.linkAvatar || '/images/avatar-user-default.png'
+  }))
+})
 
-// Top favorites for the avatar row
-const topFavorites = ref([
-  { id: '1', avatar: '/images/avatar-user-default.png' },
-  { id: '2', avatar: '/images/avatar-user-default.png' },
-  { id: '3', avatar: '/images/avatar-user-default.png' },
-  { id: '4', avatar: '/images/avatar-user-default.png' },
-  { id: '5', avatar: '/images/avatar-user-default.png' }
-])
-
-// Methods
 const sendMessage = () => {
   if (newMessage.value.trim()) {
     currentChat.value.messages.push({
@@ -215,8 +131,8 @@ const sendMessage = () => {
 const getListUserChat = async () => {
   isLoading.value = true
   try {
-    const rs = await apiChat.getListUserChat(query.value)
-    console.log('🚀 ~ getListUserChat ~ rs:', rs)
+    const { value } = await apiChat.getListUserChat(query.value)
+    listMessage.value = value
   } catch (error) {
     console.error(error)
   } finally {

@@ -105,6 +105,8 @@
     "getWebSocketService": true,
     "useWebSocket": true,
     "safeJsonParse": true,
-    "sanitizeJsonString": true
+    "sanitizeJsonString": true,
+    "formatFacebookStyle": true,
+    "formatRelativeTime": true
   }
 }
