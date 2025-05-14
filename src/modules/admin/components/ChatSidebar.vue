@@ -11,39 +11,34 @@
 
     <div class="favorites-list">
       <div
-        v-for="favorite in favorites"
-        :key="favorite.id"
+        v-for="message in listMessage"
+        :key="message.groupId"
         class="favorite-item"
-        :class="{ active: favorite.name === 'Emily Brontë' }"
+        :class="{ active: message.userResponse.name === 'Quản trị hệ thống' }"
       >
         <div class="avatar">
-          <img :src="favorite.avatar" alt="Avatar" />
+          <img :src="message.userResponse.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" />
         </div>
         <div class="favorite-info">
           <div class="favorite-name-row">
-            <h4>{{ favorite.name }}</h4>
-            <span class="time">{{ favorite.time }}</span>
+            <h4>{{ message.userResponse.name }}</h4>
+            <span class="time">{{ formatRelativeTime(message.time) }}</span>
           </div>
-          <p class="last-message">{{ favorite.lastMessage }}</p>
+          <p class="last-message">{{ message.lastestMessage }}</p>
         </div>
-        <div v-if="favorite.unread > 0" class="unread-badge">
+        <!-- <div v-if="favorite.unread > 0" class="unread-badge">
           {{ favorite.unread }}
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { IMessage } from '@/types/message.types'
+
 defineProps<{
-  favorites: Array<{
-    id: string
-    name: string
-    avatar: string
-    lastMessage: string
-    unread: number
-    time: string
-  }>
+  listMessage: IMessage[]
   topFavorites: Array<{
     id: string
     avatar: string
@@ -78,7 +73,7 @@ const search = ref('')
   border: 3px solid #ffffff;
 }
 .sidebar {
-  width: 280px;
+  width: 360px;
   display: flex;
   flex-direction: column;
   overflow: hidden;

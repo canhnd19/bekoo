@@ -159,6 +159,10 @@ watch(messages, () => {
 })
 
 const handleSendMessage = (messgae: string) => {
+  console.log(
+    '🚀 ~ handleSendMessage ~ chatMessage: ChatMessage.user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id:',
+    user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id
+  )
   const chatMessage: ChatMessage = {
     type: 1,
     senderId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
@@ -166,6 +170,7 @@ const handleSendMessage = (messgae: string) => {
     content: messgae,
     timestamp: new Date().getTime()
   }
+  console.log('🚀 ~ handleSendMessage ~ chatMessage:', chatMessage)
   socket.send(chatMessage)
 }
 
