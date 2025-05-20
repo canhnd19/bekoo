@@ -103,7 +103,10 @@ class WebSocketService {
       console.warn('WebSocket not connected yet. Message will be sent after connection.')
       return
     }
-
+    // console.log('🚀 ~ WebSocketService ~ send ~ message:', {
+    //   ...message,
+    //   time: new Date().toLocaleString()
+    // })
     try {
       if (this.socket) {
         this.socket.send(JSON.stringify(message))

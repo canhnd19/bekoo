@@ -30,6 +30,12 @@ const init = async () => {
     // await Promise.all([getUserInfo(), getPatientInfo()])
     await getUserInfo()
     await getPatientInfo()
+    // window.addEventListener('focus', () => setUserOnlineStatus('online'))
+    // window.addEventListener('blur', () => setUserOnlineStatus('offline'))
+    document.addEventListener('visibilitychange', () => {
+      setUserOnlineStatus(document.visibilityState === 'visible' ? 'online' : 'offline')
+    })
+    setUserOnlineStatus('online')
   }
   app.use(router)
   app.mount('#app')

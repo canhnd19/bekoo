@@ -109,6 +109,7 @@
     "formatFacebookStyle": true,
     "formatRelativeTime": true,
     "convertToISOString": true,
-    "convertTimestampToISO": true
+    "convertTimestampToISO": true,
+    "setUserOnlineStatus": true
   }
 }

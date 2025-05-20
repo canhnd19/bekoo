@@ -22,6 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
       request.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
       await getUserInfo()
       await getPatientInfo()
+      setUserOnlineStatus('online')
       return Promise.resolve(rs.value)
     } catch (error) {
       return Promise.reject(error)
@@ -40,6 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
       request.defaults.headers.common['Authorization'] = ''
       requestQuery.defaults.headers.common['Authorization'] = ''
       location.href = '/login'
+      setUserOnlineStatus('offline')
       return Promise.resolve()
     } catch (error) {
       return Promise.reject(error)

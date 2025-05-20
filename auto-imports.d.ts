@@ -68,6 +68,7 @@ declare global {
   const sanitizeJsonString: (typeof import('./src/utils/jsonSanitizer'))['sanitizeJsonString']
   const setActivePinia: (typeof import('pinia'))['setActivePinia']
   const setMapStoreSuffix: (typeof import('pinia'))['setMapStoreSuffix']
+  const setUserOnlineStatus: (typeof import('./src/utils/setUserOnlineStatus'))['default']
   const shallowReactive: (typeof import('vue'))['shallowReactive']
   const shallowReadonly: (typeof import('vue'))['shallowReadonly']
   const shallowRef: (typeof import('vue'))['shallowRef']
@@ -178,6 +179,7 @@ declare module 'vue' {
     readonly sanitizeJsonString: UnwrapRef<(typeof import('./src/utils/jsonSanitizer'))['sanitizeJsonString']>
     readonly setActivePinia: UnwrapRef<(typeof import('pinia'))['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<(typeof import('pinia'))['setMapStoreSuffix']>
+    readonly setUserOnlineStatus: UnwrapRef<(typeof import('./src/utils/setUserOnlineStatus'))['default']>
     readonly shallowReactive: UnwrapRef<(typeof import('vue'))['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<(typeof import('vue'))['shallowReadonly']>
     readonly shallowRef: UnwrapRef<(typeof import('vue'))['shallowRef']>
