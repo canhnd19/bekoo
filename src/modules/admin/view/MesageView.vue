@@ -2,20 +2,18 @@
   <div class="app-container">
     <ChatSidebar
       :is-loading="isLoading"
-      :list-message="listMessage"
+      :list-user-chat="listUserChat"
       :top-favorites="topFavorites"
       :search-query="searchQuery"
       @click-user="handleClickUser"
-      @update:search-query="searchQuery = $event"
+      @update:search-query="handleSearch"
     />
     <ChatMain v-model:message-send="newMessage" :user-info="userInfo" :chat="currentChat" @send="sendMessage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { apiChat } from '@/services'
-
-import type { IMessage, IMessageHistory } from '@/types/message.types'
+import type { IChat, IListUserChat, IMessageHistory } from '@/types/message.types'
 import type { ChatMessage } from '@/types/socket.types'
 import type { IUser } from '@/types/user.types'
 
@@ -25,11 +23,8 @@ import ChatSidebar from '../components/ChatSidebar.vue'
 const searchQuery = ref('')
 const newMessage = ref('')
 const isLoading = ref(false)
-const query = ref({
-  'search-word': ''
-})
 
-const listMessage = ref<IMessage[]>([])
+const listUserChat = ref<IChat[]>([])
 const currentChat = ref<IMessageHistory[]>([])
 const userInfo = ref({
   id: '',
@@ -69,14 +64,15 @@ const handleClickUser = (user: IUser) => {
   socket.send(chatMessage)
 }
 
-socket.addListener('message', (data: IMessageHistory[]) => {
-  currentChat.value = data
+socket.addListener('message', (data: IListUserChat) => {
+  listUserChat.value = data.value
+  // currentChat.value = data
 })
 
 const topFavorites = computed(() => {
-  return listMessage.value.map((item) => ({
-    id: item.userResponse.id,
-    avatar: item.userResponse.linkAvatar || '/images/avatar-user-default.png'
+  return listUserChat.value.map((item) => ({
+    id: item.userId,
+    avatar: item.avatar || '/images/avatar-user-default.png'
   }))
 })
 
@@ -93,23 +89,40 @@ const sendMessage = () => {
 
 const getListUserChat = async () => {
   isLoading.value = true
-  try {
-    const { value } = await apiChat.getListUserChat(query.value)
-    listMessage.value = value
-    userInfo.value = value[0].userResponse
-    const chatMessage: ChatMessage = {
-      type: 1,
-      senderId: value[0].userResponse.id,
-      adminStatus: 'ON',
-      content: 'GET MESSAGE',
-      timestamp: new Date().getTime()
+  socket.send({
+    requestType: 'Get-All-Chat',
+    data: {
+      name: ''
     }
-    socket.send(chatMessage)
-  } catch (error) {
-    console.error(error)
-  } finally {
-    isLoading.value = false
-  }
+  })
+
+  // try {
+  //   const { value } = await apiChat.getListUserChat(query.value)
+  //   listMessage.value = value
+  //   userInfo.value = value[0].userResponse
+  //   const chatMessage: ChatMessage = {
+  //     type: 1,
+  //     senderId: value[0].userResponse.id,
+  //     adminStatus: 'ON',
+  //     content: 'GET MESSAGE',
+  //     timestamp: new Date().getTime()
+  //   }
+  //   socket.send(chatMessage)
+  // } catch (error) {
+  //   console.error(error)
+  // } finally {
+  // }
+  isLoading.value = false
+}
+
+const handleSearch = (name: string) => {
+  searchQuery.value = name
+  socket.send({
+    requestType: 'Get-All-Chat',
+    data: {
+      name
+    }
+  })
 }
 
 getListUserChat()

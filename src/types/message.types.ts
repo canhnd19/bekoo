@@ -1,14 +1,20 @@
-import type { IUser } from './user.types'
-
-export interface IMessage {
-  groupId: number
-  lastestMessage: string
-  time: string
-  userResponse: IUser
-}
-// type DateArray = [number, number, number, number, number, number, number]
 export interface IMessageHistory {
   content: string
   time: any
   type: number
+}
+
+export interface IListUserChat {
+  code: number
+  message: string
+  value: IChat[]
+}
+
+export interface IChat {
+  content: string
+  name: string
+  senderId: null | string
+  time: string
+  userId: string
+  avatar: string
 }

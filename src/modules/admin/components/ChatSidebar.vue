@@ -3,7 +3,12 @@
     <BaseLoading v-if="isLoading" />
     <template v-else>
       <div class="sidebar-header">
-        <BaseInput v-model:model-value="search" class="input-search mb-4" :show-icon="true" />
+        <BaseInput
+          v-model:model-value="name"
+          class="input-search mb-4"
+          :show-icon="true"
+          @change="emit('update:searchQuery', name)"
+        />
         <div class="avatar-row">
           <div v-for="favorite in topFavorites" :key="favorite.id" class="avatar">
             <img :src="favorite.avatar" alt="Avatar" />
@@ -13,21 +18,23 @@
 
       <div class="favorites-list">
         <div
-          v-for="message in listMessage"
-          :key="message.groupId"
+          v-for="chat in listUserChat"
+          :key="chat.userId"
           class="favorite-item"
-          :class="{ active: message.userResponse.id === userIdActive }"
-          @click="handleClickUser(message.userResponse)"
+          :class="{ active: chat.userId === userIdActive }"
+          @click="handleClickUser(chat.userId)"
         >
           <div class="avatar">
-            <img :src="message.userResponse.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" />
+            <img :src="chat.avatar || '/images/avatar-user-default.png'" alt="Avatar" />
           </div>
           <div class="favorite-info">
             <div class="favorite-name-row">
-              <h4>{{ message.userResponse.name }}</h4>
-              <span class="time">{{ formatRelativeTime(message.time) }} </span>
+              <h4>{{ chat.name }}</h4>
+              <span class="time">{{ chat.time }} </span>
             </div>
-            <p class="last-message">{{ message.lastestMessage }}</p>
+            <p class="last-message">
+              {{ chat.senderId ? `${getLastWord(chat.name)}: ${chat.content}` : `Bạn:  ${chat.content}` }}
+            </p>
           </div>
           <!-- <div v-if="favorite.unread > 0" class="unread-badge">
             {{ favorite.unread }}
@@ -39,11 +46,11 @@
 </template>
 
 <script setup lang="ts">
-import type { IMessage } from '@/types/message.types'
+import type { IChat } from '@/types/message.types'
 import type { IUser } from '@/types/user.types'
 
 const props = defineProps<{
-  listMessage: IMessage[]
+  listUserChat: IChat[]
   topFavorites: Array<{
     id: string
     avatar: string
@@ -57,21 +64,25 @@ const emit = defineEmits<{
   (e: 'click-user', value: IUser): void
 }>()
 
-const search = ref('')
+const name = ref('')
 const userIdActive = ref('')
 
 watch(
-  () => props.listMessage,
-  (newListMessage) => {
-    if (newListMessage.length > 0) {
-      userIdActive.value = newListMessage[0].userResponse.id
+  () => props.listUserChat,
+  (newValue) => {
+    if (newValue.length > 0) {
+      userIdActive.value = newValue[0].userId
     }
   }
 )
 
-const handleClickUser = (user: IUser) => {
-  userIdActive.value = user.id
-  emit('click-user', user)
+const handleClickUser = (userId: string) => {
+  userIdActive.value = userId
+  // emit('click-user', userId)
+}
+const getLastWord = (s: string): string => {
+  const words = s.trim().split(/\s+/) // loại bỏ khoảng trắng thừa
+  return words.at(-1) || ''
 }
 </script>
 
