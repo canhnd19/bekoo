@@ -23,32 +23,40 @@ const newMessage = ref('')
 const isLoading = ref(false)
 
 const listUserChat = ref<IChat[]>([])
+
 const currentChat = ref<IMessageHistory[]>([])
 const userInfo = ref({
-  id: '',
-  name: '',
+  id: listUserChat.value[0]?.userId,
+  name: listUserChat.value[0]?.name,
   linkAvatar: '/images/avatar-user-default.png'
 })
 
 const handleClickUser = (chat: IChat) => {
-  console.log('🚀 ~ handleClickUser ~ chat:', chat)
   const chatMessage = {
     requestType: 'Get-Chat-History',
     data: {
       userId: chat.userId
     }
   }
+  userInfo.value = {
+    id: chat.userId,
+    name: chat.name,
+    linkAvatar: chat.avatar || '/images/avatar-user-default.png'
+  }
+
   socket.send(chatMessage)
 }
 
-socket.addListener('message', (data: IListUserChat) => {
+socket.addListener('message', (data: IListUserChat | IChatHistory) => {
   listUserChat.value = data.value
+  currentChat.value = data.value
+  userInfo.value = {
+    id: listUserChat.value[0].userId,
+    name: listUserChat.value[0].name,
+    linkAvatar: listUserChat.value[0].avatar || '/images/avatar-user-default.png'
+  }
   isLoading.value = false
   // currentChat.value = data
-})
-socket.addListener('chat-history', (data: IChatHistory) => {
-  console.log('🚀 ~ socket.addListener ~ data:', data)
-  currentChat.value = data.value
 })
 
 const topFavorites = computed(() => {
@@ -63,11 +71,12 @@ const sendMessage = () => {
     currentChat.value.push({
       content: newMessage.value,
       time: new Date().getTime(),
-      type: 0
+      createdBy: 'Hệ thống'
     })
     newMessage.value = ''
   }
 }
+
 const fetchUserChatList = (name = '') => {
   isLoading.value = true
   searchQuery.value = name

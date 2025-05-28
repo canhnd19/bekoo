@@ -21,8 +21,8 @@
         :key="message.createdAt"
         class="message"
         :class="{
-          'user-message': message.createdBy === 'Người dùng',
-          'contact-message': message.createdBy === 'Hệ thống'
+          'user-message': message.createdBy === 'Hệ thống',
+          'contact-message': message.createdBy === 'Người dùng'
         }"
       >
         <div class="message-content">
@@ -63,8 +63,6 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue'
-
 import type { IMessageHistory } from '@/types/message.types'
 
 const props = defineProps<{

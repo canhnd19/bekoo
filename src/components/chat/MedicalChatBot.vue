@@ -122,27 +122,7 @@ const sendMessage = () => {
   if (newMessage.value.trim() === '') return
   handleSendMessage(newMessage.value)
   addMessage(newMessage.value, 'Người dùng')
-
-  // Clear input
-  // const userInput = newMessage.value
   newMessage.value = ''
-
-  // Simulate bot response after a delay
-  // setTimeout(() => {
-  //   userTyping.value = false
-
-  //   // Bot response based on user input
-  //   if (userInput.toLowerCase().includes('khám')) {
-  //     addMessage(
-  //       'Medpro đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
-  //       'bot'
-  //     )
-  //   } else if (userInput.toLowerCase().includes('cảm ơn')) {
-  //     addMessage('Cảm ơn anh/chị quan tâm đến dịch vụ Medpro.', 'bot')
-  //   } else {
-  //     addMessage('Em có thể hỗ trợ thông tin gì cho anh/chị ạ?', 'bot')
-  //   }
-  // }, 1500)
 }
 
 const scheduleAppointment = () => {
@@ -161,11 +141,7 @@ const scheduleAppointment = () => {
 
 // Watch for new messages to scroll to bottom
 watch(messages, () => {
-  nextTick(() => {
-    if (messagesContainer.value) {
-      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
-    }
-  })
+  scrollToBottom()
 })
 
 const handleSendMessage = (messgae: string) => {
@@ -186,12 +162,14 @@ const handleSendMessage = (messgae: string) => {
 
 // check requestType để lấy kết quả trả về
 socket.addListener('message', (data: IChatHistory) => {
+  console.log('🚀 ~ socket.addListener ~ data:', data)
   if (isLoggedIn.value) {
     messages.value = data.value
   } else {
     addMessage(data.value, 'Hệ thống')
   }
 })
+
 const scrollToBottom = () => {
   nextTick(() => {
     if (messagesContainer.value) {
