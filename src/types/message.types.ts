@@ -2,6 +2,7 @@ export interface IMessageHistory {
   content: string
   createdBy: 'Người dùng' | 'Hệ thống'
   createdAt?: string
+  time?: number
 }
 
 export interface IChatHistory {

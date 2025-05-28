@@ -40,7 +40,9 @@
               <div class="message">
                 {{ message.content }}
               </div>
-              <div class="message-time">{{ message.createdAt }}</div>
+              <div class="message-time">
+                {{ message.createdAt ? message.createdAt : formatRelativeTime(convertTimestampToISO(message.time!)) }}
+              </div>
             </div>
           </div>
 
@@ -104,7 +106,8 @@ onMounted(() => {
 const addMessage = (content: string, createdBy: 'Người dùng' | 'Hệ thống') => {
   messages.value.push({
     content,
-    createdBy
+    createdBy,
+    time: new Date().getTime()
   })
 
   // Scroll to bottom after message is added
