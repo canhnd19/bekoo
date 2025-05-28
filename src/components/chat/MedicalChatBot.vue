@@ -25,7 +25,6 @@
         </div>
 
         <!-- Chat Messages -->
-
         <div ref="messagesContainer" class="chat-messages">
           <div
             v-for="(message, index) in messages"
@@ -140,6 +139,7 @@ const sendMessage = () => {
   //   }
   // }, 1500)
 }
+
 const scheduleAppointment = () => {
   showActionButton.value = false
   addMessage('Tôi muốn đặt lịch khám', 'user')
@@ -164,20 +164,16 @@ watch(messages, () => {
 })
 
 const handleSendMessage = (messgae: string) => {
-  console.log(
-    '🚀 ~ handleSendMessage ~ chatMessage: ChatMessage.user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id:',
-    user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id
-  )
   const chatMessage: ChatMessage = {
-    type: 1,
-    senderId: isLoggedIn.value
-      ? user.value.patient?.info
-        ? user.value.patient.info.id
-        : user.value.doctor!.info.id
-      : '',
-    adminStatus: 'ON',
-    content: messgae,
-    timestamp: new Date().getTime()
+    requestType: 'Chat',
+    data: {
+      senderId: isLoggedIn.value
+        ? user.value.patient?.info
+          ? user.value.patient.info.id
+          : user.value.doctor!.info.id
+        : '',
+      content: messgae
+    }
   }
   console.log('🚀 ~ handleSendMessage ~ chatMessage:', chatMessage)
   socket.send(chatMessage)
@@ -185,7 +181,7 @@ const handleSendMessage = (messgae: string) => {
 
 socket.addListener('message', (data: MessageResoponse) => {
   console.log('Received data from BE:', data)
-  addMessage(data.botResponse, 'bot')
+  addMessage(data.value, 'bot')
 })
 </script>
 

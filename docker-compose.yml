@@ -82,6 +82,7 @@ services:
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: root_admin
       WEB_URL: localhost:8082/home
+      AI_URL: http://bekoo-ai:5501/ask
 
   booking-care-query:
     platform: linux/amd64
@@ -100,10 +101,10 @@ services:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: root_admin
-  ai:
+  bekoo-ai:
     platform: linux/amd64
     image: datj114/bekoo-ai:v2.0.0
-    container_name: ai
+    container_name: bekoo-ai
     ports:
       - '5501:5501'
 
