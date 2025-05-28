@@ -9,6 +9,7 @@
       trigger="click"
       virtual-triggering
       width="400px"
+      @show="scrollToBottom"
     >
       <div class="chat-container">
         <!-- Chat Header -->
@@ -29,17 +30,17 @@
           <div
             v-for="(message, index) in messages"
             :key="index"
-            :class="['message-wrapper', message.sender === 'user' ? 'user-message' : 'bot-message']"
+            :class="['message-wrapper', message.createdBy === 'Người dùng' ? 'user-message' : 'bot-message']"
           >
-            <div v-if="message.sender === 'bot'" class="bot-avatar">
+            <div v-if="message.createdBy === 'Hệ thống'" class="bot-avatar">
               <img src="/favicon.png" alt="User avatar" class="rounded-full bg-white p-1" />
             </div>
 
             <div class="max-w-[70%]">
               <div class="message">
-                {{ message.text }}
+                {{ message.content }}
               </div>
-              <div class="message-time">{{ formatRelativeTime(convertTimestampToISO(message.timestamp)) }}</div>
+              <div class="message-time">{{ message.createdAt }}</div>
             </div>
           </div>
 
@@ -64,17 +65,12 @@
 import { ClickOutside as vClickOutside } from 'element-plus'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
-import type { ChatMessage, MessageResoponse } from '@/types/socket.types'
+import type { IChatHistory, IMessageHistory } from '@/types/message.types'
+import type { ChatMessage } from '@/types/socket.types'
 
 import { useAuthStore } from '@/stores/auth'
 
 const { user, isLoggedIn } = storeToRefs(useAuthStore())
-// Types
-interface Message {
-  text: string
-  sender: 'user' | 'bot'
-  timestamp: number
-}
 
 const buttonRef = ref()
 const popoverRef = ref()
@@ -83,7 +79,7 @@ const onClickOutside = () => {
 }
 
 // Reactive state
-const messages = ref<Message[]>([])
+const messages = ref<IMessageHistory[]>([])
 const newMessage = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
 const showActionButton = ref(false)
@@ -91,18 +87,24 @@ const showActionButton = ref(false)
 // Initial messages
 onMounted(() => {
   // Add initial bot message after a short delay
+  if (isLoggedIn.value) {
+    socket.send({
+      requestType: 'Get-Chat-History',
+      data: {
+        userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id
+      }
+    })
+  }
   setTimeout(() => {
-    addMessage('Bạn cần đăng ký đặt lịch khám vào hôm nào ạ?', 'bot')
+    // addMessage('Bạn cần đăng ký đặt lịch khám vào hôm nào ạ?', 'Hệ thống')
     showActionButton.value = true
   }, 1000)
 })
 
-// Methods
-const addMessage = (text: string, sender: 'user' | 'bot') => {
+const addMessage = (content: string, createdBy: 'Người dùng' | 'Hệ thống') => {
   messages.value.push({
-    text,
-    sender,
-    timestamp: new Date().getTime()
+    content,
+    createdBy
   })
 
   // Scroll to bottom after message is added
@@ -116,7 +118,7 @@ const addMessage = (text: string, sender: 'user' | 'bot') => {
 const sendMessage = () => {
   if (newMessage.value.trim() === '') return
   handleSendMessage(newMessage.value)
-  addMessage(newMessage.value, 'user')
+  addMessage(newMessage.value, 'Người dùng')
 
   // Clear input
   // const userInput = newMessage.value
@@ -142,13 +144,13 @@ const sendMessage = () => {
 
 const scheduleAppointment = () => {
   showActionButton.value = false
-  addMessage('Tôi muốn đặt lịch khám', 'user')
+  addMessage('Tôi muốn đặt lịch khám', 'Người dùng')
 
   // Simulate bot response
   setTimeout(() => {
     addMessage(
       'Bekoo đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
-      'bot'
+      'Hệ thống'
     )
   }, 1000)
   handleSendMessage('Tôi muốn đặt lịch khám')
@@ -179,10 +181,21 @@ const handleSendMessage = (messgae: string) => {
   socket.send(chatMessage)
 }
 
-socket.addListener('message', (data: MessageResoponse) => {
-  console.log('Received data from BE:', data)
-  addMessage(data.value, 'bot')
+// check requestType để lấy kết quả trả về
+socket.addListener('message', (data: IChatHistory) => {
+  if (isLoggedIn.value) {
+    messages.value = data.value
+  } else {
+    addMessage(data.value, 'Hệ thống')
+  }
 })
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (messagesContainer.value) {
+      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+    }
+  })
+}
 </script>
 
 <style scoped>
