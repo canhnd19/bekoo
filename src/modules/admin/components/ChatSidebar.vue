@@ -22,7 +22,7 @@
           :key="chat.userId"
           class="favorite-item"
           :class="{ active: chat.userId === userIdActive }"
-          @click="handleClickUser(chat.userId)"
+          @click="handleClickUser(chat)"
         >
           <div class="avatar">
             <img :src="chat.avatar || '/images/avatar-user-default.png'" alt="Avatar" />
@@ -47,7 +47,6 @@
 
 <script setup lang="ts">
 import type { IChat } from '@/types/message.types'
-import type { IUser } from '@/types/user.types'
 
 const props = defineProps<{
   listUserChat: IChat[]
@@ -61,7 +60,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:searchQuery', value: string): void
-  (e: 'click-user', value: IUser): void
+  (e: 'click-user', value: IChat): void
 }>()
 
 const name = ref('')
@@ -76,9 +75,9 @@ watch(
   }
 )
 
-const handleClickUser = (userId: string) => {
-  userIdActive.value = userId
-  // emit('click-user', userId)
+const handleClickUser = (chat: IChat) => {
+  userIdActive.value = chat.userId
+  emit('click-user', chat)
 }
 const getLastWord = (s: string): string => {
   const words = s.trim().split(/\s+/) // loại bỏ khoảng trắng thừa

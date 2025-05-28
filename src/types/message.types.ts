@@ -1,7 +1,13 @@
 export interface IMessageHistory {
   content: string
-  time: any
-  type: number
+  createdAt: string
+  createdBy: string
+}
+
+export interface IChatHistory {
+  code: number
+  message: string
+  value: IMessageHistory[]
 }
 
 export interface IListUserChat {

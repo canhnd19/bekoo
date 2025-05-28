@@ -6,16 +6,14 @@
       :top-favorites="topFavorites"
       :search-query="searchQuery"
       @click-user="handleClickUser"
-      @update:search-query="handleSearch"
+      @update:search-query="(name) => fetchUserChatList(name)"
     />
     <ChatMain v-model:message-send="newMessage" :user-info="userInfo" :chat="currentChat" @send="sendMessage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { IChat, IListUserChat, IMessageHistory } from '@/types/message.types'
-import type { ChatMessage } from '@/types/socket.types'
-import type { IUser } from '@/types/user.types'
+import type { IChat, IChatHistory, IListUserChat, IMessageHistory } from '@/types/message.types'
 
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
@@ -32,41 +30,25 @@ const userInfo = ref({
   linkAvatar: '/images/avatar-user-default.png'
 })
 
-// const chatHistory = {
-//   id: '1',
-//   name: 'Emily Brontë',
-//   avatar: '/images/avatar-user-default.png',
-//   messages: [
-//     {
-//       id: '1' (Hiện tại chưa có nhưng nếu sau này muốn làm reply thì có thể thêm vào),
-//       sender: 0 || 1,
-//       content: "Hi, I need help with my project. I'm having trouble with the layout design.",
-//       time: 1691234567890,
-//     },
-//     {
-//       id: '2',
-//       sender: 0 || 1,
-//       text: "Of course! What's the issue?",
-//       time: 1691234567890,
-//     },
-//   ]
-// }
-
-const handleClickUser = (user: IUser) => {
-  userInfo.value = user
-  const chatMessage: ChatMessage = {
-    type: 1,
-    senderId: user.id,
-    adminStatus: 'ON',
-    content: 'GET MESSAGE',
-    timestamp: new Date().getTime()
+const handleClickUser = (chat: IChat) => {
+  console.log('🚀 ~ handleClickUser ~ chat:', chat)
+  const chatMessage = {
+    requestType: 'Get-Chat-History',
+    data: {
+      userId: chat.userId
+    }
   }
   socket.send(chatMessage)
 }
 
 socket.addListener('message', (data: IListUserChat) => {
   listUserChat.value = data.value
+  isLoading.value = false
   // currentChat.value = data
+})
+socket.addListener('chat-history', (data: IChatHistory) => {
+  console.log('🚀 ~ socket.addListener ~ data:', data)
+  currentChat.value = data.value
 })
 
 const topFavorites = computed(() => {
@@ -86,46 +68,16 @@ const sendMessage = () => {
     newMessage.value = ''
   }
 }
-
-const getListUserChat = async () => {
+const fetchUserChatList = (name = '') => {
   isLoading.value = true
-  socket.send({
-    requestType: 'Get-All-Chat',
-    data: {
-      name: ''
-    }
-  })
-
-  // try {
-  //   const { value } = await apiChat.getListUserChat(query.value)
-  //   listMessage.value = value
-  //   userInfo.value = value[0].userResponse
-  //   const chatMessage: ChatMessage = {
-  //     type: 1,
-  //     senderId: value[0].userResponse.id,
-  //     adminStatus: 'ON',
-  //     content: 'GET MESSAGE',
-  //     timestamp: new Date().getTime()
-  //   }
-  //   socket.send(chatMessage)
-  // } catch (error) {
-  //   console.error(error)
-  // } finally {
-  // }
-  isLoading.value = false
-}
-
-const handleSearch = (name: string) => {
   searchQuery.value = name
   socket.send({
     requestType: 'Get-All-Chat',
-    data: {
-      name
-    }
+    data: { name }
   })
 }
 
-getListUserChat()
+fetchUserChatList()
 </script>
 
 <style lang="scss" scoped>

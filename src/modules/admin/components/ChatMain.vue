@@ -18,15 +18,18 @@
     <div ref="messagesContainer" class="messages-container">
       <div
         v-for="message in chat"
-        :key="message.time"
+        :key="message.createdAt"
         class="message"
-        :class="{ 'user-message': message.type === 0, 'contact-message': message.type === 1 }"
+        :class="{
+          'user-message': message.createdBy === 'Người dùng',
+          'contact-message': message.createdBy === 'Hệ thống'
+        }"
       >
         <div class="message-content">
           <div class="message-bubble">
             {{ message.content }}
           </div>
-          <div class="message-time">{{ formatRelativeTime(convertTimestampToISO(message.time)) }}</div>
+          <div class="message-time">{{ message.createdAt }}</div>
         </div>
       </div>
     </div>
