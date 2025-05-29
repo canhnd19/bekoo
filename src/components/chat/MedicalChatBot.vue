@@ -70,6 +70,8 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 import type { IChatHistory, IMessageHistory } from '@/types/message.types'
 import type { ChatMessage } from '@/types/socket.types'
 
+import getSocket from '@/utils/socket'
+
 import { useAuthStore } from '@/stores/auth'
 import { useBaseStore } from '@/stores/base'
 
@@ -89,6 +91,7 @@ const showActionButton = ref(false)
 let removeListener: (() => void) | undefined
 // Initial messages
 onMounted(() => {
+  const socket = getSocket()
   // Add initial bot message after a short delay
   if (isLoggedIn.value) {
     socket.send({
@@ -124,12 +127,12 @@ const sendMessage = () => {
   handleSendMessage(newMessage.value)
   addMessage(newMessage.value, 'Người dùng')
   userMessage.value = newMessage.value
-  socket.send({
-    requestType: 'Get-All-Chat',
-    data: {
-      name: ''
-    }
-  })
+  // socket.send({
+  //   requestType: 'Get-All-Chat',
+  //   data: {
+  //     name: ''
+  //   }
+  // })
   newMessage.value = ''
 }
 
@@ -153,6 +156,7 @@ watch(messages, () => {
 })
 
 const handleSendMessage = (messgae: string) => {
+  const socket = getSocket()
   const chatMessage: ChatMessage = {
     requestType: 'Chat',
     data: {
@@ -168,12 +172,22 @@ const handleSendMessage = (messgae: string) => {
   socket.send(chatMessage)
 }
 
+const socket = getSocket()
 removeListener = socket.addListener('message', (data: IChatHistory) => {
   if (data.message && data.message === 'Get-Chat-History') {
     messages.value = data.value as IMessageHistory[]
     return
   } else if (data.message === 'Chat') {
     addMessage(data.value as string, 'Hệ thống')
+    return
+  } else if (data.message === 'Admin-Chat') {
+    // Add message from admin
+    addMessage(data.value as string, 'Hệ thống')
+    // Update chat list to show latest message
+    socket.send({
+      requestType: 'Get-All-Chat',
+      data: { name: '' }
+    })
     return
   }
 })

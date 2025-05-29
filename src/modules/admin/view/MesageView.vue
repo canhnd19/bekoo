@@ -15,6 +15,8 @@
 <script setup lang="ts">
 import type { IChat, IChatHistory, IMessageHistory } from '@/types/message.types'
 
+import getSocket from '@/utils/socket'
+
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
 
@@ -32,6 +34,7 @@ const userInfo = ref({
 })
 
 const handleClickUser = (chat: IChat) => {
+  const socket = getSocket()
   const chatMessage = {
     requestType: 'Get-Chat-History',
     data: {
@@ -45,10 +48,13 @@ const handleClickUser = (chat: IChat) => {
   }
   socket.send(chatMessage)
 }
+
+const socket = getSocket()
 let removeListener: (() => void) | undefined
 onMounted(() => {
   removeListener = socket.addListener('message', (data: IChatHistory) => {
     if (data.message === 'Get-All-Chat') {
+      console.log('object')
       listUserChat.value = data.value as IChat[]
       userInfo.value = {
         id: listUserChat?.value[0]?.userId,
@@ -62,13 +68,25 @@ onMounted(() => {
         }
       })
     } else if (data.message === 'Get-Chat-History') {
-      console.log('object')
       currentChat.value = data.value as IMessageHistory[]
     } else if (data.message === 'Admin-Chat') {
-      console.log('🚀 ~ removeListener=socket.addListener ~ data:', data)
+      // Message sent by admin was received
+      console.log('Admin message sent:', data)
+    } else if (data.message === 'Chat') {
+      // New message from client
+      const messageData = data.value as unknown as { content: string; senderId: string }
+      // If message is from current chat user, add to current chat
+      if (messageData.senderId === userInfo.value.id) {
+        currentChat.value.push({
+          content: messageData.content,
+          createdBy: 'Người dùng',
+          time: new Date().getTime()
+        })
+      }
+      // Update chat list to show latest message
+      fetchUserChatList()
     }
     isLoading.value = false
-    // currentChat.value = data
   })
 })
 onUnmounted(() => {
@@ -83,6 +101,7 @@ const topFavorites = computed(() => {
 
 const sendMessage = () => {
   if (newMessage.value.trim()) {
+    const socket = getSocket()
     currentChat.value.push({
       content: newMessage.value,
       time: new Date().getTime(),
@@ -101,6 +120,7 @@ const sendMessage = () => {
 }
 
 const fetchUserChatList = (name = '') => {
+  const socket = getSocket()
   isLoading.value = true
   searchQuery.value = name
   socket.send({

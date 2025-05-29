@@ -30,6 +30,7 @@ declare global {
   const getSocketService: (typeof import('./src/utils/socket'))['getSocketService']
   const getWebSocketService: (typeof import('./src/utils/socket'))['getWebSocketService']
   const h: (typeof import('vue'))['h']
+  const initSocket: (typeof import('./src/utils/socket'))['initSocket']
   const inject: (typeof import('vue'))['inject']
   const isProxy: (typeof import('vue'))['isProxy']
   const isReactive: (typeof import('vue'))['isReactive']
@@ -141,6 +142,7 @@ declare module 'vue' {
     readonly getCurrentInstance: UnwrapRef<(typeof import('vue'))['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<(typeof import('vue'))['getCurrentScope']>
     readonly h: UnwrapRef<(typeof import('vue'))['h']>
+    readonly initSocket: UnwrapRef<(typeof import('./src/utils/socket'))['initSocket']>
     readonly inject: UnwrapRef<(typeof import('vue'))['inject']>
     readonly isProxy: UnwrapRef<(typeof import('vue'))['isProxy']>
     readonly isReactive: UnwrapRef<(typeof import('vue'))['isReactive']>

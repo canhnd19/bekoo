@@ -110,6 +110,7 @@
     "formatRelativeTime": true,
     "convertToISOString": true,
     "convertTimestampToISO": true,
-    "setUserOnlineStatus": true
+    "setUserOnlineStatus": true,
+    "initSocket": true
   }
 }
