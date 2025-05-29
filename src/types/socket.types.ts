@@ -11,7 +11,7 @@ export interface WebSocketMessage {
   [key: string]: any
 }
 
-export type WebSocketEventType = 'connect' | 'message' | 'close' | 'error' | 'chat-history'
+export type WebSocketEventType = 'connect' | 'message' | 'close' | 'error'
 
 export type WebSocketEventCallback = (data: any) => void
 

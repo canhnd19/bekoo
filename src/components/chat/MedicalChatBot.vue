@@ -160,13 +160,13 @@ const handleSendMessage = (messgae: string) => {
   socket.send(chatMessage)
 }
 
-// check requestType để lấy kết quả trả về
 socket.addListener('message', (data: IChatHistory) => {
-  console.log('🚀 ~ socket.addListener ~ data:', data)
-  if (isLoggedIn.value) {
-    messages.value = data.value
-  } else {
-    addMessage(data.value, 'Hệ thống')
+  if (data.message && data.message === 'Get-Chat-History') {
+    messages.value = data.value as IMessageHistory[]
+    return
+  } else if (data.message === 'Chat') {
+    addMessage(data.value as string, 'Hệ thống')
+    return
   }
 })
 
