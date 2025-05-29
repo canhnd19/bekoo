@@ -1,47 +1,47 @@
 <template>
   <div class="sidebar">
-    <BaseLoading v-if="isLoading" />
-    <template v-else>
-      <div class="sidebar-header">
-        <BaseInput
-          v-model:model-value="name"
-          class="input-search mb-4"
-          :show-icon="true"
-          @change="emit('update:searchQuery', name)"
-        />
-        <div class="avatar-row">
-          <div v-for="favorite in topFavorites" :key="favorite.id" class="avatar">
-            <img :src="favorite.avatar" alt="Avatar" />
-          </div>
+    <!-- <BaseLoading v-if="isLoading" /> -->
+    <!-- <template> -->
+    <div class="sidebar-header">
+      <BaseInput
+        v-model:model-value="name"
+        class="input-search mb-4"
+        :show-icon="true"
+        @change="emit('update:searchQuery', name)"
+      />
+      <div class="avatar-row">
+        <div v-for="favorite in topFavorites" :key="favorite.id" class="avatar">
+          <img :src="favorite.avatar" alt="Avatar" />
         </div>
       </div>
+    </div>
 
-      <div class="favorites-list">
-        <div
-          v-for="chat in listUserChat"
-          :key="chat.userId"
-          class="favorite-item"
-          :class="{ active: chat.userId === userIdActive }"
-          @click="handleClickUser(chat)"
-        >
-          <div class="avatar">
-            <img :src="chat.urlImage || '/images/avatar-user-default.png'" alt="Avatar" />
+    <div class="favorites-list">
+      <div
+        v-for="chat in listUserChat"
+        :key="chat.userId"
+        class="favorite-item"
+        :class="{ active: chat.userId === userIdActive }"
+        @click="handleClickUser(chat)"
+      >
+        <div class="avatar">
+          <img :src="chat.urlImage || '/images/avatar-user-default.png'" alt="Avatar" />
+        </div>
+        <div class="favorite-info">
+          <div class="favorite-name-row">
+            <h4>{{ chat.name }}</h4>
+            <span class="time">{{ chat.time }} </span>
           </div>
-          <div class="favorite-info">
-            <div class="favorite-name-row">
-              <h4>{{ chat.name }}</h4>
-              <span class="time">{{ chat.time }} </span>
-            </div>
-            <p class="last-message">
-              {{ chat.senderId ? `${getLastWord(chat.name)}: ${chat.content}` : `Bạn:  ${chat.content}` }}
-            </p>
-          </div>
-          <!-- <div v-if="favorite.unread > 0" class="unread-badge">
+          <p class="last-message">
+            {{ chat.senderId ? `${getLastWord(chat.name)}: ${chat.content}` : `Bạn:  ${chat.content}` }}
+          </p>
+        </div>
+        <!-- <div v-if="favorite.unread > 0" class="unread-badge">
             {{ favorite.unread }}
           </div> -->
-        </div>
       </div>
-    </template>
+    </div>
+    <!-- </template> -->
   </div>
 </template>
 
