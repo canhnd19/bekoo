@@ -85,7 +85,7 @@ const messages = ref<IMessageHistory[]>([])
 const newMessage = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
 const showActionButton = ref(false)
-
+let removeListener: (() => void) | undefined
 // Initial messages
 onMounted(() => {
   // Add initial bot message after a short delay
@@ -130,12 +130,12 @@ const scheduleAppointment = () => {
   addMessage('Tôi muốn đặt lịch khám', 'Người dùng')
 
   // Simulate bot response
-  setTimeout(() => {
-    addMessage(
-      'Bekoo đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
-      'Hệ thống'
-    )
-  }, 1000)
+  // setTimeout(() => {
+  //   addMessage(
+  //     'Bekoo đã tiếp nhận thông tin và đang kết nối với nhân viên hỗ trợ, bạn vui lòng chờ trong giây lát.',
+  //     'Hệ thống'
+  //   )
+  // }, 1000)
   handleSendMessage('Tôi muốn đặt lịch khám')
 }
 
@@ -160,7 +160,7 @@ const handleSendMessage = (messgae: string) => {
   socket.send(chatMessage)
 }
 
-socket.addListener('message', (data: IChatHistory) => {
+removeListener = socket.addListener('message', (data: IChatHistory) => {
   if (data.message && data.message === 'Get-Chat-History') {
     messages.value = data.value as IMessageHistory[]
     return
@@ -168,6 +168,9 @@ socket.addListener('message', (data: IChatHistory) => {
     addMessage(data.value as string, 'Hệ thống')
     return
   }
+})
+onUnmounted(() => {
+  if (removeListener) removeListener()
 })
 
 const scrollToBottom = () => {
