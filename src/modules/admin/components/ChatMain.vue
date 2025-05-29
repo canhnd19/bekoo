@@ -29,7 +29,9 @@
           <div class="message-bubble">
             {{ message.content }}
           </div>
-          <div class="message-time">{{ message.createdAt }}</div>
+          <div class="message-time">
+            {{ message.createdAt ? message.createdAt : formatRelativeTime(convertTimestampToISO(message.time!)) }}
+          </div>
         </div>
       </div>
     </div>

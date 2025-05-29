@@ -8,7 +8,7 @@ export interface IMessageHistory {
 export interface IChatHistory {
   code: number
   message: string
-  value: IMessageHistory[] | string
+  value: IMessageHistory[] | string | IChat[]
 }
 
 export interface IListUserChat {

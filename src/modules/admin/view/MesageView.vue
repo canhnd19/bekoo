@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IChat, IChatHistory, IListUserChat, IMessageHistory } from '@/types/message.types'
+import type { IChat, IChatHistory, IMessageHistory } from '@/types/message.types'
 
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
@@ -47,9 +47,18 @@ const handleClickUser = (chat: IChat) => {
   socket.send(chatMessage)
 }
 
-socket.addListener('message', (data: IListUserChat | IChatHistory) => {
-  listUserChat.value = data.value
-  currentChat.value = data.value
+socket.addListener('message', (data: IChatHistory) => {
+  if (data.message === 'Get-All-Chat') {
+    listUserChat.value = data.value as IChat[]
+    socket.send({
+      requestType: 'Get-Chat-History',
+      data: {
+        userId: listUserChat.value[0].userId
+      }
+    })
+  } else if (data.message === 'Get-Chat-History') {
+    currentChat.value = data.value as IMessageHistory[]
+  }
   userInfo.value = {
     id: listUserChat.value[0].userId,
     name: listUserChat.value[0].name,
