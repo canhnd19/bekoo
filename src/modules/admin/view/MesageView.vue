@@ -65,6 +65,8 @@ onMounted(() => {
     } else if (data.message === 'Get-Chat-History') {
       console.log('object')
       currentChat.value = data.value as IMessageHistory[]
+    } else if (data.message === 'Admin-Chat') {
+      console.log('🚀 ~ removeListener=socket.addListener ~ data:', data)
     }
     isLoading.value = false
     // currentChat.value = data
@@ -87,6 +89,14 @@ const sendMessage = () => {
       time: new Date().getTime(),
       createdBy: 'Hệ thống'
     })
+    socket.send({
+      requestType: 'Admin-Chat',
+      data: {
+        toUserId: userInfo.value.id,
+        content: newMessage.value
+      }
+    })
+    fetchUserChatList()
     newMessage.value = ''
   }
 }
