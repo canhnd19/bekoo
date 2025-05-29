@@ -20,15 +20,15 @@ export interface WebSocketListeners {
 }
 
 export interface ChatMessage {
-  type: number
-  senderId: string
-  content: string
-  timestamp: number
-  adminStatus?: 'ON' | 'OFF'
+  requestType: 'Chat'
+  data: {
+    senderId: string
+    content: string
+  }
 }
 
 export interface MessageResoponse {
-  botResponse: string
-  time: string
-  userId: string
+  code: number
+  message: string
+  value: string
 }

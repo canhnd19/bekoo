@@ -3,11 +3,11 @@
     <div class="chat-header">
       <div class="chat-user-info">
         <div class="avatar">
-          <img :src="chat.avatar" alt="Avatar" class="rounded-full" />
+          <img :src="userInfo.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" class="rounded-full" />
         </div>
         <div>
-          <h3>{{ chat.name }}</h3>
-          <p class="status">{{ chat.status }}</p>
+          <h3>{{ userInfo.name }}</h3>
+          <p class="status">Active now</p>
         </div>
       </div>
       <div class="info-icon">
@@ -17,16 +17,21 @@
 
     <div ref="messagesContainer" class="messages-container">
       <div
-        v-for="message in chat.messages"
-        :key="message.id"
+        v-for="message in chat"
+        :key="message.createdAt"
         class="message"
-        :class="{ 'user-message': message.sender === 'user', 'contact-message': message.sender === 'contact' }"
+        :class="{
+          'user-message': message.createdBy === 'Hệ thống',
+          'contact-message': message.createdBy === 'Người dùng'
+        }"
       >
         <div class="message-content">
           <div class="message-bubble">
-            {{ message.text }}
+            {{ message.content }}
           </div>
-          <div class="message-time">{{ message.time }}</div>
+          <div class="message-time">
+            {{ message.createdAt ? message.createdAt : formatRelativeTime(convertTimestampToISO(message.time!)) }}
+          </div>
         </div>
       </div>
     </div>
@@ -60,21 +65,14 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue'
+import type { IMessageHistory } from '@/types/message.types'
 
 const props = defineProps<{
-  chat: {
+  chat: IMessageHistory[]
+  userInfo: {
     id: string
     name: string
-    avatar: string
-    status: string
-    messages: Array<{
-      id: string
-      sender: 'user' | 'contact'
-      text: string
-      time: string
-      avatar: string
-    }>
+    linkAvatar: string
   }
 }>()
 
@@ -100,7 +98,7 @@ onMounted(() => {
 })
 
 watch(
-  () => props.chat.messages.length,
+  () => props.chat.length,
   () => {
     scrollToBottom()
   }

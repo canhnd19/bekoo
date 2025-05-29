@@ -2,148 +2,109 @@
   <div class="app-container">
     <ChatSidebar
       :is-loading="isLoading"
-      :list-message="listMessage"
+      :list-user-chat="listUserChat"
       :top-favorites="topFavorites"
       :search-query="searchQuery"
-      @update:search-query="searchQuery = $event"
+      @click-user="handleClickUser"
+      @update:search-query="(name) => fetchUserChatList(name)"
     />
-    <ChatMain v-model:message-send="newMessage" :chat="currentChat" @send="sendMessage" />
+    <ChatMain v-model:message-send="newMessage" :user-info="userInfo" :chat="currentChat" @send="sendMessage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { apiChat } from '@/services'
-
-import type { IMessage } from '@/types/message.types'
+import type { IChat, IChatHistory, IMessageHistory } from '@/types/message.types'
 
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
 
-interface Message {
-  id: string
-  sender: 'user' | 'contact'
-  text: string
-  time: string
-  avatar: string
-}
-
-interface Chat {
-  id: string
-  name: string
-  avatar: string
-  status: string
-  messages: Message[]
-}
-
 const searchQuery = ref('')
 const newMessage = ref('')
 const isLoading = ref(false)
-const query = ref({
-  'search-word': ''
-})
-const listMessage = ref<IMessage[]>([])
 
-const currentChat = ref<Chat>({
-  id: '1',
-  name: 'Emily Brontë',
-  avatar: '/images/avatar-user-default.png',
-  status: 'Active now',
-  messages: [
-    {
-      id: '1',
-      sender: 'contact',
-      text: "Hi, I need help with my project. I'm having trouble with the layout design.",
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
-    },
-    {
-      id: '2',
-      sender: 'user',
-      text: "Of course! What's the issue?",
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
-    },
-    {
-      id: '3',
-      sender: 'contact',
-      text: "I'm struggling with the layout design.",
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
-    },
-    {
-      id: '4',
-      sender: 'contact',
-      text: "The spacing between elements doesn't look right. What should I do?",
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
-    },
-    {
-      id: '5',
-      sender: 'user',
-      text: 'Try adjusting the margins and padding to create better spacing. Sometimes a little tweak can make a big difference.',
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
-    },
-    {
-      id: '6',
-      sender: 'user',
-      text: "For aligning text, use your design tool's alignment options.",
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
-    },
-    {
-      id: '7',
-      sender: 'user',
-      text: 'Center, left, or right alignment can help make your design more cohesive.',
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
-    },
-    {
-      id: '8',
-      sender: 'contact',
-      text: 'Great, thanks for the advice!',
-      time: '10:20 PM',
-      avatar: '/images/avatar-user-default.png'
+const listUserChat = ref<IChat[]>([])
+
+const currentChat = ref<IMessageHistory[]>([])
+const userInfo = ref({
+  id: listUserChat.value[0]?.userId,
+  name: listUserChat.value[0]?.name,
+  linkAvatar: '/images/avatar-user-default.png'
+})
+
+const handleClickUser = (chat: IChat) => {
+  const chatMessage = {
+    requestType: 'Get-Chat-History',
+    data: {
+      userId: chat.userId
     }
-  ]
-})
+  }
+  userInfo.value = {
+    id: chat.userId,
+    name: chat.name,
+    linkAvatar: chat.urlImage || '/images/avatar-user-default.png'
+  }
 
+  socket.send(chatMessage)
+}
+let removeListener: (() => void) | undefined
+onMounted(() => {
+  removeListener = socket.addListener('message', (data: IChatHistory) => {
+    if (data.message === 'Get-All-Chat') {
+      listUserChat.value = data.value as IChat[]
+      userInfo.value = {
+        id: listUserChat.value[0].userId,
+        name: listUserChat.value[0].name,
+        linkAvatar: listUserChat.value[0].urlImage || '/images/avatar-user-default.png'
+      }
+      socket.send({
+        requestType: 'Get-Chat-History',
+        data: {
+          userId: listUserChat.value[0].userId
+        }
+      })
+    } else if (data.message === 'Get-Chat-History') {
+      console.log('object')
+      currentChat.value = data.value as IMessageHistory[]
+    }
+
+    isLoading.value = false
+    // currentChat.value = data
+  })
+})
+onUnmounted(() => {
+  if (removeListener) removeListener()
+})
 const topFavorites = computed(() => {
-  return listMessage.value.map((item) => ({
-    id: item.userResponse.id,
-    avatar: item.userResponse.linkAvatar || '/images/avatar-user-default.png'
+  return listUserChat.value.map((item) => ({
+    id: item.userId,
+    avatar: item.urlImage || '/images/avatar-user-default.png'
   }))
 })
 
 const sendMessage = () => {
   if (newMessage.value.trim()) {
-    currentChat.value.messages.push({
-      id: (currentChat.value.messages.length + 1).toString(),
-      sender: 'user',
-      text: newMessage.value,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      avatar: '/images/avatar-user-default.png'
+    currentChat.value.push({
+      content: newMessage.value,
+      time: new Date().getTime(),
+      createdBy: 'Hệ thống'
     })
     newMessage.value = ''
   }
 }
 
-const getListUserChat = async () => {
+const fetchUserChatList = (name = '') => {
   isLoading.value = true
-  try {
-    const { value } = await apiChat.getListUserChat(query.value)
-    listMessage.value = value
-  } catch (error) {
-    console.error(error)
-  } finally {
-    isLoading.value = false
-  }
+  searchQuery.value = name
+  socket.send({
+    requestType: 'Get-All-Chat',
+    data: { name }
+  })
 }
 
-getListUserChat()
+fetchUserChatList()
 </script>
 
-<style>
+<style lang="scss" scoped>
 .app-container {
   display: flex;
   height: 100%;

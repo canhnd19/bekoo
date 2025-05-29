@@ -13,6 +13,8 @@ declare global {
   const ElMessage: (typeof import('element-plus/es'))['ElMessage']
   const acceptHMRUpdate: (typeof import('pinia'))['acceptHMRUpdate']
   const computed: (typeof import('vue'))['computed']
+  const convertTimestampToISO: (typeof import('./src/utils/timestampConverter'))['convertTimestampToISO']
+  const convertToISOString: (typeof import('./src/utils/timestampConverter'))['convertToISOString']
   const createApp: (typeof import('vue'))['createApp']
   const createPinia: (typeof import('pinia'))['createPinia']
   const customRef: (typeof import('vue'))['customRef']
@@ -66,6 +68,7 @@ declare global {
   const sanitizeJsonString: (typeof import('./src/utils/jsonSanitizer'))['sanitizeJsonString']
   const setActivePinia: (typeof import('pinia'))['setActivePinia']
   const setMapStoreSuffix: (typeof import('pinia'))['setMapStoreSuffix']
+  const setUserOnlineStatus: (typeof import('./src/utils/setUserOnlineStatus'))['default']
   const shallowReactive: (typeof import('vue'))['shallowReactive']
   const shallowReadonly: (typeof import('vue'))['shallowReadonly']
   const shallowRef: (typeof import('vue'))['shallowRef']
@@ -122,6 +125,9 @@ declare module 'vue' {
     readonly ElMessage: UnwrapRef<(typeof import('element-plus/es'))['ElMessage']>
     readonly acceptHMRUpdate: UnwrapRef<(typeof import('pinia'))['acceptHMRUpdate']>
     readonly computed: UnwrapRef<(typeof import('vue'))['computed']>
+    readonly convertTimestampToISO: UnwrapRef<
+      (typeof import('./src/utils/timestampConverter'))['convertTimestampToISO']
+    >
     readonly createApp: UnwrapRef<(typeof import('vue'))['createApp']>
     readonly createPinia: UnwrapRef<(typeof import('pinia'))['createPinia']>
     readonly customRef: UnwrapRef<(typeof import('vue'))['customRef']>
@@ -173,6 +179,7 @@ declare module 'vue' {
     readonly sanitizeJsonString: UnwrapRef<(typeof import('./src/utils/jsonSanitizer'))['sanitizeJsonString']>
     readonly setActivePinia: UnwrapRef<(typeof import('pinia'))['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<(typeof import('pinia'))['setMapStoreSuffix']>
+    readonly setUserOnlineStatus: UnwrapRef<(typeof import('./src/utils/setUserOnlineStatus'))['default']>
     readonly shallowReactive: UnwrapRef<(typeof import('vue'))['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<(typeof import('vue'))['shallowReadonly']>
     readonly shallowRef: UnwrapRef<(typeof import('vue'))['shallowRef']>

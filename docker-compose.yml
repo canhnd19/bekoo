@@ -5,8 +5,8 @@ services:
     container_name: kafka
     image: bitnami/kafka:latest
     ports:
-      - "9092:9092"
-      - "9093:9093"
+      - '9092:9092'
+      - '9093:9093'
     environment:
       - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
@@ -26,18 +26,18 @@ services:
       MYSQL_ROOT_PASSWORD: 19110919
 
     ports:
-      - "3307:3306"
+      - '3307:3306'
     volumes:
       - mysql_data:/var/lib/mysql
 
   redis:
     image: redis:latest
     container_name: redis
-    command: [ "redis-server", "--requirepass", "root_admin" ]
+    command: ['redis-server', '--requirepass', 'root_admin']
     environment:
       REDIS_PASSWORD: root_admin
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
 
@@ -58,9 +58,8 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
     ports:
-      - "9200:9200"
-      - "9300:9300"
-
+      - '9200:9200'
+      - '9300:9300'
 
   booking-care-command:
     platform: linux/amd64
@@ -72,7 +71,7 @@ services:
       - kafka
     restart: on-failure
     ports:
-      - "8083:8080"
+      - '8083:8080'
     environment:
       SPRING_URL: http://localhost:8083
       SPRING_KAFKA_PORT: kafka:9092
@@ -83,6 +82,8 @@ services:
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: root_admin
       WEB_URL: localhost:8082/home
+      AI_URL: http://bekoo-ai:5501/ask
+
   booking-care-query:
     platform: linux/amd64
     image: presidentquyen/booking-care-query:v1.0.0
@@ -92,7 +93,7 @@ services:
       - redis
     restart: on-failure
     ports:
-      - "8084:8081"
+      - '8084:8081'
     environment:
       SPRING_URL: http://localhost:8084
       SPRING_ELASTICSEARCH_ENDPOINT: elasticsearch:9200
@@ -100,6 +101,13 @@ services:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: root_admin
+  bekoo-ai:
+    platform: linux/amd64
+    image: datj114/bekoo-ai:v2.0.0
+    container_name: bekoo-ai
+    ports:
+      - '5501:5501'
+
 volumes:
   mysql_data:
   redis_data:
