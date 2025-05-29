@@ -23,5 +23,5 @@ export interface IChat {
   senderId: null | string
   time: string
   userId: string
-  avatar: string
+  urlImage: string
 }

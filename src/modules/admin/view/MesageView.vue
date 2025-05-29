@@ -41,37 +41,43 @@ const handleClickUser = (chat: IChat) => {
   userInfo.value = {
     id: chat.userId,
     name: chat.name,
-    linkAvatar: chat.avatar || '/images/avatar-user-default.png'
+    linkAvatar: chat.urlImage || '/images/avatar-user-default.png'
   }
 
   socket.send(chatMessage)
 }
-
-socket.addListener('message', (data: IChatHistory) => {
-  if (data.message === 'Get-All-Chat') {
-    listUserChat.value = data.value as IChat[]
-    socket.send({
-      requestType: 'Get-Chat-History',
-      data: {
-        userId: listUserChat.value[0].userId
+let removeListener: (() => void) | undefined
+onMounted(() => {
+  removeListener = socket.addListener('message', (data: IChatHistory) => {
+    if (data.message === 'Get-All-Chat') {
+      listUserChat.value = data.value as IChat[]
+      userInfo.value = {
+        id: listUserChat.value[0].userId,
+        name: listUserChat.value[0].name,
+        linkAvatar: listUserChat.value[0].urlImage || '/images/avatar-user-default.png'
       }
-    })
-  } else if (data.message === 'Get-Chat-History') {
-    currentChat.value = data.value as IMessageHistory[]
-  }
-  userInfo.value = {
-    id: listUserChat.value[0].userId,
-    name: listUserChat.value[0].name,
-    linkAvatar: listUserChat.value[0].avatar || '/images/avatar-user-default.png'
-  }
-  isLoading.value = false
-  // currentChat.value = data
-})
+      socket.send({
+        requestType: 'Get-Chat-History',
+        data: {
+          userId: listUserChat.value[0].userId
+        }
+      })
+    } else if (data.message === 'Get-Chat-History') {
+      console.log('object')
+      currentChat.value = data.value as IMessageHistory[]
+    }
 
+    isLoading.value = false
+    // currentChat.value = data
+  })
+})
+onUnmounted(() => {
+  if (removeListener) removeListener()
+})
 const topFavorites = computed(() => {
   return listUserChat.value.map((item) => ({
     id: item.userId,
-    avatar: item.avatar || '/images/avatar-user-default.png'
+    avatar: item.urlImage || '/images/avatar-user-default.png'
   }))
 })
 

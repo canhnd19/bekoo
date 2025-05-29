@@ -120,7 +120,6 @@ class WebSocketService {
     if (!this.listeners[event]) {
       this.listeners[event] = []
     }
-
     this.listeners[event].push(callback)
 
     return (): void => {

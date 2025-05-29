@@ -25,7 +25,7 @@
           @click="handleClickUser(chat)"
         >
           <div class="avatar">
-            <img :src="chat.avatar || '/images/avatar-user-default.png'" alt="Avatar" />
+            <img :src="chat.urlImage || '/images/avatar-user-default.png'" alt="Avatar" />
           </div>
           <div class="favorite-info">
             <div class="favorite-name-row">
