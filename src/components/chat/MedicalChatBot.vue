@@ -71,9 +71,10 @@ import type { IChatHistory, IMessageHistory } from '@/types/message.types'
 import type { ChatMessage } from '@/types/socket.types'
 
 import { useAuthStore } from '@/stores/auth'
+import { useBaseStore } from '@/stores/base'
 
 const { user, isLoggedIn } = storeToRefs(useAuthStore())
-
+const { userMessage } = storeToRefs(useBaseStore())
 const buttonRef = ref()
 const popoverRef = ref()
 const onClickOutside = () => {
@@ -122,6 +123,13 @@ const sendMessage = () => {
   if (newMessage.value.trim() === '') return
   handleSendMessage(newMessage.value)
   addMessage(newMessage.value, 'Người dùng')
+  userMessage.value = newMessage.value
+  socket.send({
+    requestType: 'Get-All-Chat',
+    data: {
+      name: ''
+    }
+  })
   newMessage.value = ''
 }
 

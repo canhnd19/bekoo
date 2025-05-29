@@ -43,7 +43,6 @@ const handleClickUser = (chat: IChat) => {
     name: chat.name,
     linkAvatar: chat.urlImage || '/images/avatar-user-default.png'
   }
-
   socket.send(chatMessage)
 }
 let removeListener: (() => void) | undefined

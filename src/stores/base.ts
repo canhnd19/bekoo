@@ -12,7 +12,7 @@ export const useBaseStore = defineStore('base', () => {
   const isDesktop = ref(true)
   const province = ref<IProvince[]>([])
   const department = ref<IDepartment[]>([])
-
+  const userMessage = ref('')
   const setOpenPopup = (popupName: POPUP_NAME, isOpen = true) => {
     if (isOpen) {
       popup.value = union(popup.value, [popupName])
@@ -70,6 +70,7 @@ export const useBaseStore = defineStore('base', () => {
     province,
     getListProvince,
     getDepartment,
-    department
+    department,
+    userMessage
   }
 })
