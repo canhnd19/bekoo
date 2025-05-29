@@ -52,21 +52,20 @@ onMounted(() => {
     if (data.message === 'Get-All-Chat') {
       listUserChat.value = data.value as IChat[]
       userInfo.value = {
-        id: listUserChat.value[0].userId,
-        name: listUserChat.value[0].name,
-        linkAvatar: listUserChat.value[0].urlImage || '/images/avatar-user-default.png'
+        id: listUserChat?.value[0]?.userId,
+        name: listUserChat?.value[0]?.name,
+        linkAvatar: listUserChat?.value[0]?.urlImage || '/images/avatar-user-default.png'
       }
       socket.send({
         requestType: 'Get-Chat-History',
         data: {
-          userId: listUserChat.value[0].userId
+          userId: listUserChat?.value[0]?.userId
         }
       })
     } else if (data.message === 'Get-Chat-History') {
       console.log('object')
       currentChat.value = data.value as IMessageHistory[]
     }
-
     isLoading.value = false
     // currentChat.value = data
   })
