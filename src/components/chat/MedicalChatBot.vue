@@ -378,7 +378,7 @@ const scrollToBottom = () => {
   flex: 1;
   padding: 10px 14px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 50px;
   outline: none;
   font-size: 14px;
 }
