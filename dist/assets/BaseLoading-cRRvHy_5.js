@@ -1,1 +1,0 @@
-import{_ as n,o,c as t,a as s}from"./index-DSdE6rLa.js";const c={},a={class:"flex min-h-[202px] flex-col items-center justify-center"};function _(r,e){return o(),t("div",a,e[0]||(e[0]=[s("div",{class:"loader"},null,-1),s("div",{class:"mt-3"},"loading...",-1)]))}const i=n(c,[["render",_],["__scopeId","data-v-8f138153"]]);export{i as _};
