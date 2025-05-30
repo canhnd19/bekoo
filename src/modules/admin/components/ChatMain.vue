@@ -31,11 +31,31 @@
           'contact-message': message.createdBy === 'Người dùng'
         }"
       >
-        <div class="message-content">
-          <div class="message-bubble">
-            {{ message.content }}
+        <div class="message-content max-w-[70%]">
+          <div
+            class="flex items-start space-x-2"
+            :class="[message.createdBy === 'Hệ thống' ? 'justify-end' : 'justify-start']"
+          >
+            <img
+              v-if="message.createdBy === 'Người dùng'"
+              :src="userInfo.linkAvatar || '/images/avatar-user-default.png'"
+              alt="Avatar"
+              class="h-10 w-10 rounded-full"
+            />
+            <div class="message-bubble">
+              {{ message.content }}
+            </div>
+            <img
+              v-if="message.createdBy === 'Hệ thống'"
+              src="/favicon.png"
+              alt="Avatar"
+              class="h-10 w-10 rounded-full"
+            />
           </div>
-          <div class="message-time" :class="[message.createdBy === 'Hệ thống' ? 'text-right' : 'text-left']">
+          <div
+            class="message-time"
+            :class="[message.createdBy === 'Hệ thống' ? 'mr-12 text-right' : 'ml-12 text-left']"
+          >
             {{ message.createdAt ? message.createdAt : formatRelativeTime(convertTimestampToISO(message.time!)) }}
           </div>
         </div>
@@ -180,7 +200,6 @@ watch(
 .messages-container {
   flex: 1;
   overflow-y: auto;
-  padding: 15px;
 }
 
 .message {
