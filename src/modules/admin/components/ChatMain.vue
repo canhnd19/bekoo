@@ -35,7 +35,7 @@
           <div class="message-bubble">
             {{ message.content }}
           </div>
-          <div class="message-time">
+          <div class="message-time" :class="[message.createdBy === 'Hệ thống' ? 'text-right' : 'text-left']">
             {{ message.createdAt ? message.createdAt : formatRelativeTime(convertTimestampToISO(message.time!)) }}
           </div>
         </div>
@@ -225,7 +225,7 @@ watch(
   font-size: 11px;
   color: #888;
   margin-top: 5px;
-  text-align: right;
+  // text-align: right;
 }
 
 .message-input-container {

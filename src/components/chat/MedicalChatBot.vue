@@ -40,7 +40,7 @@
               <div class="message">
                 {{ message.content }}
               </div>
-              <div class="message-time">
+              <div class="message-time" :class="[message.createdBy === 'Người dùng' ? 'text-right' : 'text-left']">
                 {{ message.createdAt ? message.createdAt : formatRelativeTime(convertTimestampToISO(message.time!)) }}
               </div>
             </div>
@@ -406,27 +406,6 @@ const scrollToBottom = () => {
   font-size: 11px;
   color: #888;
   margin-top: 5px;
-  text-align: right;
+  /* text-align: right; */
 }
 </style>
-
-<!-- chức năng chat
-
-- gợi ý bác sĩ hoặc chuyên khoa phù hợp
-- hướng dẫn đặt lịch
-- thông báo lịch đã đặt (nhắc nhở đi khám)
-- hướng dẫn sử dụng web
-- Trả lời các câu hỏi thường gặp (FAQ)
-  + Giờ làm việc
-  + Địa chỉ, bản đồ phòng khám
-  + Các dịch vụ khám bệnh
-  + Hướng dẫn thanh toán
-  + Chính sách hủy/hoãn lịch
-- thông báo từ phòng khám
-- Gợi ý bác sĩ, thời gian, chuyên khoa... dựa trên:
-  + Triệu chứng mà người dùng mô tả 
-  + Lịch sử khám bệnh trước đó (nếu có)
-  + Lịch trống của phòng khám
-  + Tần suất đặt lịch
-
-  -->
