@@ -128,8 +128,6 @@ import type { IQuery } from '@/types/query.type'
 
 import MedicalChatBot from '@/components/chat/MedicalChatBot.vue'
 
-import socket from '@/utils/socket'
-
 import { useBaseStore } from '@/stores/base'
 
 import { CAROUSEL_HOMEPAGE, FEEDBACK, STATISTICS } from '../constants/index'
@@ -141,14 +139,6 @@ const modules = [Pagination, Navigation]
 const data = ref<IDepartment[]>([])
 const search = ref<string>('')
 const showMore = ref<boolean>(false)
-
-onMounted(() => {
-  try {
-    socket.connect()
-  } catch (error) {
-    console.error('Failed to connect to Socket.IO server', error)
-  }
-})
 
 const { department } = useBaseStore()
 const query = ref<IQuery>({
