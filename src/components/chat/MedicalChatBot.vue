@@ -32,7 +32,7 @@
             :key="index"
             :class="['message-wrapper', message.createdBy === 'Người dùng' ? 'user-message' : 'bot-message']"
           >
-            <div v-if="message.createdBy === 'Hệ thống'" class="bot-avatar">
+            <div v-if="message.createdBy === 'Hệ thống'" class="mr-2 h-8 w-8 rounded-full">
               <img src="/favicon.png" alt="User avatar" class="rounded-full bg-white p-1" />
             </div>
 
@@ -43,6 +43,9 @@
               <div class="message-time" :class="[message.createdBy === 'Người dùng' ? 'text-right' : 'text-left']">
                 {{ message.createdAt ? message.createdAt : formatRelativeTime(convertTimestampToISO(message.time!)) }}
               </div>
+            </div>
+            <div v-if="message.createdBy === 'Người dùng'" class="ml-2 h-8 w-8 rounded-full">
+              <img :src="avatarUrl" alt="User avatar" class="rounded-full bg-white p-1" />
             </div>
           </div>
 
@@ -171,6 +174,11 @@ const handleSendMessage = (messgae: string) => {
   console.log('🚀 ~ handleSendMessage ~ chatMessage:', chatMessage)
   socket.send(chatMessage)
 }
+const avatarUrl = computed(() => {
+  return isLoggedIn.value
+    ? user.value.patient?.info?.linkAvatar || user.value.doctor?.info?.linkAvatar || '/images/avatar-user-default.png'
+    : '/images/avatar-user-default.png'
+})
 
 const socket = getSocket()
 removeListener = socket.addListener('message', (data: IChatHistory) => {
@@ -290,7 +298,7 @@ const scrollToBottom = () => {
 
 .chat-messages {
   flex: 1;
-  padding: 16px;
+  padding: 16px 4px 16px 16px;
   overflow-y: auto;
   /* background-color: #f5f5f5; */
   display: flex;
@@ -311,16 +319,6 @@ const scrollToBottom = () => {
 .user-message {
   align-self: flex-end;
   justify-content: flex-end;
-}
-
-.bot-avatar {
-  margin-right: 8px;
-}
-
-.bot-avatar img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
 }
 
 .message {
