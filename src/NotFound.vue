@@ -1,15 +1,22 @@
 <template>
-  <div id="notfound" class="bg-white">
-    <div class="notfound">
-      <div class="notfound-404">
-        <div></div>
-        <h1>404</h1>
-      </div>
-      <h2>Page not found</h2>
-      <p class="mt-2">
+  <div class="page-not-found"></div>
+
+  <div class="flex h-screen w-screen items-center justify-center space-x-8 sm:block sm:px-6 sm:pt-20">
+    <div>
+      <img alt="404 Raket Mascot" src="/images/raket-error.png" class="flex items-center justify-center" />
+    </div>
+
+    <div class="space-y-6">
+      <h2 class="text-xl font-bold text-[#ff7e20]">Page Not Found</h2>
+      <p class="text-6xl font-bold text-[#1e2225]">Oh No! Error 404</p>
+      <p class="text-lg text-[#959799]">
         The page you are looking for might have been removed had its name changed or is temporarily unavailable.
       </p>
-      <div class="action mt-4 cursor-pointer" @click="$router.push('/')">home page</div>
+      <div class="mt-7 cursor-pointer py-4" @click="$router.push('/')">
+        <span class="inline rounded-full bg-[#ff7e20] px-6 py-4 font-semibold text-white hover:bg-[#FF974D]"
+          >Back to Home</span
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -17,103 +24,65 @@
 <script setup lang="ts"></script>
 
 <style scoped>
-* {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-body {
-  padding: 0;
-  margin: 0;
-}
-#notfound {
-  position: relative;
-  height: 100vh;
-}
-#notfound .notfound {
+.page-not-found {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-.notfound {
-  max-width: 460px;
   width: 100%;
-  text-align: center;
-  line-height: 1.4;
+  height: 100%;
+  max-height: 1572px;
+  top: -61px;
+  z-index: -1;
+  background-image: url(https://www.raket.ph/desktop_background.svg);
+  -webkit-background-size: cover;
+  background-size: cover;
+  -webkit-animation: animation-1o0baec 9s ease infinite;
+  animation: animation-1o0baec 9s ease infinite;
+  -webkit-background-position: center center;
+  background-position: center center;
+  -webkit-filter: blur(100px);
+  filter: blur(100px);
+  opacity: 0.6;
 }
-.notfound .notfound-404 {
-  position: relative;
-  width: 180px;
-  height: 180px;
-  margin: 0 auto 50px;
-}
-.notfound .notfound-404 > div:first-child {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: #ffa200;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  border: 5px dashed #000;
-  border-radius: 5px;
-}
-.notfound .notfound-404 > div:first-child:before {
+.page-not-found::after {
   content: '';
   position: absolute;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  top: -5px;
-  -webkit-box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1) inset;
-  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1) inset;
-  border-radius: 5px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), #ffffff);
+  height: 200px;
+  width: 100%;
 }
-.notfound .notfound-404 h1 {
-  color: #000;
-  font-weight: 700;
-  margin: 0;
-  font-size: 90px;
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  left: 50%;
-  text-align: center;
-  height: 40px;
-  line-height: 40px;
-}
-.notfound h2 {
-  font-size: 33px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 7px;
-}
-.notfound p {
-  font-size: 16px;
-  color: #000;
-  font-weight: 400;
-}
-.notfound .action {
-  display: inline-block;
-  padding: 10px 25px;
-  background-color: #8f8f8f;
-  border: none;
-  border-radius: 40px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-decoration: none;
-  -webkit-transition: 0.2s all;
-  transition: 0.2s all;
-}
-.notfound a:hover {
-  background-color: #2c2c2c;
+
+@keyframes animation-1o0baec {
+  0% {
+    -webkit-transform: translate(-5%, -10%);
+    -moz-transform: translate(-5%, -10%);
+    -ms-transform: translate(-5%, -10%);
+    transform: translate(-5%, -10%);
+  }
+  25% {
+    -webkit-transform: translate(15%, -10%);
+    -moz-transform: translate(15%, -10%);
+    -ms-transform: translate(15%, -10%);
+    transform: translate(15%, -10%);
+  }
+  50% {
+    -webkit-transform: translate(15%, 15%);
+    -moz-transform: translate(15%, 15%);
+    -ms-transform: translate(15%, 15%);
+    transform: translate(15%, 15%);
+  }
+  75% {
+    -webkit-transform: translate(-5%, 15%);
+    -moz-transform: translate(-5%, 15%);
+    -ms-transform: translate(-5%, 15%);
+    transform: translate(-5%, 15%);
+  }
+  100% {
+    -webkit-transform: translate(-5%, -10%);
+    -moz-transform: translate(-5%, -10%);
+    -ms-transform: translate(-5%, -10%);
+    transform: translate(-5%, -10%);
+  }
 }
 </style>
