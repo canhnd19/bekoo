@@ -118,7 +118,7 @@ const getLastWord = (s: string): string => {
   border: 3px solid #ffffff;
 }
 .sidebar {
-  width: 360px;
+  width: 32%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
