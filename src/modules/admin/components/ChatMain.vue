@@ -20,7 +20,6 @@
         <BaseIcon name="warning" />
       </div>
     </div>
-
     <div ref="messagesContainer" class="messages-container">
       <div
         v-for="message in chat"

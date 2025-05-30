@@ -50,7 +50,7 @@
           </div>
 
           <div v-if="showActionButton" class="action-button-container">
-            <button class="action-button" @click="scheduleAppointment">Đặt lịch khám mới</button>
+            <button class="action-button" @click="scheduleAppointment">Tôi muốn đặt lịch khám</button>
           </div>
         </div>
 
