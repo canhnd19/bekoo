@@ -30,7 +30,8 @@ const currentChat = ref<IMessageHistory[]>([])
 const userInfo = ref({
   id: listUserChat.value[0]?.userId,
   name: listUserChat.value[0]?.name,
-  linkAvatar: '/images/avatar-user-default.png'
+  linkAvatar: '/images/avatar-user-default.png',
+  online: 'Offline' as 'Online' | 'Offline'
 })
 
 const handleClickUser = (chat: IChat) => {
@@ -44,7 +45,8 @@ const handleClickUser = (chat: IChat) => {
   userInfo.value = {
     id: chat.userId,
     name: chat.name,
-    linkAvatar: chat.urlImage || '/images/avatar-user-default.png'
+    linkAvatar: chat.urlImage || '/images/avatar-user-default.png',
+    online: chat.online
   }
   socket.send(chatMessage)
 }
@@ -54,12 +56,12 @@ let removeListener: (() => void) | undefined
 onMounted(() => {
   removeListener = socket.addListener('message', (data: IChatHistory) => {
     if (data.message === 'Get-All-Chat') {
-      console.log('object')
       listUserChat.value = data.value as IChat[]
       userInfo.value = {
         id: listUserChat?.value[0]?.userId,
         name: listUserChat?.value[0]?.name,
-        linkAvatar: listUserChat?.value[0]?.urlImage || '/images/avatar-user-default.png'
+        linkAvatar: listUserChat?.value[0]?.urlImage || '/images/avatar-user-default.png',
+        online: listUserChat?.value[0]?.online
       }
       socket.send({
         requestType: 'Get-Chat-History',
@@ -95,7 +97,8 @@ onUnmounted(() => {
 const topFavorites = computed(() => {
   return listUserChat.value.map((item) => ({
     id: item.userId,
-    avatar: item.urlImage || '/images/avatar-user-default.png'
+    avatar: item.urlImage || '/images/avatar-user-default.png',
+    online: item.online
   }))
 })
 

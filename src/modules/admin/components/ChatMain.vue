@@ -2,12 +2,18 @@
   <div class="chat-main">
     <div class="chat-header">
       <div class="chat-user-info">
-        <div class="avatar">
-          <img :src="userInfo.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" class="rounded-full" />
+        <div class="relative">
+          <div class="avatar">
+            <img :src="userInfo.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" class="rounded-full" />
+          </div>
+          <div
+            v-if="userInfo.online === 'Online'"
+            class="absolute bottom-1 right-2 h-2.5 w-2.5 rounded-full bg-green-500"
+          ></div>
         </div>
         <div>
           <h3>{{ userInfo.name }}</h3>
-          <p class="status">Active now</p>
+          <p v-if="userInfo.online === 'Online'" class="status">Đang hoạt động</p>
         </div>
       </div>
       <div class="info-icon">
@@ -73,6 +79,7 @@ const props = defineProps<{
     id: string
     name: string
     linkAvatar: string
+    online: 'Online' | 'Offline'
   }
 }>()
 

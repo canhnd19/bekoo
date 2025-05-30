@@ -10,8 +10,14 @@
         @change="emit('update:searchQuery', name)"
       />
       <div class="avatar-row">
-        <div v-for="favorite in topFavorites" :key="favorite.id" class="avatar">
-          <img :src="favorite.avatar" alt="Avatar" />
+        <div v-for="favorite in topFavorites" :key="favorite.id" class="relative">
+          <div class="avatar">
+            <img :src="favorite.avatar" alt="Avatar" />
+          </div>
+          <div
+            v-if="favorite.online === 'Online'"
+            class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
+          ></div>
         </div>
       </div>
     </div>
@@ -24,8 +30,14 @@
         :class="{ active: chat.userId === userIdActive }"
         @click="handleClickUser(chat)"
       >
-        <div class="avatar">
-          <img :src="chat.urlImage || '/images/avatar-user-default.png'" alt="Avatar" />
+        <div class="relative">
+          <div class="avatar">
+            <img :src="chat.urlImage || '/images/avatar-user-default.png'" alt="Avatar" />
+          </div>
+          <div
+            v-if="chat.online === 'Online'"
+            class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
+          ></div>
         </div>
         <div class="favorite-info">
           <div class="favorite-name-row">
@@ -53,6 +65,7 @@ const props = defineProps<{
   topFavorites: Array<{
     id: string
     avatar: string
+    online: 'Online' | 'Offline'
   }>
   isLoading: boolean
   searchQuery: string
