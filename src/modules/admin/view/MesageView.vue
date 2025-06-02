@@ -71,9 +71,6 @@ onMounted(() => {
       })
     } else if (data.message === 'Get-Chat-History') {
       currentChat.value = data.value as IMessageHistory[]
-    } else if (data.message === 'Admin-Chat') {
-      // Message sent by admin was received
-      console.log('Admin message sent:', data)
     } else if (data.message === 'Chat') {
       // New message from client
       const messageData = data.value as unknown as { content: string; senderId: string }
