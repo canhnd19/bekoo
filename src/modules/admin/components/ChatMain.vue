@@ -11,9 +11,11 @@
             class="absolute bottom-1 right-2 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
         </div>
+
         <div>
           <h3>{{ userInfo.name }}</h3>
           <p v-if="userInfo.online === 'Online'" class="status">Đang hoạt động</p>
+          <p v-else class="text-xs text-[var(--placeholder)]">hoạt động {{ userInfo.online }}</p>
         </div>
       </div>
       <div class="info-icon">

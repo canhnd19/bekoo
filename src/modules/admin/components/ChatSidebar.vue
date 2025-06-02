@@ -18,6 +18,12 @@
             v-if="favorite.online === 'Online'"
             class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
+          <p
+            v-else
+            class="absolute -right-1 bottom-1 rounded-full border border-solid border-green-500 bg-white px-[2px] text-[6px] text-green-500"
+          >
+            {{ formatStatus(favorite.online) }}
+          </p>
         </div>
       </div>
     </div>
@@ -38,6 +44,12 @@
             v-if="chat.online === 'Online'"
             class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
+          <p
+            v-else
+            class="absolute -right-1 bottom-1 rounded-full border border-solid border-green-500 bg-white px-[2px] text-[6px] text-green-500"
+          >
+            {{ formatStatus(chat.online) }}
+          </p>
         </div>
         <div class="favorite-info">
           <div class="favorite-name-row">
@@ -95,6 +107,12 @@ const handleClickUser = (chat: IChat) => {
 const getLastWord = (s: string): string => {
   const words = s.trim().split(/\s+/) // loại bỏ khoảng trắng thừa
   return words.at(-1) || ''
+}
+
+const formatStatus = (status: string) => {
+  if (status.includes('phút trước')) {
+    return status.split(' ')[0] + 'm'
+  }
 }
 </script>
 
