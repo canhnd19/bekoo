@@ -218,7 +218,9 @@ export function initSocket() {
       : user.value.doctor?.info.id
     : ''
 
-  socketInstance = new WebSocketService(`${import.meta.env.VITE_SOCKET_URL}?userId=${userId}`)
+  const baseUrl = import.meta.env.VITE_SOCKET_URL
+  const url = userId ? `${baseUrl}?userId=${userId}` : baseUrl
+  socketInstance = new WebSocketService(url)
 
   socketInstance.addListener('connect', () => {
     console.log('Connected to WebSocket server')
