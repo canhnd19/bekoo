@@ -314,11 +314,13 @@ const scrollToBottom = () => {
 
 .bot-message {
   align-self: flex-start;
+  align-items: start;
 }
 
 .user-message {
   align-self: flex-end;
   justify-content: flex-end;
+  align-items: start;
 }
 
 .message {
