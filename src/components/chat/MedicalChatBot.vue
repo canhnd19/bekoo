@@ -186,7 +186,7 @@ removeListener = socket.addListener('message', (data: IChatHistory) => {
     messages.value = data.value as IMessageHistory[]
     return
   } else if (data.message === 'Chat') {
-    addMessage(data.value as string, 'Hệ thống')
+    if (data.value) addMessage(data.value as string, 'Hệ thống')
     return
   } else if (data.message === 'Admin-Chat') {
     // Add message from admin

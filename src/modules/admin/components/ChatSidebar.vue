@@ -15,11 +15,11 @@
             <img :src="favorite.avatar" alt="Avatar" />
           </div>
           <div
-            v-if="favorite.online === 'Online'"
+            v-if="favorite.online === 'Online' || formatStatus(favorite.online) === 'Online'"
             class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
           <p
-            v-else
+            v-else-if="formatStatus(favorite.online)"
             class="absolute -right-1 bottom-1 rounded-full border border-solid border-green-500 bg-white px-[2px] text-[6px] text-green-500"
           >
             {{ formatStatus(favorite.online) }}
@@ -41,11 +41,11 @@
             <img :src="chat.urlImage || '/images/avatar-user-default.png'" alt="Avatar" />
           </div>
           <div
-            v-if="chat.online === 'Online'"
+            v-if="chat.online === 'Online' || formatStatus(chat.online) === 'Online'"
             class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
           <p
-            v-else
+            v-else-if="formatStatus(chat.online)"
             class="absolute -right-1 bottom-1 rounded-full border border-solid border-green-500 bg-white px-[2px] text-[6px] text-green-500"
           >
             {{ formatStatus(chat.online) }}
@@ -112,6 +112,10 @@ const getLastWord = (s: string): string => {
 const formatStatus = (status: string) => {
   if (status.includes('phút trước')) {
     return status.split(' ')[0] + 'm'
+  } else if (status.includes('giờ trước')) {
+    return status.split(' ')[0] + 'h'
+  } else if (status.includes('Vài giây trước')) {
+    return 'Online'
   }
 }
 </script>
