@@ -167,6 +167,7 @@ watch(
   justify-content: space-between;
   align-items: center;
   padding: 15px;
+  margin-bottom: 16px;
   border-bottom: 1px solid #e0e0e0;
 }
 
