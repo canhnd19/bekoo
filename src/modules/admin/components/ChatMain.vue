@@ -7,7 +7,7 @@
             <img :src="userInfo.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" class="rounded-full" />
           </div>
           <div
-            v-if="userInfo.online === 'Online'"
+            v-if="userInfo.online === 'Online' || formatStatus(userInfo.online) === 'Online'"
             class="absolute bottom-1 right-2 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
         </div>
@@ -121,6 +121,15 @@ const scrollToBottom = async () => {
   }
 }
 
+const formatStatus = (status: string) => {
+  if (status.includes('phút trước')) {
+    return status.split(' ')[0] + 'm'
+  } else if (status.includes('giờ trước')) {
+    return status.split(' ')[0] + 'h'
+  } else if (status.includes('Vài giây trước')) {
+    return 'Online'
+  }
+}
 onMounted(() => {
   scrollToBottom()
 })

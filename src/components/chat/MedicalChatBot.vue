@@ -100,7 +100,9 @@ onMounted(() => {
     socket.send({
       requestType: 'Get-Chat-History',
       data: {
-        userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id
+        userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
+        pageIndex: 1,
+        pageSize: 10
       }
     })
   }

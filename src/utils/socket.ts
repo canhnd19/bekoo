@@ -159,6 +159,7 @@ class WebSocketService {
     // })
     try {
       if (this.socket) {
+        console.log('🚀 ~ WebSocketService ~ send ~ message:', message)
         this.socket.send(JSON.stringify(message))
       }
     } catch (error) {

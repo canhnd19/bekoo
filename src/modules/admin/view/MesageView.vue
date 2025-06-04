@@ -39,7 +39,9 @@ const handleClickUser = (chat: IChat) => {
   const chatMessage = {
     requestType: 'Get-Chat-History',
     data: {
-      userId: chat.userId
+      userId: chat.userId,
+      pageIndex: 1,
+      pageSize: 10
     }
   }
   userInfo.value = {
@@ -66,7 +68,9 @@ onMounted(() => {
       socket.send({
         requestType: 'Get-Chat-History',
         data: {
-          userId: listUserChat?.value[0]?.userId
+          userId: listUserChat?.value[0]?.userId,
+          pageIndex: 1,
+          pageSize: 10
         }
       })
     } else if (data.message === 'Get-Chat-History') {

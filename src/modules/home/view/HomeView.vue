@@ -143,7 +143,7 @@ const showMore = ref<boolean>(false)
 const { department } = useBaseStore()
 const query = ref<IQuery>({
   pageIndex: 1,
-  pageSize: 40,
+  pageSize: 10,
   totalElements: 0,
   loading: false
 })
