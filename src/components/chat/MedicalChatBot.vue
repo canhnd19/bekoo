@@ -24,9 +24,8 @@
             </div>
           </div>
         </div>
-
         <!-- Chat Messages -->
-        <div ref="messagesContainer" class="chat-messages">
+        <div ref="messagesContainer" class="chat-messages" @scroll="handleScroll">
           <div
             v-for="(message, index) in messages"
             :key="index"
@@ -68,7 +67,6 @@
 
 <script setup lang="ts">
 import { ClickOutside as vClickOutside } from 'element-plus'
-import { nextTick, onMounted, ref, watch } from 'vue'
 
 import type { IChatHistory, IMessageHistory } from '@/types/message.types'
 import type { ChatMessage } from '@/types/socket.types'
@@ -82,6 +80,7 @@ const { user, isLoggedIn } = storeToRefs(useAuthStore())
 const { userMessage } = storeToRefs(useBaseStore())
 const buttonRef = ref()
 const popoverRef = ref()
+const pageIndex = ref(1)
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.()
 }
@@ -101,8 +100,8 @@ onMounted(() => {
       requestType: 'Get-Chat-History',
       data: {
         userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
-        pageIndex: 1,
-        pageSize: 40
+        pageIndex: pageIndex.value,
+        pageSize: 10
       }
     })
   }
@@ -125,6 +124,21 @@ const addMessage = (content: string, createdBy: 'Người dùng' | 'Hệ thống
       messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
     }
   })
+}
+
+const handleScroll = async () => {
+  const container = messagesContainer.value
+  if (container?.scrollTop === 0) {
+    socket.send({
+      requestType: 'Get-Chat-History',
+      data: {
+        userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
+        pageIndex: pageIndex.value + 1,
+        pageSize: 10
+      }
+    })
+    pageIndex.value++
+  }
 }
 
 const sendMessage = () => {
@@ -155,11 +169,6 @@ const scheduleAppointment = () => {
   handleSendMessage('Tôi muốn đặt lịch khám')
 }
 
-// Watch for new messages to scroll to bottom
-watch(messages, () => {
-  scrollToBottom()
-})
-
 const handleSendMessage = (messgae: string) => {
   const socket = getSocket()
   const chatMessage: ChatMessage = {
@@ -185,7 +194,26 @@ const avatarUrl = computed(() => {
 const socket = getSocket()
 removeListener = socket.addListener('message', (data: IChatHistory) => {
   if (data.message && data.message === 'Get-Chat-History') {
-    messages.value = data.value as IMessageHistory[]
+    // messages.value = data.value as IMessageHistory[]
+    const newMessages = data.value as IMessageHistory[]
+    if (pageIndex.value === 1) {
+      messages.value = newMessages
+      nextTick(() => {
+        if (messagesContainer.value) {
+          messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+        }
+      })
+    } else {
+      // Lưu chiều cao cũ
+      const prevHeight = messagesContainer.value?.scrollHeight || 0
+      messages.value = [...newMessages, ...messages.value]
+      nextTick(() => {
+        if (messagesContainer.value) {
+          // Giữ nguyên vị trí scroll sau khi prepend
+          messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight - prevHeight
+        }
+      })
+    }
     return
   } else if (data.message === 'Chat' && data.code === 200) {
     if (data.value) addMessage(data.value as string, 'Hệ thống')
