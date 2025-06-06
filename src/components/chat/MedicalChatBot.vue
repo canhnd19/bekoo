@@ -102,7 +102,7 @@ onMounted(() => {
       data: {
         userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
         pageIndex: 1,
-        pageSize: 10
+        pageSize: 40
       }
     })
   }
@@ -187,7 +187,7 @@ removeListener = socket.addListener('message', (data: IChatHistory) => {
   if (data.message && data.message === 'Get-Chat-History') {
     messages.value = data.value as IMessageHistory[]
     return
-  } else if (data.message === 'Chat') {
+  } else if (data.message === 'Chat' && data.code === 200) {
     if (data.value) addMessage(data.value as string, 'Hệ thống')
     return
   } else if (data.message === 'Admin-Chat') {
