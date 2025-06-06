@@ -116,6 +116,7 @@ const props = defineProps<{
     online: 'online' | 'offline'
   }
   isLoadMore: boolean
+  isScrollToTop: boolean
 }>()
 
 const emit = defineEmits<{
@@ -128,7 +129,6 @@ const messageSend = defineModel('messageSend', {
   default: '',
   type: String
 })
-
 const status = ref<'Admin-off' | 'Admin-on'>('Admin-on')
 
 const scrollToBottom = async () => {
@@ -154,11 +154,21 @@ onMounted(() => {
 watch(
   () => props.chat.length,
   () => {
-    scrollToBottom()
+    if (props.isScrollToTop) {
+      const prevHeight = messagesContainer.value?.scrollHeight || 0
+      nextTick(() => {
+        if (messagesContainer.value) {
+          messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight - prevHeight
+        }
+      })
+    } else {
+      scrollToBottom()
+    }
   }
 )
 
 const socket = getSocket()
+
 const handleStatus = () => {
   socket.send({
     requestType: status.value,
@@ -167,20 +177,14 @@ const handleStatus = () => {
     }
   })
 }
-// const prevHeight = messagesContainer.value?.scrollHeight || 0
-//   nextTick(() => {
-//     if (messagesContainer.value) {
-//       // Giữ nguyên vị trí scroll sau khi prepend
-//       messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight - prevHeight
-//     }
-//   })
+
 const loadMore = () => {
   const container = messagesContainer.value
   if (container?.scrollTop === 0) {
     emit('load-more')
   }
 }
-defineExpose({ messagesContainer })
+defineExpose({ messagesContainer, scrollToBottom })
 </script>
 
 <style scoped lang="scss">

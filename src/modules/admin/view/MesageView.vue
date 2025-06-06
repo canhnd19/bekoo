@@ -9,10 +9,12 @@
       @update:search-query="(name) => fetchUserChatList(name)"
     />
     <ChatMain
+      ref="messagesContainer"
       v-model:message-send="newMessage"
       :user-info="userInfo"
       :chat="currentChat"
       :is-load-more="isLoadMore"
+      :is-scroll-to-top="isScrollToTop"
       @send="sendMessage"
       @load-more="loadMoreMessage"
     />
@@ -27,11 +29,12 @@ import getSocket from '@/utils/socket'
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
 
+const messagesContainer = ref<InstanceType<typeof ChatMain> | null>(null)
 const isLoadMore = ref(false)
 const searchQuery = ref('')
 const newMessage = ref('')
 const isLoading = ref(false)
-
+const isScrollToTop = ref(false)
 const listUserChat = ref<IChat[]>([])
 const pageIndex = ref(1)
 
@@ -45,11 +48,12 @@ const userInfo = ref({
 
 const handleClickUser = (chat: IChat) => {
   const socket = getSocket()
+  currentChat.value = []
   const chatMessage = {
     requestType: 'Get-Chat-History',
     data: {
       userId: chat.userId,
-      pageIndex: pageIndex.value,
+      pageIndex: 1,
       pageSize: 20
     }
   }
@@ -78,19 +82,17 @@ onMounted(() => {
         requestType: 'Get-Chat-History',
         data: {
           userId: listUserChat?.value[0]?.userId,
-          pageIndex: pageIndex.value,
+          pageIndex: 1,
           pageSize: 20
         }
       })
     } else if (data.message === 'Get-Chat-History') {
-      // currentChat.value = data.value as IMessageHistory[]
-
       const newMessages = data.value as IMessageHistory[]
       if (pageIndex.value === 1) {
         currentChat.value = newMessages
       } else {
+        isScrollToTop.value = true
         isLoadMore.value = true
-        // Lưu chiều cao cũ
         currentChat.value = [...newMessages, ...currentChat.value]
         isLoadMore.value = false
       }
@@ -125,6 +127,8 @@ const topFavorites = computed(() => {
 
 const sendMessage = () => {
   if (newMessage.value.trim()) {
+    isScrollToTop.value = false
+    pageIndex.value = 1
     const socket = getSocket()
     currentChat.value.push({
       content: newMessage.value,
@@ -145,7 +149,7 @@ const sendMessage = () => {
 
 const fetchUserChatList = (name = '') => {
   const socket = getSocket()
-  isLoading.value = true
+  isScrollToTop.value = false
   searchQuery.value = name
   socket.send({
     requestType: 'Get-All-Chat',
@@ -156,7 +160,6 @@ const fetchUserChatList = (name = '') => {
 fetchUserChatList()
 
 const loadMoreMessage = () => {
-  console.log('object')
   socket.send({
     requestType: 'Get-Chat-History',
     data: {
