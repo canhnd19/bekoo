@@ -8,7 +8,14 @@
       @click-user="handleClickUser"
       @update:search-query="(name) => fetchUserChatList(name)"
     />
-    <ChatMain v-model:message-send="newMessage" :user-info="userInfo" :chat="currentChat" @send="sendMessage" />
+    <ChatMain
+      v-model:message-send="newMessage"
+      :user-info="userInfo"
+      :chat="currentChat"
+      :is-load-more="isLoadMore"
+      @send="sendMessage"
+      @load-more="loadMoreMessage"
+    />
   </div>
 </template>
 
@@ -20,11 +27,13 @@ import getSocket from '@/utils/socket'
 import ChatMain from '../components/ChatMain.vue'
 import ChatSidebar from '../components/ChatSidebar.vue'
 
+const isLoadMore = ref(false)
 const searchQuery = ref('')
 const newMessage = ref('')
 const isLoading = ref(false)
 
 const listUserChat = ref<IChat[]>([])
+const pageIndex = ref(1)
 
 const currentChat = ref<IMessageHistory[]>([])
 const userInfo = ref({
@@ -40,8 +49,8 @@ const handleClickUser = (chat: IChat) => {
     requestType: 'Get-Chat-History',
     data: {
       userId: chat.userId,
-      pageIndex: 1,
-      pageSize: 10
+      pageIndex: pageIndex.value,
+      pageSize: 20
     }
   }
   userInfo.value = {
@@ -69,12 +78,23 @@ onMounted(() => {
         requestType: 'Get-Chat-History',
         data: {
           userId: listUserChat?.value[0]?.userId,
-          pageIndex: 1,
-          pageSize: 10
+          pageIndex: pageIndex.value,
+          pageSize: 20
         }
       })
     } else if (data.message === 'Get-Chat-History') {
-      currentChat.value = data.value as IMessageHistory[]
+      // currentChat.value = data.value as IMessageHistory[]
+
+      const newMessages = data.value as IMessageHistory[]
+      if (pageIndex.value === 1) {
+        currentChat.value = newMessages
+      } else {
+        isLoadMore.value = true
+        // Lưu chiều cao cũ
+        currentChat.value = [...newMessages, ...currentChat.value]
+        isLoadMore.value = false
+      }
+      return
     } else if (data.message === 'Chat') {
       // New message from client
       const messageData = data.value as unknown as { content: string; senderId: string }
@@ -134,6 +154,19 @@ const fetchUserChatList = (name = '') => {
 }
 
 fetchUserChatList()
+
+const loadMoreMessage = () => {
+  console.log('object')
+  socket.send({
+    requestType: 'Get-Chat-History',
+    data: {
+      userId: userInfo.value.id,
+      pageIndex: pageIndex.value + 1,
+      pageSize: 20
+    }
+  })
+  pageIndex.value++
+}
 </script>
 
 <style lang="scss" scoped>

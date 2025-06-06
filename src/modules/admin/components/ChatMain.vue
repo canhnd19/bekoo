@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <div ref="messagesContainer" class="messages-container">
+    <div ref="messagesContainer" class="messages-container" @scroll="loadMore">
       <div
         v-for="message in chat"
         :key="message.createdAt"
@@ -115,10 +115,12 @@ const props = defineProps<{
     linkAvatar: string
     online: 'online' | 'offline'
   }
+  isLoadMore: boolean
 }>()
 
 const emit = defineEmits<{
   send: []
+  'load-more': []
 }>()
 const messagesContainer = ref<HTMLElement | null>(null)
 
@@ -155,6 +157,7 @@ watch(
     scrollToBottom()
   }
 )
+
 const socket = getSocket()
 const handleStatus = () => {
   socket.send({
@@ -164,6 +167,20 @@ const handleStatus = () => {
     }
   })
 }
+// const prevHeight = messagesContainer.value?.scrollHeight || 0
+//   nextTick(() => {
+//     if (messagesContainer.value) {
+//       // Giữ nguyên vị trí scroll sau khi prepend
+//       messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight - prevHeight
+//     }
+//   })
+const loadMore = () => {
+  const container = messagesContainer.value
+  if (container?.scrollTop === 0) {
+    emit('load-more')
+  }
+}
+defineExpose({ messagesContainer })
 </script>
 
 <style scoped lang="scss">

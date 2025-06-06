@@ -101,7 +101,7 @@ onMounted(() => {
       data: {
         userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
         pageIndex: pageIndex.value,
-        pageSize: 10
+        pageSize: 20
       }
     })
   }
@@ -134,7 +134,7 @@ const handleScroll = async () => {
       data: {
         userId: user.value.patient?.info ? user.value.patient.info.id : user.value.doctor!.info.id,
         pageIndex: pageIndex.value + 1,
-        pageSize: 10
+        pageSize: 20
       }
     })
     pageIndex.value++
