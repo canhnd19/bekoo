@@ -15,7 +15,7 @@
             <img :src="favorite.avatar" alt="Avatar" />
           </div>
           <div
-            v-if="favorite.online === 'Online' || formatStatus(favorite.online) === 'Online'"
+            v-if="favorite.online === 'online' || formatStatus(favorite.online) === 'online'"
             class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
           <p
@@ -41,7 +41,7 @@
             <img :src="chat.urlImage || '/images/avatar-user-default.png'" alt="Avatar" />
           </div>
           <div
-            v-if="chat.online === 'Online' || formatStatus(chat.online) === 'Online'"
+            v-if="chat.online === 'online' || formatStatus(chat.online) === 'online'"
             class="absolute bottom-1 right-0 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
           <p
@@ -77,7 +77,7 @@ const props = defineProps<{
   topFavorites: Array<{
     id: string
     avatar: string
-    online: 'Online' | 'Offline'
+    online: 'online' | 'offline'
   }>
   isLoading: boolean
   searchQuery: string
@@ -115,7 +115,7 @@ const formatStatus = (status: string) => {
   } else if (status.includes('giờ trước')) {
     return status.split(' ')[0] + 'h'
   } else if (status.includes('Vài giây trước')) {
-    return 'Online'
+    return 'online'
   }
 }
 </script>

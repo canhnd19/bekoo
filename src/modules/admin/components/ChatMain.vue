@@ -7,13 +7,13 @@
             <img :src="userInfo.linkAvatar || '/images/avatar-user-default.png'" alt="Avatar" class="rounded-full" />
           </div>
           <div
-            v-if="userInfo.online === 'Online' || formatStatus(userInfo.online) === 'Online'"
+            v-if="userInfo.online === 'online' || formatStatus(userInfo.online) === 'online'"
             class="absolute bottom-1 right-2 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
         </div>
         <div>
           <h3>{{ userInfo.name }}</h3>
-          <p v-if="userInfo.online === 'Online'" class="status">Đang hoạt động</p>
+          <p v-if="userInfo.online === 'online'" class="status">Đang hoạt động</p>
           <p v-else class="text-xs text-[var(--placeholder)]">hoạt động {{ userInfo.online }}</p>
         </div>
       </div>
@@ -113,7 +113,7 @@ const props = defineProps<{
     id: string
     name: string
     linkAvatar: string
-    online: 'Online' | 'Offline'
+    online: 'online' | 'offline'
   }
 }>()
 

@@ -31,7 +31,7 @@ const userInfo = ref({
   id: listUserChat.value[0]?.userId,
   name: listUserChat.value[0]?.name,
   linkAvatar: '/images/avatar-user-default.png',
-  online: 'Offline' as 'Online' | 'Offline'
+  online: 'offline' as 'online' | 'offline'
 })
 
 const handleClickUser = (chat: IChat) => {

@@ -24,5 +24,5 @@ export interface IChat {
   time: string
   userId: string
   urlImage: string
-  online: 'Online' | 'Offline'
+  online: 'online' | 'offline'
 }
