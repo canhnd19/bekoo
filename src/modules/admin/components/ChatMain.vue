@@ -11,15 +11,26 @@
             class="absolute bottom-1 right-2 h-2.5 w-2.5 rounded-full bg-green-500"
           ></div>
         </div>
-
         <div>
           <h3>{{ userInfo.name }}</h3>
           <p v-if="userInfo.online === 'Online'" class="status">Đang hoạt động</p>
           <p v-else class="text-xs text-[var(--placeholder)]">hoạt động {{ userInfo.online }}</p>
         </div>
       </div>
-      <div class="info-icon">
-        <BaseIcon name="warning" />
+      <div class="flex items-center justify-between gap-6">
+        <div class="flex items-center justify-end gap-6">
+          <span>AI auto reply</span>
+          <el-switch
+            v-model="status"
+            active-value="Admin-on"
+            inactive-value="Admin-off"
+            style="--el-switch-on-color: #129961; --el-switch-off-color: #c1c4ce"
+            @change="handleStatus"
+          />
+        </div>
+        <div class="info-icon">
+          <BaseIcon name="warning" />
+        </div>
       </div>
     </div>
     <div ref="messagesContainer" class="messages-container">
@@ -94,6 +105,8 @@
 <script setup lang="ts">
 import type { IMessageHistory } from '@/types/message.types'
 
+import getSocket from '@/utils/socket'
+
 const props = defineProps<{
   chat: IMessageHistory[]
   userInfo: {
@@ -113,6 +126,8 @@ const messageSend = defineModel('messageSend', {
   default: '',
   type: String
 })
+
+const status = ref<'Admin-off' | 'Admin-on'>('Admin-on')
 
 const scrollToBottom = async () => {
   await nextTick()
@@ -140,6 +155,15 @@ watch(
     scrollToBottom()
   }
 )
+const socket = getSocket()
+const handleStatus = () => {
+  socket.send({
+    requestType: status.value,
+    data: {
+      toUserId: props.userInfo.id
+    }
+  })
+}
 </script>
 
 <style scoped lang="scss">
