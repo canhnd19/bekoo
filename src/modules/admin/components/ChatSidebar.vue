@@ -57,13 +57,16 @@
             <p class="relative flex flex-col">
               <span class="time">{{ chat.time }} </span>
               <span
-                v-if="chat.totalUnreadMessages > 1"
+                v-if="chat.totalUnreadMessages > 1 && chat.userId !== userIdActive"
                 class="absolute right-0 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#007bff] text-white"
                 >{{ chat.totalUnreadMessages }}</span
               >
             </p>
           </div>
-          <p class="last-message" :class="{ 'font-semibold !text-[#003553]': chat.totalUnreadMessages }">
+          <p
+            class="last-message"
+            :class="{ 'font-semibold !text-[#003553]': chat.totalUnreadMessages && chat.userId !== userIdActive }"
+          >
             {{ chat.senderId ? `${getLastWord(chat.name)}: ${chat.content}` : `Bạn:  ${chat.content}` }}
           </p>
         </div>
