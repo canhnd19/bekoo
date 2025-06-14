@@ -50,6 +50,7 @@ const userInfo = ref({
 
 const handleClickUser = (chat: IChat) => {
   const socket = getSocket()
+  isScrollToTop.value = false
   currentChat.value = []
   const chatMessage = {
     requestType: 'Get-Chat-History',
