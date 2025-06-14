@@ -54,9 +54,16 @@
         <div class="favorite-info">
           <div class="favorite-name-row">
             <h4>{{ chat.name }}</h4>
-            <span class="time">{{ chat.time }} </span>
+            <p class="relative flex flex-col">
+              <span class="time">{{ chat.time }} </span>
+              <span
+                v-if="chat.totalUnreadMessages > 1"
+                class="absolute right-0 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-[#007bff] text-[#003553] text-white"
+                >{{ chat.totalUnreadMessages }}</span
+              >
+            </p>
           </div>
-          <p class="last-message">
+          <p class="last-message" :class="{ 'font-semibold !text-[#003553]': chat.totalUnreadMessages }">
             {{ chat.senderId ? `${getLastWord(chat.name)}: ${chat.content}` : `Bạn:  ${chat.content}` }}
           </p>
         </div>

@@ -19,7 +19,7 @@
       </div>
       <div class="flex items-center justify-between gap-6">
         <div class="flex items-center justify-end gap-6">
-          <span>AI auto reply {{ status }}</span>
+          <span>AI auto reply</span>
           <ElSwitch
             v-model="status"
             active-value="Admin-on"

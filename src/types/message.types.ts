@@ -25,4 +25,5 @@ export interface IChat {
   userId: string
   urlImage: string
   online: 'online' | 'offline'
+  totalUnreadMessages: number
 }
