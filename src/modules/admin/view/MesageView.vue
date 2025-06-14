@@ -187,8 +187,9 @@ const loadMoreMessage = () => {
   pageIndex.value++
 }
 const handleStatus = () => {
+  const _status = status.value === 'Admin-on' ? 'Admin-off' : 'Admin-on'
   socket.send({
-    requestType: status.value,
+    requestType: _status,
     data: {
       toUserId: userInfo.value.id
     }
