@@ -65,6 +65,12 @@ const handleClickUser = (chat: IChat) => {
     linkAvatar: chat.urlImage || '/images/avatar-user-default.png',
     online: chat.online
   }
+  socket.send({
+    requestType: 'get-admin-status',
+    data: {
+      toUserId: userInfo.value.id
+    }
+  })
   socket.send(chatMessage)
 }
 
@@ -119,7 +125,7 @@ onMounted(() => {
       // Update chat list to show latest message
       fetchUserChatList()
     } else if (data.message === 'get-admin-status') {
-      data.value ? (status.value = 'Admin-on') : (status.value = 'Admin-off')
+      data.value ? (status.value = 'Admin-off') : (status.value = 'Admin-on')
     }
     isLoading.value = false
   })
