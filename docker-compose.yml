@@ -71,7 +71,7 @@ services:
       - kafka
     restart: on-failure
     ports:
-      - '8083:8083'
+      - '8083:8080'
     environment:
       SPRING_URL: http://localhost:8083
       SPRING_KAFKA_PORT: kafka:9092
