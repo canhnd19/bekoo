@@ -88,6 +88,12 @@ onMounted(() => {
           pageSize: 20
         }
       })
+      socket.send({
+        requestType: 'get-admin-status',
+        data: {
+          toUserId: userInfo.value.id
+        }
+      })
     } else if (data.message === 'Get-Chat-History') {
       const newMessages = data.value as IMessageHistory[]
       if (pageIndex.value === 1) {
@@ -112,6 +118,8 @@ onMounted(() => {
       }
       // Update chat list to show latest message
       fetchUserChatList()
+    } else if (data.message === 'get-admin-status') {
+      data.value ? (status.value = 'Admin-on') : (status.value = 'Admin-off')
     }
     isLoading.value = false
   })

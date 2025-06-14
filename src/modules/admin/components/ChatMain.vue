@@ -19,7 +19,7 @@
       </div>
       <div class="flex items-center justify-between gap-6">
         <div class="flex items-center justify-end gap-6">
-          <span>AI auto reply</span>
+          <span>AI auto reply {{ status }}</span>
           <ElSwitch
             v-model="status"
             active-value="Admin-on"
@@ -103,8 +103,6 @@
 </template>
 
 <script setup lang="ts">
-import { ElSwitch } from 'element-plus'
-
 import type { IMessageHistory } from '@/types/message.types'
 
 const props = defineProps<{
@@ -131,6 +129,7 @@ const messageSend = defineModel('messageSend', {
   type: String
 })
 const status = defineModel<'Admin-off' | 'Admin-on'>('status', { default: 'Admin-on' })
+
 const scrollToBottom = async () => {
   await nextTick()
   if (messagesContainer.value) {
