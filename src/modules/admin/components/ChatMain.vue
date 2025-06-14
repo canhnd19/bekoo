@@ -25,7 +25,7 @@
             active-value="Admin-on"
             inactive-value="Admin-off"
             style="--el-switch-on-color: #129961; --el-switch-off-color: #c1c4ce"
-            @change="emit('change-status-ai-auto-reply', status)"
+            @change="emit('change-status-ai-auto-reply', status as 'Admin-off' | 'Admin-on')"
           />
         </div>
         <div class="info-icon">
