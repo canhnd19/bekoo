@@ -11,10 +11,12 @@
     <ChatMain
       ref="messagesContainer"
       v-model:message-send="newMessage"
+      v-model:status="status"
       :user-info="userInfo"
       :chat="currentChat"
       :is-load-more="isLoadMore"
       :is-scroll-to-top="isScrollToTop"
+      @change-status-ai-auto-reply="handleStatus"
       @send="sendMessage"
       @load-more="loadMoreMessage"
     />
@@ -37,7 +39,7 @@ const isLoading = ref(false)
 const isScrollToTop = ref(false)
 const listUserChat = ref<IChat[]>([])
 const pageIndex = ref(1)
-
+const status = ref<'Admin-on' | 'Admin-off'>('Admin-on')
 const currentChat = ref<IMessageHistory[]>([])
 const userInfo = ref({
   id: listUserChat.value[0]?.userId,
@@ -169,6 +171,14 @@ const loadMoreMessage = () => {
     }
   })
   pageIndex.value++
+}
+const handleStatus = () => {
+  socket.send({
+    requestType: status.value,
+    data: {
+      toUserId: userInfo.value.id
+    }
+  })
 }
 </script>
 

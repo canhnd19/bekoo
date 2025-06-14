@@ -20,12 +20,12 @@
       <div class="flex items-center justify-between gap-6">
         <div class="flex items-center justify-end gap-6">
           <span>AI auto reply</span>
-          <el-switch
+          <ElSwitch
             v-model="status"
             active-value="Admin-on"
             inactive-value="Admin-off"
             style="--el-switch-on-color: #129961; --el-switch-off-color: #c1c4ce"
-            @change="handleStatus"
+            @change="emit('change-status-ai-auto-reply', status)"
           />
         </div>
         <div class="info-icon">
@@ -103,9 +103,9 @@
 </template>
 
 <script setup lang="ts">
-import type { IMessageHistory } from '@/types/message.types'
+import { ElSwitch } from 'element-plus'
 
-import getSocket from '@/utils/socket'
+import type { IMessageHistory } from '@/types/message.types'
 
 const props = defineProps<{
   chat: IMessageHistory[]
@@ -122,6 +122,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   send: []
   'load-more': []
+  'change-status-ai-auto-reply': [status: 'Admin-off' | 'Admin-on']
 }>()
 const messagesContainer = ref<HTMLElement | null>(null)
 
@@ -129,8 +130,7 @@ const messageSend = defineModel('messageSend', {
   default: '',
   type: String
 })
-const status = ref<'Admin-off' | 'Admin-on'>('Admin-on')
-
+const status = defineModel<'Admin-off' | 'Admin-on'>('status', { default: 'Admin-on' })
 const scrollToBottom = async () => {
   await nextTick()
   if (messagesContainer.value) {
@@ -166,17 +166,6 @@ watch(
     }
   }
 )
-
-const socket = getSocket()
-
-const handleStatus = () => {
-  socket.send({
-    requestType: status.value,
-    data: {
-      toUserId: props.userInfo.id
-    }
-  })
-}
 
 const loadMore = () => {
   const container = messagesContainer.value
